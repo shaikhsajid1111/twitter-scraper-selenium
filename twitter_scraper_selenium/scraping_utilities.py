@@ -8,7 +8,7 @@ except Exception as ex:
 
 frameinfo = currentframe()
 
-class Scraping_utlities:
+class Scraping_utilities:
 
   @staticmethod
   def __parse_name(string):

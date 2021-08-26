@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 try:
     from selenium.common.exceptions import NoSuchElementException
-    from .scraping_utils import Scraping_utilities
+    from .scraping_utilities import Scraping_utilities
     from .driver_utils import Utilities
     import sys
     import urllib.request
     import re
     from inspect import currentframe
-    from .scraping_utilities import Scraping_utlities
     from dateutil.parser import parse
 except Exception as ex:
     frameinfo = currentframe()
@@ -30,7 +29,7 @@ class Finder:
   def __find_name(driver) -> str:
     try:
       name = name = driver.title
-      name = Scraping_utlities._Scraping_utlities__parse_name(name)
+      name = Scraping_utilities._Scraping_utilities__parse_name(name)
       return name
     except Exception as ex:
       print("Error at method find_name on line no. {} : {}".format(frameinfo.f_lineno, ex))
@@ -49,7 +48,7 @@ class Finder:
       if replies.text == "":
         return 0
       else:
-        return int(Scraping_utlities._Scraping_utlities__value_to_float(replies.text))
+        return int(Scraping_utilities._Scraping_utilities__value_to_float(replies.text))
     except Exception as ex:
       print("Error at method find_replies on line no. {} : {}".format(frameinfo.f_lineno, ex))
       return ""
@@ -61,7 +60,7 @@ class Finder:
       if shares.text == "":
         return 0
       else:
-        return int(Scraping_utlities._Scraping_utlities__value_to_float(shares.text))
+        return int(Scraping_utilities._Scraping_utilities__value_to_float(shares.text))
     except Exception as ex:
       print("Error at method find_shares on line no. {} : {}".format(frameinfo.f_lineno, ex))
       return ""
@@ -114,7 +113,7 @@ class Finder:
       if like_element.text == "":
         return 0
       else:
-        return int(Scraping_utlities._Scraping_utlities__value_to_float(like_element.text))
+        return int(Scraping_utilities._Scraping_utilities__value_to_float(like_element.text))
     except Exception as ex:
       print("Error at method find_all_anchor_tags on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
