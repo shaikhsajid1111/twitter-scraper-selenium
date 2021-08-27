@@ -1,27 +1,35 @@
-# Twitter scraper selenium
-###### Python package to scrap twitter's front-end easily with selenium
+<h1> Twitter scraper selenium </h1>
+<p> Python package to scrap twitter's front-end easily with selenium </p>
 
 
-## Table of Contents
-- [Prerequisites](#Prerequisites)
-- [Installation](#Installation)
-- [Usage](#Usage)
+<h2> Table of Contents </h2>
+<li> <a href="#Prerequisites">Prerequisites </a></li>
+<li> <a href="#Installation">Installation</a>
+  
+</li>
+<li> <a href="#Usage"> Usage</a> </li>
 
-## Prerequisites
-- Internet Connection
-- Python 3.6+
-- Chrome or Firefox browser installed on your machine
+<h2>Prerequisites </h2>
+<li> Internet Connection </li>
+<li> Python 3.6+ </li>
+<li> Chrome or Firefox browser installed on your machine </li>
+<hr>
+<h2> Installation </h2>
+<h4 id="sourceInstallation">Installing from the source</h4>
+<p>Download the source code or clone it with:<p>
 
-## Installation
-#### Installing from source
-Download the source code or clone it with:
-```git clone https://github.com/shaikhsajid1111/twitter_scraper_selenium```
+<code> git clone https://github.com/shaikhsajid1111/twitter_scraper_selenium </code>
 
 Open terminal inside the downloaded folder and enter:
-`python3 setup.py install`
+<br>
+<code>python3 setup.py install</code>
 
-#### Installing with [pypi](https://pypi.org)
-`pip3 install twitter-scraper-selenium`
+<h4>
+Installing from <a href="https://pypi.org">pypi</a>
+</h4>
 
-## Usage
+<code>pip3 install twitter-scraper-selenium</code>
+<hr>
+<h2>
+Usage</h2>
 
