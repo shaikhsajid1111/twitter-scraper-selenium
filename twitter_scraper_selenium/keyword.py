@@ -5,7 +5,7 @@ try:
   from .driver_utils import Utilities
   from inspect import currentframe
   from .element_finder import Finder
-  import re,json
+  import re,json,os,csv
   from urllib.parse import quote
 except Exception as ex:
   print(ex)
@@ -16,8 +16,8 @@ class Keyword:
   """this class needs to be instantiated in order to find something
   on twitter related to keywords"""
 
-  def __init__(self, keyword,browser,until=datetime.today().strftime('%Y-%m-%d'),
-               since=(datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d"), proxy=None, posts_count=10) -> None:
+  def __init__(self, keyword,browser,until,
+               since, proxy, posts_count):
       self.keyword = keyword
       self.URL = "https://twitter.com/search?q={}%20until%3A{}%20since%3A{}&src=typed_query&f=live".format(
           quote(keyword), until, since)
@@ -116,3 +116,73 @@ class Keyword:
       print("Error at method scrap on line no. {} : {}".format(frameinfo.f_lineno,ex))
 
 
+def json_to_csv(filename,json_data,directory):
+  os.chdir(directory) #change working directory to given directory
+  #headers of the CSV file
+  fieldnames = ['post_id','username','name','profile_picture','replies',
+  'retweets','likes','is_retweet'
+              ,'posted_time','content','hashtags','mentions','images','videos','post_url']
+  #open and start writing to CSV files
+  with open("{}.csv".format(filename),'w',newline='',encoding="utf-8") as data_file:
+      writer = csv.DictWriter(data_file,fieldnames=fieldnames) #instantiate DictWriter for writing CSV fi
+      writer.writeheader() #write headers to CSV file
+      #iterate over entire dictionary, write each posts as a row to CSV file
+      for key in json_data:
+          #parse post in a dictionary and write it as a single row
+          row = {
+            "post_id" : key,
+            "username" : json_data[key]['username'],
+            "name" : json_data[key]['name'],
+            "profile_picture" : json_data[key]['profile_picture'],
+            "replies" : json_data[key]['replies'],
+            "retweets" : json_data[key]['retweets'],
+            "likes":json_data[key]['likes'],
+            "is_retweet" : json_data[key]['is_retweet'],
+            "posted_time" : json_data[key]['posted_time'],
+            "content" : json_data[key]['content'],
+            "hashtags" : json_data[key]['hashtags'],
+            "mentions" : json_data[key]['mentions'],
+            "images" : json_data[key]['images'],
+            "videos" : json_data[key]['videos'],
+            "post_url" : json_data[key]['post_url']
+          }
+          writer.writerow(row) #write row to CSV fi
+      data_file.close() #after writing close the file
+
+
+
+
+
+def scrap_keyword(keyword,browser="firefox",until=datetime.today().strftime('%Y-%m-%d'),
+                  since=(datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d"), proxy=None, posts_count=10, output="json", filename="", directory=os.getcwd()):
+  """
+  Returns tweets data in CSV or JSON.
+
+  Parameters:
+  keyword(string): Keyword to search on twitter.
+
+  browser(string): which browser to use for scraping?, Only 2 are supported Chrome and Firefox,default is set to Firefox
+
+  until(string): optional parameter,Until date for scraping. Format for date is YYYY-MM-DD.
+
+  since(string): optional parameter,Since date for scraping. Format for date is YYYY-MM-DD.
+
+  proxy(string): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port
+
+  posts_count(int): number of posts to scrap. Default is 10.
+
+  output(string): The output format, whether JSON or CSV. Default is JSON.
+
+  filename(string): If output parameter is set to CSV, then it is necessary for filename parameter to passed. If not passed then the filename will be same as keyword passed.
+
+  directory(string): If output parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.
+
+  """
+  keyword_bot = Keyword(keyword,browser=browser,until=until,since=since,proxy=proxy,posts_count=posts_count)
+  data = keyword_bot.scrap()
+  if output == "json":
+    return data
+  elif output == "csv":
+    if filename == "":
+      filename = keyword
+    json_to_csv(filename=filename, json_data=json.loads(data), directory=directory)

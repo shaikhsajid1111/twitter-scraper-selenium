@@ -5,7 +5,7 @@ try:
   from inspect import currentframe
   from .element_finder import Finder
   from .driver_utils import Utilities
-  import re,json
+  import re,json,csv,os
 except Exception as ex:
   frameinfo = currentframe()
   print("Error on line no. {} : {}".format(frameinfo.f_lineno,ex))
@@ -15,7 +15,8 @@ frameinfo = currentframe()
 class Profile:
   """this class needs to be instantiated in orer to scrape post of some
   twitter profile"""
-  def __init__(self,twitter_username,browser,proxy=None,posts_count = 10) -> None:
+
+  def __init__(self, twitter_username, browser, proxy, posts_count):
       self.twitter_username = twitter_username
       self.URL = "https://twitter.com/{}".format(twitter_username.lower())
       self.__driver = ""
@@ -99,6 +100,7 @@ class Profile:
       print("Error at method scrap on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
 
+
   def scrap(self):
     try:
       self.__start_driver()
@@ -116,4 +118,67 @@ class Profile:
 
 
 
+def json_to_csv(filename,json_data,directory):
+  os.chdir(directory) #change working directory to given directory
+  #headers of the CSV file
+  fieldnames = ['post_id','username','name','profile_picture','replies',
+  'retweets','likes','is_retweet'
+              ,'retweet_link','posted_time','content','hashtags','mentions','images','videos','post_url']
+  #open and start writing to CSV files
+  with open("{}.csv".format(filename),'w',newline='',encoding="utf-8") as data_file:
+      writer = csv.DictWriter(data_file,fieldnames=fieldnames) #instantiate DictWriter for writing CSV fi
+      writer.writeheader() #write headers to CSV file
+      #iterate over entire dictionary, write each posts as a row to CSV file
+      for key in json_data:
+          #parse post in a dictionary and write it as a single row
+          row = {
+            "post_id" : key,
+            "username" : json_data[key]['username'],
+            "name" : json_data[key]['name'],
+            "profile_picture" : json_data[key]['profile_picture'],
+            "replies" : json_data[key]['replies'],
+            "retweets" : json_data[key]['retweets'],
+            "likes":json_data[key]['likes'],
+            "is_retweet" : json_data[key]['is_retweet'],
+            "retweet_link" : json_data[key]['retweet_link'],
+            "posted_time" : json_data[key]['posted_time'],
+            "content" : json_data[key]['content'],
+            "hashtags" : json_data[key]['hashtags'],
+            "mentions" : json_data[key]['mentions'],
+            "images" : json_data[key]['images'],
+            "videos" : json_data[key]['videos'],
+            "post_url" : json_data[key]['post_url']
+          }
+          writer.writerow(row) #write row to CSV fi
+      data_file.close() #after writing close the file
+  
 
+def scrap_profile(twitter_username,browser="firefox",proxy=None, posts_count=10, output="json",filename="",directory=os.getcwd()):
+  """
+  Returns tweets data in CSV or JSON.
+
+  Parameters:
+  twitter_username(string): twitter username of the account.
+
+  browser(string): which browser to use for scraping?, Only 2 are supported Chrome and Firefox. Default is set to Firefox
+
+  proxy(string): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port
+
+  posts_count(int): number of posts to scrap. Default is 10.
+
+  output(string): The output format, whether JSON or CSV. Default is JSON.
+
+  filename(string): If output parameter is set to CSV, then it is necessary for filename parameter to passed. If not passed then the filename will be same as keyword passed.
+
+  directory(string): If output parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.
+
+
+  """
+  profile_bot = Profile(twitter_username, browser, proxy, posts_count)
+  data = profile_bot.scrap()
+  if output == "json":
+    return data
+  elif output == "csv":
+    if filename == "":
+      filename = twitter_username
+    json_to_csv(filename=filename, json_data=json.loads(data), directory=directory)

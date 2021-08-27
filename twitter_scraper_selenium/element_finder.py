@@ -2,10 +2,6 @@
 try:
     from selenium.common.exceptions import NoSuchElementException
     from .scraping_utilities import Scraping_utilities
-    from .driver_utils import Utilities
-    import sys
-    import urllib.request
-    import re
     from inspect import currentframe
     from dateutil.parser import parse
 except Exception as ex:
@@ -99,6 +95,8 @@ class Finder:
       #content_element = tweet.find_element_by_css_selector('.//*[@dir="auto"]')[4]
       content_element = tweet.find_element_by_css_selector('div[lang]')
       return content_element.text
+    except NoSuchElementException:
+      return ""
     except Exception as ex:
       print("Error at method find_all_anchor_tags on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
