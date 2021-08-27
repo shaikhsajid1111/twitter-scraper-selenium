@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 try:
   from inspect import currentframe
+  import re
 except Exception as ex:
   frameinfo = currentframe()
   print("Error on line no. {} : {}".format(frameinfo.f_lineno, ex))
@@ -18,21 +19,8 @@ class Scraping_utilities:
       print("Error on line no. {} : {}".format(frameinfo.f_lineno, ex))
 
   @staticmethod
-  def __value_to_float(x):
+  def __extract_digits(string):
     try:
-        x = float(x)
-        return x
-    except:
-        pass
-    x = x.lower()
-    if 'k' in x:
-        if len(x) > 1:
-            return float(x.replace('k', '')) * 1000
-        return 1000
-    if 'm' in x:
-        if len(x) > 1:
-            return float(x.replace('m', '')) * 1000000
-        return 1000000
-    if 'b' in x:
-        return float(x.replace('b', '')) * 1000000000
-    return 0
+      return int(re.search(r'\d+', string).group(0))
+    except Exception as ex:
+      print("Error on line no. {} : {}".format(frameinfo.f_lineno, ex))

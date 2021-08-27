@@ -36,7 +36,6 @@ class Utilities:
     try:
       body = driver.find_element_by_css_selector('body')
       for _ in range(3):
-        print("scrolled...")
         body.send_keys(Keys.PAGE_DOWN)
     except Exception as ex:
       print("Error on line no. {} : {}".format(frameinfo.f_lineno,ex))

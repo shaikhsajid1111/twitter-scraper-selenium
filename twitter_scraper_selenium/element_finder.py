@@ -26,7 +26,7 @@ class Finder:
   """
 
   @staticmethod
-  def __find_name(driver) -> str:
+  def __find_name(driver):
     try:
       name = name = driver.title
       name = Scraping_utilities._Scraping_utilities__parse_name(name)
@@ -44,11 +44,9 @@ class Finder:
   @staticmethod
   def __find_replies(tweet):
     try:
-      replies = tweet.find_element_by_css_selector('div[data-testid="reply"]')
-      if replies.text == "":
-        return 0
-      else:
-        return int(Scraping_utilities._Scraping_utilities__value_to_float(replies.text))
+      replies_element = tweet.find_element_by_css_selector('div[data-testid="reply"]')
+      replies = replies_element.get_attribute("aria-label")
+      return Scraping_utilities._Scraping_utilities__extract_digits(replies)
     except Exception as ex:
       print("Error at method find_replies on line no. {} : {}".format(frameinfo.f_lineno, ex))
       return ""
@@ -56,11 +54,9 @@ class Finder:
   @staticmethod
   def __find_shares(tweet):
     try:
-      shares = tweet.find_element_by_css_selector('div[data-testid="retweet"]')
-      if shares.text == "":
-        return 0
-      else:
-        return int(Scraping_utilities._Scraping_utilities__value_to_float(shares.text))
+      shares_element = tweet.find_element_by_css_selector('div[data-testid="retweet"]')
+      shares =  shares_element.get_attribute("aria-label")
+      return Scraping_utilities._Scraping_utilities__extract_digits(shares)
     except Exception as ex:
       print("Error at method find_shares on line no. {} : {}".format(frameinfo.f_lineno, ex))
       return ""
@@ -100,7 +96,8 @@ class Finder:
   @staticmethod
   def __find_content(tweet):
     try:
-      content_element = tweet.find_elements_by_xpath('.//*[@dir="auto"]')[4]
+      #content_element = tweet.find_element_by_css_selector('.//*[@dir="auto"]')[4]
+      content_element = tweet.find_element_by_css_selector('div[lang]')
       return content_element.text
     except Exception as ex:
       print("Error at method find_all_anchor_tags on line no. {} : {}".format(
@@ -110,10 +107,8 @@ class Finder:
   def __find_like(tweet):
     try:
       like_element = tweet.find_element_by_css_selector('div[data-testid="like"]')
-      if like_element.text == "":
-        return 0
-      else:
-        return int(Scraping_utilities._Scraping_utilities__value_to_float(like_element.text))
+      likes = like_element.get_attribute("aria-label")
+      return Scraping_utilities._Scraping_utilities__extract_digits(likes)
     except Exception as ex:
       print("Error at method find_all_anchor_tags on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
@@ -145,3 +140,26 @@ class Finder:
       print("Error at method find_all_anchor_tags on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
 
+  @staticmethod
+  def __is_retweet(tweet):
+    try:
+      tweet.find_element_by_css_selector('[role="presentation"]')
+      return True
+    except NoSuchElementException:
+      return False
+    except Exception as ex:
+      print("Error at method find_all_anchor_tags on line no. {} : {}".format(
+          frameinfo.f_lineno, ex))
+      return False
+
+  @staticmethod
+  def __find_name_from_post(tweet):
+    try:
+      name = "NA"
+      anchors = Finder.__find_all_anchor_tags(tweet)
+      if len(anchors) > 2:
+        name = anchors[1].text.split("\n")[0]
+      return name
+    except Exception as ex:
+      print("Error at method find_all_anchor_tags on line no. {} : {}".format(
+          frameinfo.f_lineno, ex))
