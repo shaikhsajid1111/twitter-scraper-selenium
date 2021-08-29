@@ -22,20 +22,11 @@ class Finder:
   """
 
   @staticmethod
-  def __find_name(driver):
-    try:
-      name = name = driver.title
-      name = Scraping_utilities._Scraping_utilities__parse_name(name)
-      return name
-    except Exception as ex:
-      print("Error at method find_name on line no. {} : {}".format(frameinfo.f_lineno, ex))
-
-  @staticmethod
   def __fetch_all_tweets(driver):
     try:
       return driver.find_elements_by_css_selector('div[data-testid="tweet"]')
     except:
-      print("Error at method find_all_tweets on line no. {} : {}".format(frameinfo.f_lineno, ex))
+      print("Error at method fetch_all_tweets on line no. {} : {}".format(frameinfo.f_lineno, ex))
 
   @staticmethod
   def __find_replies(tweet):
@@ -85,7 +76,7 @@ class Finder:
       posted_time = parse(timestamp).isoformat()
       return posted_time
     except Exception as ex:
-      print("Error at method find_all_anchor_tags on line no. {} : {}".format(
+      print("Error at method find_timestamp on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
 
 
@@ -98,7 +89,7 @@ class Finder:
     except NoSuchElementException:
       return ""
     except Exception as ex:
-      print("Error at method find_all_anchor_tags on line no. {} : {}".format(
+      print("Error at method find_content on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
 
   @staticmethod
@@ -108,7 +99,7 @@ class Finder:
       likes = like_element.get_attribute("aria-label")
       return Scraping_utilities._Scraping_utilities__extract_digits(likes)
     except Exception as ex:
-      print("Error at method find_all_anchor_tags on line no. {} : {}".format(
+      print("Error at method find_like on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
   @staticmethod
   def __find_images(tweet):
@@ -121,7 +112,7 @@ class Finder:
         images.append(href)
       return images
     except Exception as ex:
-      print("Error at method find_all_anchor_tags on line no. {} : {}".format(
+      print("Error at method __find_images on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
 
   @staticmethod
@@ -135,7 +126,7 @@ class Finder:
         videos.append(href)
       return videos
     except Exception as ex:
-      print("Error at method find_all_anchor_tags on line no. {} : {}".format(
+      print("Error at method find_videos on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
 
   @staticmethod
@@ -146,7 +137,7 @@ class Finder:
     except NoSuchElementException:
       return False
     except Exception as ex:
-      print("Error at method find_all_anchor_tags on line no. {} : {}".format(
+      print("Error at method is_retweet on line no. {} : {}".format(
           frameinfo.f_lineno, ex))
       return False
 
@@ -159,5 +150,18 @@ class Finder:
         name = anchors[1].text.split("\n")[0]
       return name
     except Exception as ex:
-      print("Error at method find_all_anchor_tags on line no. {} : {}".format(
+      print("Error at method __find_name_from_post on line no. {} : {}".format(
+          frameinfo.f_lineno, ex))
+
+  @staticmethod
+  def __find_external_link(tweet):
+    try:
+      card = tweet.find_element_by_css_selector('[data-testid="card.wrapper"]')
+      href = card.find_element_by_tag_name('a')
+      return href.get_attribute("href")
+
+    except NoSuchElementException:
+      return ""
+    except Exception as ex:
+      print("Error at method __find_external_link on line no. {} : {}".format(
           frameinfo.f_lineno, ex))

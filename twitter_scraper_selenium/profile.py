@@ -16,13 +16,13 @@ class Profile:
   """this class needs to be instantiated in orer to scrape post of some
   twitter profile"""
 
-  def __init__(self, twitter_username, browser, proxy, posts_count):
+  def __init__(self, twitter_username, browser, proxy, tweets_count):
       self.twitter_username = twitter_username
       self.URL = "https://twitter.com/{}".format(twitter_username.lower())
       self.__driver = ""
       self.browser = browser
       self.proxy = proxy
-      self.posts_count = posts_count
+      self.tweets_count = tweets_count
       self.posts_data = {}
       self.retry = 10
 
@@ -43,15 +43,15 @@ class Profile:
 
   def __fetch_and_store_data(self):
     try:
-      name = Finder._Finder__find_name(self.__driver)
       all_ready_fetched_posts = []
       present_tweets = Finder._Finder__fetch_all_tweets(self.__driver)
       self.__check_tweets_presence(present_tweets)
       all_ready_fetched_posts.extend(present_tweets)
 
-      while len(self.posts_data) < self.posts_count:
+      while len(self.posts_data) < self.tweets_count:
         for tweet in present_tweets:
           status = Finder._Finder__find_status(tweet)
+          name = Finder._Finder__find_name_from_post(tweet)
           replies = Finder._Finder__find_replies(tweet)
           retweets = Finder._Finder__find_shares(tweet)
           username = status[3]
@@ -67,6 +67,7 @@ class Profile:
           mentions = re.findall(r"@(\w+)", content)
           profile_picture = "https://twitter.com/{}/photo".format(username)
           post_url = "https://twitter.com/{}/status/{}".format(username,status)
+          external_link = Finder._Finder__find_external_link(tweet)
           self.posts_data[status] = {
             "post_id" : status,
             "username" : username,
@@ -83,7 +84,8 @@ class Profile:
             "mentions" : mentions,
             "images" : images,
             "videos" : videos,
-            "post_url" : post_url
+            "post_url" : post_url,
+            "external_link" : external_link
           }
 
         Utilities._Utilities__scroll_down(self.__driver)
@@ -109,7 +111,7 @@ class Profile:
       Utilities._Utilities__wait_until_tweets_appear(self.__driver)
       self.__fetch_and_store_data()
       self.__close_driver()
-      data = dict(list(self.posts_data.items())[0:int(self.posts_count)])
+      data = dict(list(self.posts_data.items())[0:int(self.tweets_count)])
       return json.dumps(data)
     except Exception as ex:
       self.__close_driver()
@@ -123,7 +125,8 @@ def json_to_csv(filename,json_data,directory):
   #headers of the CSV file
   fieldnames = ['post_id','username','name','profile_picture','replies',
   'retweets','likes','is_retweet'
-              ,'retweet_link','posted_time','content','hashtags','mentions','images','videos','post_url']
+              ,'retweet_link','posted_time','content','hashtags','mentions',
+                'images', 'videos', 'post_url', 'external_link']
   #open and start writing to CSV files
   with open("{}.csv".format(filename),'w',newline='',encoding="utf-8") as data_file:
       writer = csv.DictWriter(data_file,fieldnames=fieldnames) #instantiate DictWriter for writing CSV fi
@@ -147,13 +150,14 @@ def json_to_csv(filename,json_data,directory):
             "mentions" : json_data[key]['mentions'],
             "images" : json_data[key]['images'],
             "videos" : json_data[key]['videos'],
-            "post_url" : json_data[key]['post_url']
+            "post_url" : json_data[key]['post_url'],
+            "external_link": json_data[key]['external_link']
           }
           writer.writerow(row) #write row to CSV fi
       data_file.close() #after writing close the file
-  
 
-def scrap_profile(twitter_username,browser="firefox",proxy=None, posts_count=10, output="json",filename="",directory=os.getcwd()):
+
+def scrap_profile(twitter_username,browser="firefox",proxy=None, tweets_count=10, output="json",filename="",directory=os.getcwd()):
   """
   Returns tweets data in CSV or JSON.
 
@@ -164,7 +168,7 @@ def scrap_profile(twitter_username,browser="firefox",proxy=None, posts_count=10,
 
   proxy(string): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port
 
-  posts_count(int): number of posts to scrap. Default is 10.
+  tweets_count(int): number of posts to scrap. Default is 10.
 
   output(string): The output format, whether JSON or CSV. Default is JSON.
 
@@ -174,11 +178,12 @@ def scrap_profile(twitter_username,browser="firefox",proxy=None, posts_count=10,
 
 
   """
-  profile_bot = Profile(twitter_username, browser, proxy, posts_count)
+  profile_bot = Profile(twitter_username, browser, proxy, tweets_count)
   data = profile_bot.scrap()
   if output == "json":
     return data
-  elif output == "csv":
+  elif output.lower() == "csv":
     if filename == "":
       filename = twitter_username
     json_to_csv(filename=filename, json_data=json.loads(data), directory=directory)
+

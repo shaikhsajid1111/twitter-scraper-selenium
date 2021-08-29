@@ -17,14 +17,14 @@ class Keyword:
   on twitter related to keywords"""
 
   def __init__(self, keyword,browser,until,
-               since, proxy, posts_count):
+               since, proxy, tweets_count):
       self.keyword = keyword
       self.URL = "https://twitter.com/search?q={}%20until%3A{}%20since%3A{}&src=typed_query&f=live".format(
           quote(keyword), until, since)
       self.driver = ""
       self.browser= browser
       self.proxy = proxy
-      self.posts_count = posts_count
+      self.tweets_count = tweets_count
       self.posts_data = {}
       self.retry = 10
   def __start_driver(self):
@@ -49,7 +49,7 @@ class Keyword:
       self.__check_tweets_presence(present_tweets)
       all_ready_fetched_posts.extend(present_tweets)
 
-      while len(self.posts_data) < self.posts_count:
+      while len(self.posts_data) < self.tweets_count:
         for tweet in present_tweets:
           name = Finder._Finder__find_name_from_post(tweet)
           status = Finder._Finder__find_status(tweet)
@@ -67,6 +67,8 @@ class Keyword:
           mentions = re.findall(r"@(\w+)", content)
           profile_picture = "https://twitter.com/{}/photo".format(username)
           post_url = "https://twitter.com/{}/status/{}".format(username,status)
+          external_link = Finder._Finder__find_external_link(tweet)
+
           self.posts_data[status] = {
             "post_id" : status,
             "username" : username,
@@ -82,7 +84,8 @@ class Keyword:
             "mentions" : mentions,
             "images" : images,
             "videos" : videos,
-            "post_url" : post_url
+            "post_url" : post_url,
+            "external_link" : external_link
           }
 
         Utilities._Utilities__scroll_down(self.__driver)
@@ -108,7 +111,7 @@ class Keyword:
       self.__fetch_and_store_data()
 
       self.__close_driver()
-      data = dict(list(self.posts_data.items())[0:int(self.posts_count)])
+      data = dict(list(self.posts_data.items())[0:int(self.tweets_count)])
       return json.dumps(data)
 
     except Exception as ex:
@@ -121,7 +124,8 @@ def json_to_csv(filename,json_data,directory):
   #headers of the CSV file
   fieldnames = ['post_id','username','name','profile_picture','replies',
   'retweets','likes','is_retweet'
-              ,'posted_time','content','hashtags','mentions','images','videos','post_url']
+              ,'posted_time','content','hashtags','mentions',
+                'images', 'videos', 'post_url', 'external_link']
   #open and start writing to CSV files
   with open("{}.csv".format(filename),'w',newline='',encoding="utf-8") as data_file:
       writer = csv.DictWriter(data_file,fieldnames=fieldnames) #instantiate DictWriter for writing CSV fi
@@ -144,7 +148,9 @@ def json_to_csv(filename,json_data,directory):
             "mentions" : json_data[key]['mentions'],
             "images" : json_data[key]['images'],
             "videos" : json_data[key]['videos'],
-            "post_url" : json_data[key]['post_url']
+            "post_url" : json_data[key]['post_url'],
+            "external_link": json_data[key]['external_link']
+
           }
           writer.writerow(row) #write row to CSV fi
       data_file.close() #after writing close the file
@@ -152,9 +158,8 @@ def json_to_csv(filename,json_data,directory):
 
 
 
-
 def scrap_keyword(keyword,browser="firefox",until=datetime.today().strftime('%Y-%m-%d'),
-                  since=(datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d"), proxy=None, posts_count=10, output="json", filename="", directory=os.getcwd()):
+                  since=(datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d"), proxy=None, tweets_count=10, output="json", filename="", directory=os.getcwd()):
   """
   Returns tweets data in CSV or JSON.
 
@@ -169,7 +174,7 @@ def scrap_keyword(keyword,browser="firefox",until=datetime.today().strftime('%Y-
 
   proxy(string): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port
 
-  posts_count(int): number of posts to scrap. Default is 10.
+  tweets_count(int): number of posts to scrap. Default is 10.
 
   output(string): The output format, whether JSON or CSV. Default is JSON.
 
@@ -178,11 +183,11 @@ def scrap_keyword(keyword,browser="firefox",until=datetime.today().strftime('%Y-
   directory(string): If output parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.
 
   """
-  keyword_bot = Keyword(keyword,browser=browser,until=until,since=since,proxy=proxy,posts_count=posts_count)
+  keyword_bot = Keyword(keyword,browser=browser,until=until,since=since,proxy=proxy,tweets_count=tweets_count)
   data = keyword_bot.scrap()
   if output == "json":
     return data
-  elif output == "csv":
+  elif output.lower() == "csv":
     if filename == "":
       filename = keyword
     json_to_csv(filename=filename, json_data=json.loads(data), directory=directory)
