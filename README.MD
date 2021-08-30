@@ -28,8 +28,8 @@
     <ul>
     <li><a href="#profile">Scraping profile's tweets</a>
     <ul>
-    <li><a href="">In JSON format</a></li>
-    <li><a href="">In CSV format</a></li>
+    <li><a href="#profileJson">In JSON format</a></li>
+    <li><a href="#profileCSV">In CSV format</a></li>
     <li><a href="">Keys of the output data</a></li>
     </ul>
     <li><a href="">Scraping tweets using keywords</a>
@@ -85,12 +85,12 @@ Installing with <a href="https://pypi.org">PyPI</a>
 Usage</h2>
 
 <h3>To scrap profile's tweets:</h3>
-<p>For JSON format:</p>
+<p id="profileJson">In JSON format:</p>
 
 ```python
 from twitter_scraper_selenium import scrap_profile
 
-microsoft = scrap_profile("microsoft")
+microsoft = scrap_profile(twitter_username="microsoft",output="json",browser="firefox",posts_count=10)
 print(microsoft)
 ```
 Output:
@@ -112,9 +112,27 @@ Output:
     "mentions": [],
     "images": [],
     "videos": [],
-    "post_url": "https://twitter.com/Microsoft/status/1430938749840629773",
-    "external_link": "https://blogs.windows.com/windowsexperience/2021/07/01/whats-coming-in-windows-11-accessibility/?ocid=FY22_soc_omc_br_tw_Windows_AC"
+    "tweet_url": "https://twitter.com/Microsoft/status/1430938749840629773",
+    "link": "https://blogs.windows.com/windowsexperience/2021/07/01/whats-coming-in-windows-11-accessibility/?ocid=FY22_soc_omc_br_tw_Windows_AC"
   },...
 }
 ```
-<p>For CSV format:</p>
+<p id="profileCSV">In CSV format:</p>
+
+```python
+from twitter_scraper_selenium import scrap_profile
+
+twitter_username = "microsoft"
+browser = "firefox" #chrome can also be used
+output_format = "csv"
+tweets_count = 10 #number of tweets to scrap
+filename = "microsoft_output"
+directory_to_save_csv = "/home/user/Downloads"
+
+scrap_profile(twitter_username=twitter_username,output=output_format,browser=browser,tweets_count=tweets_count,filename=filename,directory=directory_to_save_csv)
+
+```
+
+Output:
+<br>
+<a href="https://ibb.co/rt7KK1J"><img src="https://i.ibb.co/z5nWW0w/MS-SS.jpg" alt="MS-SS" border="0"></a>
