@@ -30,13 +30,13 @@
     <ul>
     <li><a href="#profileJson">In JSON format</a></li>
     <li><a href="#profileCSV">In CSV format</a></li>
-    <li><a href="">Keys of the output data</a></li>
+    <li><a href="#profileOutput">Keys of the output data</a></li>
     </ul>
-    <li><a href="">Scraping tweets using keywords</a>
+    <li><a href="#keyword">Scraping tweets using keywords</a>
     <ul>
-    <li><a href="">In JSON format</a></li>
-    <li><a href="">In CSV format</a></li>
-    <li><a href="">Keys of the output data</a></li>
+    <li><a href="#keywordJson">In JSON format</a></li>
+    <li><a href="#keywordCSV">In CSV format</a></li>
+    <li><a href="#keywordOutput">Keys of the output data</a></li>
     </ul>
     </li>
     <li><a href="">Using scraper with proxy</a>
@@ -84,7 +84,7 @@ Installing with <a href="https://pypi.org">PyPI</a>
 <h2 id="Usage">
 Usage</h2>
 
-<h3>To scrap profile's tweets:</h3>
+<h3 id="profile">To scrap profile's tweets:</h3>
 <p id="profileJson">In JSON format:</p>
 
 ```python
@@ -97,7 +97,7 @@ Output:
 ```javascript
 {
   "1430938749840629773": {
-    "post_id": "1430938749840629773",
+    "tweet_id": "1430938749840629773",
     "username": "Microsoft",
     "name": "Microsoft",
     "profile_picture": "https://twitter.com/Microsoft/photo",
@@ -117,6 +117,7 @@ Output:
   },...
 }
 ```
+<hr>
 <p id="profileCSV">In CSV format:</p>
 
 ```python
@@ -130,7 +131,7 @@ scrap_profile(twitter_username="microsoft",output="csv",browser="firefox",tweets
 
 Output:
 <br>
-<table class="table table-bordered table-hover table-condensed">
+<table class="table table-bordered table-hover table-condensed" style="line-height: 14px;overflow:hidden;white-space: nowrap">
 <thead><tr><th title="Field #1">tweet_id</th>
 <th title="Field #2">username</th>
 <th title="Field #3">name</th>
@@ -340,3 +341,454 @@ Output:
 <td> </td>
 </tr>
 </tbody></table>
+<hr>
+<br>
+<div id="profileOutput">
+<p>Keys of the output</p>
+
+<table>
+    <thead>
+        <tr>
+            <td>Key</td>
+            <td>Type</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>tweet_id</td>
+            <td>String</td>
+            <td>Post Identifier(integer casted inside string)</td>
+        </tr>
+        <tr>
+            <td>username</td>
+            <td>String</td>
+            <td>Username of the profile</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>String</td>
+            <td>Name of the profile</td>
+        </tr>
+        <tr>
+            <td>profile_picture</td>
+            <td>String</td>
+            <td>Profile Picture link</td>
+        </tr>
+        <tr>
+            <td>replies</td>
+            <td>Integer</td>
+            <td>Number of replies of tweet</td>
+        </tr>
+        <tr>
+            <td>retweets</td>
+            <td>Integer</td>
+            <td>Number of retweets of tweet</td>
+        </tr>
+        <tr>
+            <td>likes</td>
+            <td>Integer</td>
+            <td>Number of likes of tweet</td>
+        </tr>
+        <tr>
+            <td>is_retweet</td>
+            <td>boolean</td>
+            <td>Is the tweet a retweet?</td>
+        </tr>
+        <tr>
+            <td>retweet_link</td>
+            <td>String</td>
+            <td>If it is retweet, then the retweet link else it'll be empty string</td>
+        </tr>
+        <tr>
+            <td>posted_time</td>
+            <td>String</td>
+            <td>Time when tweet was posted in ISO 8601 format</td>
+        </tr>
+        <tr>
+            <td>content</td>
+            <td>String</td>
+            <td>content of tweet as text</td>
+        </tr>
+        <tr>
+            <td>hashtags</td>
+            <td>Array</td>
+            <td>Hashtags presents in tweet, if they're present in tweet</td>
+        </tr>
+        <tr>
+            <td>mentions</td>
+            <td>Array</td>
+            <td>Mentions presents in tweet, if they're present in tweet</td>
+        </tr>
+        <tr>
+            <td>images</td>
+            <td>Array</td>
+            <td>Images links, if they're present in tweet</td>
+        </tr>
+        <tr>
+            <td>videos</td>
+            <td>Array</td>
+            <td>Videos links, if they're present in tweet</td>
+        </tr>
+        <tr>
+            <td>tweet_url</td>
+            <td>String</td>
+            <td>URL of the tweet</td>
+        </tr>
+        <tr>
+            <td>link</td>
+            <td>String</td>
+            <td>If any link is present inside tweet for some external website. </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<br>
+<hr>
+<h3 id="keyword">To scrap tweets using keywords:</h3>
+
+<div>
+<p id="keywordJson">In JSON format:</p>
+
+```python
+from twitter_scraper_selenium import scrap_keyword
+#scrap 10 posts by searching keyword "india" from date 30th August till date 31st August
+india = scrap_keyword(keyword="india", browser="firefox",
+                      tweets_count=10, until="2021-08-31", since="2021-08-30")
+print(india)
+
+```
+Output:
+```javascript
+{
+  "1432493306152243200": {
+    "tweet_id": "1432493306152243200",
+    "username": "TOICitiesNews",
+    "name": "TOI Cities",
+    "profile_picture": "https://twitter.com/TOICitiesNews/photo",
+    "replies": 0,
+    "retweets": 0,
+    "likes": 0,
+    "is_retweet": false,
+    "posted_time": "2021-08-30T23:59:53+00:00",
+    "content": "Paralympians rake in medals, India Inc showers them with rewards",
+    "hashtags": [],
+    "mentions": [],
+    "images": [],
+    "videos": [],
+    "tweet_url": "https://twitter.com/TOICitiesNews/status/1432493306152243200",
+    "link": "https://t.co/odmappLovL?amp=1"
+  },...
+}
+```
+</div>
+<br>
+<hr>
+<div id="keywordCSV">
+<p>In CSV format:</p>
+
+```python
+from twitter_scraper_selenium import scrap_keyword
+
+scrap_keyword(keyword="india", browser="firefox",
+                      tweets_count=10, until="2021-08-31", since="2021-08-30",output="csv",filename="india")
+```
+<br>
+Output:
+<table class="table table-bordered table-hover table-condensed" style="line-height: 14px;overflow:hidden;white-space: nowrap">
+<thead><tr><th title="Field #1">tweet_id</th>
+<th title="Field #2">username</th>
+<th title="Field #3">name</th>
+<th title="Field #4">profile_picture</th>
+<th title="Field #5">replies</th>
+<th title="Field #6">retweets</th>
+<th title="Field #7">likes</th>
+<th title="Field #8">is_retweet</th>
+<th title="Field #9">posted_time</th>
+<th title="Field #10">content</th>
+<th title="Field #11">hashtags</th>
+<th title="Field #12">mentions</th>
+<th title="Field #13">images</th>
+<th title="Field #14">videos</th>
+<th title="Field #15">tweet_url</th>
+<th title="Field #16">link</th>
+</tr></thead>
+<tbody><tr>
+<td>1432493328822464515</td>
+<td>SUDEBBI88994521</td>
+<td>S.B# #INDIACalcutta</td>
+<td>https://twitter.com/SUDEBBI88994521/photo</td>
+<td>0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td>True</td>
+<td>2021-08-30T23:59:58+00:00</td>
+<td>Lovely</td>
+<td>[]</td>
+<td>[]</td>
+<td>[&#39;https://pbs.twimg.com/media/E98efytVcAYs1ug?format=jpg&amp;name=small&#39;]</td>
+<td>[]</td>
+<td>https://twitter.com/SUDEBBI88994521/status/1432493328822464515</td>
+<td> </td>
+</tr>
+<tr>
+<td>1432493306152243200</td>
+<td>TOICitiesNews</td>
+<td>TOI Cities</td>
+<td>https://twitter.com/TOICitiesNews/photo</td>
+<td>0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td>False</td>
+<td>2021-08-30T23:59:53+00:00</td>
+<td>Paralympians rake in medals, India Inc showers them with rewards</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>https://twitter.com/TOICitiesNews/status/1432493306152243200</td>
+<td>https://t.co/odmappLovL?amp=1</td>
+</tr>
+<tr>
+<td>1432493299026309120</td>
+<td>IndieBombDotCom</td>
+<td>SCULPT STAR, India, PA-C</td>
+<td>https://twitter.com/IndieBombDotCom/photo</td>
+<td>0</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td>True</td>
+<td>2021-08-30T23:59:51+00:00</td>
+<td>Why didn’t I think of this?!</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>https://twitter.com/IndieBombDotCom/status/1432493299026309120</td>
+<td> </td>
+</tr>
+<tr>
+<td>1432493290323075075</td>
+<td>aryavansh108</td>
+<td>V N ARYA</td>
+<td>https://twitter.com/aryavansh108/photo</td>
+<td>1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td>False</td>
+<td>2021-08-30T23:59:49+00:00</td>
+<td>The madness of a futile war.<br/><br/>The Yanks after 20 years did little.<br/><br/>Sabre rattling will make India poorer.<br/><br/>Protect our porous borders 1st.</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>https://twitter.com/aryavansh108/status/1432493290323075075</td>
+<td> </td>
+</tr>
+<tr>
+<td>1432493284853645315</td>
+<td>surensinghsahni</td>
+<td>suren singh sahni</td>
+<td>https://twitter.com/surensinghsahni/photo</td>
+<td>0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td>False</td>
+<td>2021-08-30T23:59:48+00:00</td>
+<td>Statistics are not reliable in India and not all Covid sufferers were tested</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>https://twitter.com/surensinghsahni/status/1432493284853645315</td>
+<td> </td>
+</tr>
+<tr>
+<td>1432493271054381061</td>
+<td>INDBureaucracy</td>
+<td>Indian Bureaucracy</td>
+<td>https://twitter.com/INDBureaucracy/photo</td>
+<td>0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td>False</td>
+<td>2021-08-30T23:59:44+00:00</td>
+<td>Justice Pamidighantam Sri Narasimha appointed as Judge- Supreme Court of India - https://indianbureaucracy.com/justice-pamidighantam-sri-narasimha-appointed-as-judge-supreme-court-of-india/…</td>
+<td>[]</td>
+<td>[]</td>
+<td>[&#39;https://pbs.twimg.com/media/E-E9Ce4VIAIEeLh?format=jpg&amp;name=360x360&#39;]</td>
+<td>[]</td>
+<td>https://twitter.com/INDBureaucracy/status/1432493271054381061</td>
+<td> </td>
+</tr>
+<tr>
+<td>1432493269150310401</td>
+<td>KajalBanait2</td>
+<td>Kajal Banait</td>
+<td>https://twitter.com/KajalBanait2/photo</td>
+<td>0</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td>False</td>
+<td>2021-08-30T23:59:44+00:00</td>
+<td>Saint Rampal ji maharaj is Tatvdarshi guru who is present in Haryana, India.</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>https://twitter.com/KajalBanait2/status/1432493269150310401</td>
+<td> </td>
+</tr>
+<tr>
+<td>1432493262728740865</td>
+<td>While_NEWS</td>
+<td>While NEWS</td>
+<td>https://twitter.com/While_NEWS/photo</td>
+<td>0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td>False</td>
+<td>2021-08-30T23:59:42+00:00</td>
+<td>Oppose co-ed policy: Jamiat to non-Muslims | India News – Times of India</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>https://twitter.com/While_NEWS/status/1432493262728740865</td>
+<td>https://t.co/bUDgK8uq4h?amp=1</td>
+</tr>
+<tr>
+<td>1432493262447816704</td>
+<td>Adda4N</td>
+<td>Adda4News</td>
+<td>https://twitter.com/Adda4N/photo</td>
+<td>0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td>False</td>
+<td>2021-08-30T23:59:42+00:00</td>
+<td>realme: Realme Pad with MediaTek chipset, 4GB RAM could start shortly - Times of India</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>https://twitter.com/Adda4N/status/1432493262447816704</td>
+<td>https://t.co/1fnKHQTIoa?amp=1</td>
+</tr>
+<tr>
+<td>1432493245519613952</td>
+<td>india_guache</td>
+<td>𝗞 𝗔 𝗟 𝗜</td>
+<td>https://twitter.com/india_guache/photo</td>
+<td>0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td>True</td>
+<td>2021-08-30T23:59:38+00:00</td>
+<td>Que gonorrea, re si, confirmo JAJAJAJAJAJA</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>[]</td>
+<td>https://twitter.com/india_guache/status/1432493245519613952</td>
+<td> </td>
+</tr>
+</tbody></table>
+
+</div>
+<br>
+<hr>
+<div id="keywordOutput">
+<p>Keys of the output</p>
+<table>
+    <thead>
+        <tr>
+            <td>Key</td>
+            <td>Type</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>tweet_id</td>
+            <td>String</td>
+            <td>Post Identifier(integer casted inside string)</td>
+        </tr>
+        <tr>
+            <td>username</td>
+            <td>String</td>
+            <td>Username of the profile</td>
+        </tr>
+        <tr>
+            <td>name</td>
+            <td>String</td>
+            <td>Name of the profile</td>
+        </tr>
+        <tr>
+            <td>profile_picture</td>
+            <td>String</td>
+            <td>Profile Picture link</td>
+        </tr>
+        <tr>
+            <td>replies</td>
+            <td>Integer</td>
+            <td>Number of replies of tweet</td>
+        </tr>
+        <tr>
+            <td>retweets</td>
+            <td>Integer</td>
+            <td>Number of retweets of tweet</td>
+        </tr>
+        <tr>
+            <td>likes</td>
+            <td>Integer</td>
+            <td>Number of likes of tweet</td>
+        </tr>
+        <tr>
+            <td>is_retweet</td>
+            <td>boolean</td>
+            <td>Is the tweet a retweet?</td>
+        </tr>
+        <tr>
+            <td>posted_time</td>
+            <td>String</td>
+            <td>Time when tweet was posted in ISO 8601 format</td>
+        </tr>
+        <tr>
+            <td>content</td>
+            <td>String</td>
+            <td>content of tweet as text</td>
+        </tr>
+        <tr>
+            <td>hashtags</td>
+            <td>Array</td>
+            <td>Hashtags presents in tweet, if they're present in tweet</td>
+        </tr>
+        <tr>
+            <td>mentions</td>
+            <td>Array</td>
+            <td>Mentions presents in tweet, if they're present in tweet</td>
+        </tr>
+        <tr>
+            <td>images</td>
+            <td>Array</td>
+            <td>Images links, if they're present in tweet</td>
+        </tr>
+        <tr>
+            <td>videos</td>
+            <td>Array</td>
+            <td>Videos links, if they're present in tweet</td>
+        </tr>
+        <tr>
+            <td>tweet_url</td>
+            <td>String</td>
+            <td>URL of the tweet</td>
+        </tr>
+        <tr>
+            <td>link</td>
+            <td>String</td>
+            <td>If any link is present inside tweet for some external website. </td>
+        </tr>
+    </tbody>
+</table>
+</div>
