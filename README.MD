@@ -122,17 +122,56 @@ Output:
 ```python
 from twitter_scraper_selenium import scrap_profile
 
-twitter_username = "microsoft"
-browser = "firefox" #chrome can also be used
-output_format = "csv"
-tweets_count = 10 #number of tweets to scrap
-filename = "microsoft_output"
-directory_to_save_csv = "/home/user/Downloads"
 
-scrap_profile(twitter_username=twitter_username,output=output_format,browser=browser,tweets_count=tweets_count,filename=filename,directory=directory_to_save_csv)
+scrap_profile(twitter_username="microsoft",output="csv",browser="firefox",tweets_count=10,filename="microsoft",directory="/home/user/Downloads")
+
 
 ```
 
 Output:
 <br>
-<a href="https://ibb.co/rt7KK1J"><img src="https://i.ibb.co/z5nWW0w/MS-SS.jpg" alt="MS-SS" border="0"></a>
+<table>
+    <thead>
+        <tr>
+            <td>tweet_id</td>
+            <td>username</td>
+            <td>name</td>
+            <td>profile_picture</td>
+            <td>replies</td>
+            <td>retweets</td>
+            <td>likes</td>
+            <td>is_retweet</td>
+            <td>retweet_link</td>
+            <td>posted_time</td>
+            <td>content</td>
+            <td>hashtags</td>
+            <td>mentions</td>
+            <td>images</td>
+            <td>videos</td>
+            <td>tweet_url</td>
+            <td>link</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1430938749840629773</td>
+            <td>Microsoft</td>
+            <td>Microsoft</td>
+            <td>https://twitter.com/Microsoft/photo</td>
+            <td>29</td>
+            <td>58</td>
+            <td>453</td>
+            <td>false</td>
+            <td></td>
+            <td>2021-08-26T17:02:38+00:00</td>
+            <td>Easy to use and efficient for all \u2013 Windows 11 is committed to an accessible future.\n\nHere's how it empowers everyone to create, connect, and achieve more: https://msft.it/6009X6tbW </td>
+            <td>[]</td>
+            <td>[]</td>
+            <td>[]</td>
+            <td>[]</td>
+            <td>https://twitter.com/Microsoft/status/1430938749840629773</td>
+            <td>https://blogs.windows.com/windowsexperience/2021/07/01/whats-coming-in-windows-11-accessibility/?ocid=FY22_soc_omc_br_tw_Windows_AC</td>
+        </tr>
+    </tbody>
+</table>
+....
