@@ -9,7 +9,7 @@ for line in open("requirements.txt", 'r', encoding="utf-8").readlines():
   requirements.append(line.replace("\n", ""))
 
 setuptools.setup(
-    name="facebook_page_scraper",
+    name="twitter_scraper_selenium",
     version="0.1.0",
     author="Sajid Shaikh",
     author_email="shaikhsajid3732@gmail.com",
@@ -18,7 +18,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     license="MIT",
     url="https://github.com/shaikhsajid1111/twitter-scraper-selenium",
-    keywords="web-scraping selenium social media twitter keyword twitter-profile twitter-keywords automation json csv",
+    keywords="web-scraping selenium social media twitter keyword twitter-profile twitter-keywords automation json csv twitter-hashtag hashtag",
     packages=setuptools.find_packages(),
     classifiers=[
         "Development Status :: 4 - Beta",
