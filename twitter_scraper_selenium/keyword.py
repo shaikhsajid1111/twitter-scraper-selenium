@@ -66,11 +66,11 @@ class Keyword:
           hashtags = re.findall(r"#(\w+)", content)
           mentions = re.findall(r"@(\w+)", content)
           profile_picture = "https://twitter.com/{}/photo".format(username)
-          post_url = "https://twitter.com/{}/status/{}".format(username,status)
-          external_link = Finder._Finder__find_external_link(tweet)
+          tweet_url = "https://twitter.com/{}/status/{}".format(username,status)
+          link = Finder._Finder__find_external_link(tweet)
 
           self.posts_data[status] = {
-            "post_id" : status,
+            "tweet_id" : status,
             "username" : username,
             "name" : name,
             "profile_picture" : profile_picture,
@@ -84,8 +84,8 @@ class Keyword:
             "mentions" : mentions,
             "images" : images,
             "videos" : videos,
-            "post_url" : post_url,
-            "external_link" : external_link
+            "tweet_url" : tweet_url,
+            "link" : link
           }
 
         Utilities._Utilities__scroll_down(self.__driver)
@@ -122,10 +122,10 @@ class Keyword:
 def json_to_csv(filename,json_data,directory):
   os.chdir(directory) #change working directory to given directory
   #headers of the CSV file
-  fieldnames = ['post_id','username','name','profile_picture','replies',
+  fieldnames = ['tweet_id','username','name','profile_picture','replies',
   'retweets','likes','is_retweet'
               ,'posted_time','content','hashtags','mentions',
-                'images', 'videos', 'post_url', 'external_link']
+                'images', 'videos', 'tweet_url', 'link']
   #open and start writing to CSV files
   with open("{}.csv".format(filename),'w',newline='',encoding="utf-8") as data_file:
       writer = csv.DictWriter(data_file,fieldnames=fieldnames) #instantiate DictWriter for writing CSV fi
@@ -134,7 +134,7 @@ def json_to_csv(filename,json_data,directory):
       for key in json_data:
           #parse post in a dictionary and write it as a single row
           row = {
-            "post_id" : key,
+            "tweet_id" : key,
             "username" : json_data[key]['username'],
             "name" : json_data[key]['name'],
             "profile_picture" : json_data[key]['profile_picture'],
@@ -148,8 +148,8 @@ def json_to_csv(filename,json_data,directory):
             "mentions" : json_data[key]['mentions'],
             "images" : json_data[key]['images'],
             "videos" : json_data[key]['videos'],
-            "post_url" : json_data[key]['post_url'],
-            "external_link": json_data[key]['external_link']
+            "tweet_url" : json_data[key]['tweet_url'],
+            "link": json_data[key]['link']
 
           }
           writer.writerow(row) #write row to CSV fi
@@ -159,24 +159,24 @@ def json_to_csv(filename,json_data,directory):
 
 
 def scrap_keyword(keyword,browser="firefox",until=datetime.today().strftime('%Y-%m-%d'),
-                  since=(datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d"), proxy=None, tweets_count=10, output="json", filename="", directory=os.getcwd()):
+                  since=(datetime.today() - timedelta(days=1)).strftime("%Y-%m-%d"), proxy=None, tweets_count=10, output_format="json", filename="", directory=os.getcwd()):
   """
   Returns tweets data in CSV or JSON.
 
   Parameters:
   keyword(string): Keyword to search on twitter.
 
-  browser(string): which browser to use for scraping?, Only 2 are supported Chrome and Firefox,default is set to Firefox
+  browser(string): Which browser to use for scraping?, Only 2 are supported Chrome and Firefox,default is set to Firefox.
 
-  until(string): optional parameter,Until date for scraping. Format for date is YYYY-MM-DD.
+  until(string): Optional parameter,Until date for scraping,a end date from where search ends. Format for date is YYYY-MM-DD.
 
-  since(string): optional parameter,Since date for scraping. Format for date is YYYY-MM-DD.
+  since(string): Optional parameter,Since date for scraping,a past date from where to search from. Format for date is YYYY-MM-DD.
 
   proxy(string): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port
 
-  tweets_count(int): number of posts to scrap. Default is 10.
+  tweets_count(int): Number of posts to scrap. Default is 10.
 
-  output(string): The output format, whether JSON or CSV. Default is JSON.
+  output_format(string): The output format, whether JSON or CSV. Default is JSON.
 
   filename(string): If output parameter is set to CSV, then it is necessary for filename parameter to passed. If not passed then the filename will be same as keyword passed.
 
@@ -185,9 +185,9 @@ def scrap_keyword(keyword,browser="firefox",until=datetime.today().strftime('%Y-
   """
   keyword_bot = Keyword(keyword,browser=browser,until=until,since=since,proxy=proxy,tweets_count=tweets_count)
   data = keyword_bot.scrap()
-  if output == "json":
+  if output_format == "json":
     return data
-  elif output.lower() == "csv":
+  elif output_format.lower() == "csv":
     if filename == "":
       filename = keyword
     json_to_csv(filename=filename, json_data=json.loads(data), directory=directory)

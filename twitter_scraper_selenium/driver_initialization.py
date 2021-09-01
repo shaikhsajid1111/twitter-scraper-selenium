@@ -19,8 +19,8 @@ class Initializer:
 
     def set_properties(self, browser_option):
         """adds capabilities to the driver"""
-        #browser_option.add_argument(
-        #    '--headless')  # runs browser in headless mode
+        browser_option.add_argument(
+            '--headless')  # runs browser in headless mode
         browser_option.add_argument('--no-sandbox')
         browser_option.add_argument("--disable-dev-shm-usage")
         browser_option.add_argument('--ignore-certificate-errors')
@@ -28,10 +28,6 @@ class Initializer:
         browser_option.add_argument('--log-level=3')
         browser_option.add_argument('--disable-notifications')
         browser_option.add_argument('--disable-popup-blocking')
-
-        # browser_option.add_argument(
-        #   "--proxy-server=http://{}".format(self.proxy.replace(" ", "")))
-
         return browser_option
 
     def set_driver_for_browser(self, browser_name):
