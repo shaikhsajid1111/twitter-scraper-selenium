@@ -26,7 +26,7 @@ class Utilities:
   def __wait_until_tweets_appear(driver):
     try:
       WebDriverWait(driver, 10).until(EC.presence_of_element_located(
-        (By.CSS_SELECTOR, 'div[data-testid="tweet"]')))
+        (By.CSS_SELECTOR, '[data-testid="tweet"]')))
     except WebDriverException:
       print("Tweets did not appear!")
 

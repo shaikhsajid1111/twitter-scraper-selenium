@@ -24,14 +24,14 @@ class Finder:
   @staticmethod
   def __fetch_all_tweets(driver):
     try:
-      return driver.find_elements_by_css_selector('div[data-testid="tweet"]')
+      return driver.find_elements_by_css_selector('[data-testid="tweet"]')
     except:
       print("Error at method fetch_all_tweets on line no. {} : {}".format(frameinfo.f_lineno, ex))
 
   @staticmethod
   def __find_replies(tweet):
     try:
-      replies_element = tweet.find_element_by_css_selector('div[data-testid="reply"]')
+      replies_element = tweet.find_element_by_css_selector('[data-testid="reply"]')
       replies = replies_element.get_attribute("aria-label")
       return Scraping_utilities._Scraping_utilities__extract_digits(replies)
     except Exception as ex:
@@ -41,7 +41,7 @@ class Finder:
   @staticmethod
   def __find_shares(tweet):
     try:
-      shares_element = tweet.find_element_by_css_selector('div[data-testid="retweet"]')
+      shares_element = tweet.find_element_by_css_selector('[data-testid="retweet"]')
       shares =  shares_element.get_attribute("aria-label")
       return Scraping_utilities._Scraping_utilities__extract_digits(shares)
     except Exception as ex:
@@ -95,7 +95,7 @@ class Finder:
   @staticmethod
   def __find_like(tweet):
     try:
-      like_element = tweet.find_element_by_css_selector('div[data-testid="like"]')
+      like_element = tweet.find_element_by_css_selector('[data-testid="like"]')
       likes = like_element.get_attribute("aria-label")
       return Scraping_utilities._Scraping_utilities__extract_digits(likes)
     except Exception as ex:
