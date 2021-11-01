@@ -66,7 +66,7 @@
 <p>Download the source code or clone it with:<p>
 
 ```
-git clone https://github.com/shaikhsajid1111/twitter_scraper_selenium
+git clone https://github.com/shaikhsajid1111/twitter-scraper-selenium
 ```
 
 <p>Open terminal inside the downloaded folder:</p>
