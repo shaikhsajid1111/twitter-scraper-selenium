@@ -54,7 +54,7 @@ class Finder:
       anchors = Finder.__find_all_anchor_tags(tweet)
       status = "NA"
       if len(anchors) > 2:
-        status = anchors[2].get_attribute("href").split("/")
+        status = anchors[3].get_attribute("href").split("/")
       return status
     except Exception as ex:
       print("Error at method find_status on line no. {} : {}".format(frameinfo.f_lineno, ex))
