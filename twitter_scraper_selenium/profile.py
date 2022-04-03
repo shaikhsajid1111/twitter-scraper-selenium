@@ -50,14 +50,14 @@ class Profile:
 
       while len(self.posts_data) < self.tweets_count:
         for tweet in present_tweets:
-          status = Finder._Finder__find_status(tweet)
-          name = Finder._Finder__find_name_from_post(tweet)
+          status,tweet_url = Finder._Finder__find_status(tweet)
           replies = Finder._Finder__find_replies(tweet)
           retweets = Finder._Finder__find_shares(tweet)
-          username = status[3]
           status = status[-1]
+          username = tweet_url.split("/")[3]
           is_retweet = True if self.twitter_username.lower() != username.lower() else False
-          retweet_link = Finder._Finder__find_all_anchor_tags(tweet)[2].get_attribute("href") if is_retweet is True else ""
+          name = Finder._Finder__find_name_from_post(tweet,is_retweet)
+          retweet_link = tweet_url if is_retweet is True else ""
           posted_time = Finder._Finder__find_timestamp(tweet)
           content = Finder._Finder__find_content(tweet)
           likes = Finder._Finder__find_like(tweet)
@@ -66,7 +66,6 @@ class Profile:
           hashtags = re.findall(r"#(\w+)", content)
           mentions = re.findall(r"@(\w+)", content)
           profile_picture = "https://twitter.com/{}/photo".format(username)
-          tweet_url = "https://twitter.com/{}/status/{}".format(username,status)
           link = Finder._Finder__find_external_link(tweet)
           self.posts_data[status] = {
             "tweet_id" : status,

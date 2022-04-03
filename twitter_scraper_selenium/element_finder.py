@@ -51,11 +51,8 @@ class Finder:
   @staticmethod
   def __find_status(tweet):
     try:
-      anchors = Finder.__find_all_anchor_tags(tweet)
-      status = "NA"
-      if len(anchors) > 2:
-        status = anchors[3].get_attribute("href").split("/")
-      return status
+      anchor = tweet.find_element_by_css_selector("a.r-bcqeeo.r-3s2u2q.r-qvutc0")
+      return (anchor.get_attribute("href").split("/"), anchor.get_attribute("href"))
     except Exception as ex:
       print("Error at method find_status on line no. {} : {}".format(frameinfo.f_lineno, ex))
       return []
@@ -132,7 +129,7 @@ class Finder:
   @staticmethod
   def __is_retweet(tweet):
     try:
-      tweet.find_element_by_css_selector('[role="presentation"]')
+      tweet.find_element_by_css_selector('div.r-92ng3h.r-qvutc0')
       return True
     except NoSuchElementException:
       return False
@@ -142,12 +139,15 @@ class Finder:
       return False
 
   @staticmethod
-  def __find_name_from_post(tweet):
+  def __find_name_from_post(tweet,is_retweet=False):
     try:
       name = "NA"
       anchors = Finder.__find_all_anchor_tags(tweet)
       if len(anchors) > 2:
-        name = anchors[1].text.split("\n")[0]
+        if is_retweet:
+          name = anchors[2].text.strip()
+        else:
+          name = anchors[1].text.split("\n")[0]
       return name
     except Exception as ex:
       print("Error at method __find_name_from_post on line no. {} : {}".format(
