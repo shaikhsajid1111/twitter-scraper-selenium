@@ -52,10 +52,10 @@ class Keyword:
       while len(self.posts_data) < self.tweets_count:
         for tweet in present_tweets:
           name = Finder._Finder__find_name_from_post(tweet)
-          status = Finder._Finder__find_status(tweet)
+          status,tweet_url = Finder._Finder__find_status(tweet)
           replies = Finder._Finder__find_replies(tweet)
           retweets = Finder._Finder__find_shares(tweet)
-          username = status[3]
+          username = tweet_url.split("/")[3]
           status = status[-1]
           is_retweet = Finder._Finder__is_retweet(tweet)
           posted_time = Finder._Finder__find_timestamp(tweet)
@@ -66,7 +66,6 @@ class Keyword:
           hashtags = re.findall(r"#(\w+)", content)
           mentions = re.findall(r"@(\w+)", content)
           profile_picture = "https://twitter.com/{}/photo".format(username)
-          tweet_url = "https://twitter.com/{}/status/{}".format(username,status)
           link = Finder._Finder__find_external_link(tweet)
 
           self.posts_data[status] = {
