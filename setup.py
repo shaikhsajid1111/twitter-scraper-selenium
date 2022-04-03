@@ -10,7 +10,7 @@ for line in open("requirements.txt", 'r', encoding="utf-8").readlines():
 
 setuptools.setup(
     name="twitter_scraper_selenium",
-    version="0.1.2",
+    version="0.1.3",
     author="Sajid Shaikh",
     author_email="shaikhsajid3732@gmail.com",
     description="Python package to scrap twitter's front-end easily with selenium",
