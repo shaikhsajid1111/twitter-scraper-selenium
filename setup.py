@@ -1,6 +1,6 @@
 import setuptools
 
-with open("README.MD", "r") as file:
+with open("README.md", "r") as file:
     long_description = file.read()
 
 requirements = []
@@ -10,7 +10,7 @@ for line in open("requirements.txt", 'r', encoding="utf-8").readlines():
 
 setuptools.setup(
     name="twitter_scraper_selenium",
-    version="0.1.3",
+    version="0.1.4",
     author="Sajid Shaikh",
     author_email="shaikhsajid3732@gmail.com",
     description="Python package to scrap twitter's front-end easily with selenium",
