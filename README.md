@@ -95,7 +95,7 @@ Usage</h2>
 ```python
 from twitter_scraper_selenium import scrap_profile
 
-microsoft = scrap_profile(twitter_username="microsoft",output_format="json",browser="firefox",posts_count=10)
+microsoft = scrap_profile(twitter_username="microsoft",output_format="json",browser="firefox",tweets_count=10)
 print(microsoft)
 ```
 Output:
