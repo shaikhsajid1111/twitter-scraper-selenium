@@ -21,7 +21,7 @@ class Keyword:
       self.keyword = keyword
       self.URL = "https://twitter.com/search?q={}%20until%3A{}%20since%3A{}&src=typed_query&f=live".format(
           quote(keyword), until, since)
-      self.driver = ""
+      self.__driver = ""
       self.browser= browser
       self.proxy = proxy
       self.tweets_count = tweets_count
