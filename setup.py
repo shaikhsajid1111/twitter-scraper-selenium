@@ -1,6 +1,6 @@
 import setuptools
 
-with open("README.md", "r") as file:
+with open("README.md", "r", encoding="utf-8") as file:
     long_description = file.read()
 
 requirements = []
