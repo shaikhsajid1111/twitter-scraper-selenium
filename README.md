@@ -587,7 +587,7 @@ Output:
 <br>
 <hr>
 
-<h3 id="proxy"> Using scraper with proxy </h3>
+<h3 id="proxy"> Using scraper with proxy (http proxy) </h3>
 
 <div id="unauthenticatedProxy">
 <p>Just pass <code>proxy</code> argument to function.</p>
