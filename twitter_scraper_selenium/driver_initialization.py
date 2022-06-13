@@ -7,6 +7,7 @@ try:
     # import webdriver for downloading respective driver for the browser
     from webdriver_manager.chrome import ChromeDriverManager
     from webdriver_manager.firefox import GeckoDriverManager
+    from fake_headers import Headers
 except Exception as ex:
     print(ex)
 
@@ -19,6 +20,7 @@ class Initializer:
 
     def set_properties(self, browser_option):
         """adds capabilities to the driver"""
+        header = Headers().generate()['User-Agent']
         browser_option.add_argument(
             '--headless')  # runs browser in headless mode
         browser_option.add_argument('--no-sandbox')
@@ -28,6 +30,7 @@ class Initializer:
         browser_option.add_argument('--log-level=3')
         browser_option.add_argument('--disable-notifications')
         browser_option.add_argument('--disable-popup-blocking')
+        browser_option.add_argument('--user-agent={}'.format(header))
         return browser_option
 
     def set_driver_for_browser(self, browser_name):
