@@ -14,9 +14,10 @@ except Exception as ex:
 
 class Initializer:
 
-    def __init__(self, browser_name, proxy=None):
+    def __init__(self, browser_name, headless, proxy=None):
         self.browser_name = browser_name
         self.proxy = proxy
+        self.headless = headless
 
     def set_properties(self, browser_option):
         """adds capabilities to the driver"""
