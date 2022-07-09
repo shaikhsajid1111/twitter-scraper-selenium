@@ -227,6 +227,11 @@ Output:
             <td>String</td>
             <td>If output_format parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.</td>
         </tr>
+        <tr>
+            <td>headless</td>
+            <td>Boolean</td>
+            <td>Whether to run crawler headlessly?. Default is <code>True</code></td>
+        </tr>
     </tbody>
 </table>
 
@@ -485,6 +490,26 @@ Output:
             <td>directory</td>
             <td>String</td>
             <td>If output parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.</td>
+        </tr>
+        <tr>
+            <td>since_id</td>
+            <td>Integer</td>
+            <td>After (NOT inclusive) a specified Snowflake ID. Example <a href="https://twitter.com/search?q=since_id%3A1138872932887924737%20max_id%3A1144730280353247233%20%23nasamoontunes&src=typed_query&f=live">here</a></td>
+        </tr>
+        <tr>
+            <td>max_id</td>
+            <td>Integer</td>
+            <td>At or before (inclusive) a specified Snowflake ID. Example <a href="https://twitter.com/search?q=since_id%3A1138872932887924737%20max_id%3A1144730280353247233%20%23nasamoontunes&src=typed_query&f=live">here</a></td>
+        </tr>
+        <tr>
+            <td>within_time</td>
+            <td>String</td>
+            <td>Search within the last number of days, hours, minutes, or seconds. Example <code>2d, 3h, 5m, 30s</code>.</td>
+        </tr>
+        <tr>
+            <td>headless</td>
+            <td>Boolean</td>
+            <td>Whether to run crawler headlessly?. Default is <code>True</code></td>
         </tr>
     </tbody>
 </table>
