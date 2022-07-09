@@ -3,14 +3,10 @@ import setuptools
 with open("README.md", "r", encoding="utf-8") as file:
     long_description = file.read()
 
-requirements = []
-
-for line in open("requirements.txt", 'r', encoding="utf-8").readlines():
-  requirements.append(line.replace("\n", ""))
 
 setuptools.setup(
     name="twitter_scraper_selenium",
-    version="0.1.7",
+    version="2.0.0",
     author="Sajid Shaikh",
     author_email="shaikhsajid3732@gmail.com",
     description="Python package to scrap twitter's front-end easily with selenium",
@@ -41,5 +37,11 @@ setuptools.setup(
 
     ],
     python_requires=">=3.6",
-    install_requires=requirements
+    install_requires=[
+        'python-dateutil==2.8.2',
+        'selenium==4.3.0',
+        'selenium-wire==4.6.4',
+        'webdriver-manager==3.2.2',
+        'fake-headers==1.0.2'
+    ]
 )
