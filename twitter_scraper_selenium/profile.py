@@ -40,7 +40,7 @@ class Profile:
         self.__driver.close()
         self.__driver.quit()
 
-    def fif(self, tweet_list):
+    def __check_tweets_presence(self, tweet_list):
         if len(tweet_list) <= 0:
             self.retry -= 1
 
