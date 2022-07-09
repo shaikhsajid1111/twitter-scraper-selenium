@@ -116,8 +116,8 @@ class Finder:
                                                 'div[data-testid="tweetPhoto"]')
             images = []
             for image_div in image_element:
-                href = image_div.find_element_by_tag_name(
-                    "img").get_attribute("src")
+                href = image_div.find_element(By.TAG_NAME,
+                                              "img").get_attribute("src")
                 images.append(href)
             return images
         except Exception as ex:

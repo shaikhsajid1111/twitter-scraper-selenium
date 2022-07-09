@@ -166,9 +166,9 @@ def json_to_csv(filename, json_data, directory):
 
 
 def scrap_keyword(keyword, browser="firefox", until=None,
-                  since=None,
-                  since_id=None, max_id=None, within_time=None,
-                  proxy=None, tweets_count=10, output_format="json", filename="", directory=os.getcwd(), headless=True):
+                  since=None, since_id=None, max_id=None, within_time=None,
+                  proxy=None, tweets_count=10, output_format="json",
+                  filename="", directory=os.getcwd(), headless=True):
     """
     Returns tweets data in CSV or JSON.
 
@@ -177,9 +177,9 @@ def scrap_keyword(keyword, browser="firefox", until=None,
 
     browser(string): Which browser to use for scraping?, Only 2 are supported Chrome and Firefox,default is set to Firefox.
 
-    until(string): Optional parameter,Until date for scraping,a end date from where search ends. Format for date is YYYY-MM-DD.
+    until(string): Optional parameter,Until date for scraping,a end date from where search ends. Format for date is YYYY-MM-DD or unix timestamp in seconds.
 
-    since(string): Optional parameter,Since date for scraping,a past date from where to search from. Format for date is YYYY-MM-DD.
+    since(string): Optional parameter,Since date for scraping,a past date from where to search from. Format for date is YYYY-MM-DD or unix timestamp in seconds..
 
     proxy(string): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port
 
@@ -191,6 +191,11 @@ def scrap_keyword(keyword, browser="firefox", until=None,
 
     directory(string): If output parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.
 
+    since_id(integer): After (NOT inclusive) a specified Snowflake ID.
+
+    max_id(integer): At or before (inclusive) a specified Snowflake ID.
+
+    within_time(string): Search within the last number of days, hours, minutes, or seconds.
     """
     URL = Scraping_utilities._Scraping_utilities__url_generator(keyword, since=since, until=until,
                                                                 since_id=since_id, max_id=max_id, within_time=within_time)
