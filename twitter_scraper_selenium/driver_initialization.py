@@ -14,12 +14,14 @@ import logging
 
 logging.getLogger().setLevel(logging.INFO)
 
+
 class Initializer:
 
-    def __init__(self, browser_name, headless, proxy=None):
+    def __init__(self, browser_name, headless, proxy=None, profile=None):
         self.browser_name = browser_name
         self.proxy = proxy
         self.headless = headless
+        self.profile = profile
 
     def set_properties(self, browser_option):
         """adds capabilities to the driver"""
@@ -27,6 +29,9 @@ class Initializer:
         if self.headless:
             browser_option.add_argument(
                 '--headless')  # runs browser in headless mode
+        if self.profile and self.browser_name.lower() == 'chrome':
+            browser_option.add_argument(
+                'user-data-dir={}'.format(self.profile))
         browser_option.add_argument('--no-sandbox')
         browser_option.add_argument("--disable-dev-shm-usage")
         browser_option.add_argument('--ignore-certificate-errors')
@@ -57,6 +62,10 @@ class Initializer:
             return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=self.set_properties(browser_option))
         elif browser_name.lower() == "firefox":
             browser_option = CustomFireFoxOptions()
+            if self.profile:
+                logging.info('Loading Profile from {}'.format(self.profile))
+                profile_path = webdriver.FirefoxProfile(self.profile)
+                browser_option.profile = profile_path
             if self.proxy is not None:
                 options = {
                     'https': 'https://{}'.format(self.proxy.replace(" ", "")),
@@ -64,7 +73,6 @@ class Initializer:
                     'no_proxy': 'localhost, 127.0.0.1'
                 }
                 logging.info("Using Proxy: {}".format(self.proxy))
-
                 return webdriver.Firefox(service=FirefoxService(executable_path=GeckoDriverManager().install()),
                                          options=self.set_properties(browser_option), seleniumwire_options=options)
 

@@ -17,7 +17,7 @@ class Profile:
     """this class needs to be instantiated in orer to scrape post of some
     twitter profile"""
 
-    def __init__(self, twitter_username, browser, proxy, tweets_count, headless):
+    def __init__(self, twitter_username, browser, proxy, tweets_count, headless, browser_profile):
         self.twitter_username = twitter_username
         self.URL = "https://twitter.com/{}".format(twitter_username.lower())
         self.__driver = ""
@@ -27,11 +27,12 @@ class Profile:
         self.posts_data = {}
         self.retry = 10
         self.headless = headless
+        self.browser_profile = browser_profile
 
     def __start_driver(self):
         """changes the class member __driver value to driver on call"""
         self.__driver = Initializer(
-            self.browser, self.headless, self.proxy).init()
+            self.browser, self.headless, self.proxy, self.browser_profile).init()
 
     def __close_driver(self):
         self.__driver.close()
@@ -167,7 +168,7 @@ def json_to_csv(filename, json_data, directory):
     logging.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
-def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=10, output_format="json", filename="", directory=os.getcwd(), headless=True):
+def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=10, output_format="json", filename="", directory=os.getcwd(), headless=True, browser_profile = None):
     """
     Returns tweets data in CSV or JSON.
 
@@ -186,10 +187,10 @@ def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=
 
     directory(string): If output_format parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.
 
-
+    browser_profile(string): Path of Browser Profile where cookies might be located to scrap data in authenticated way.
     """
     profile_bot = Profile(twitter_username, browser,
-                          proxy, tweets_count, headless)
+                          proxy, tweets_count, headless, browser_profile)
     data = profile_bot.scrap()
     if output_format.lower() == "json":
         if filename == '':

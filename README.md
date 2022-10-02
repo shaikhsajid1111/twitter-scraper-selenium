@@ -236,6 +236,11 @@ Output:
             <td>Boolean</td>
             <td>Whether to run crawler headlessly?. Default is <code>True</code></td>
         </tr>
+        <tr>
+            <td>browser_profile</td>
+            <td>String</td>
+            <td>Path to the browser profile where cookies are stored and can be used for scraping data in an authenticated way.</td>
+        </tr>
     </tbody>
 </table>
 
@@ -515,6 +520,11 @@ Output:
             <td>Boolean</td>
             <td>Whether to run crawler headlessly?. Default is <code>True</code></td>
         </tr>
+        <tr>
+            <td>browser_profile</td>
+            <td>String</td>
+            <td>Path to the browser profile where cookies are stored and can be used for scraping data in an authenticated way.</td>
+        </tr>
     </tbody>
 </table>
 </div>
@@ -640,6 +650,7 @@ Output and key of the output is the same as `scrap_keyword`:
 | tweets_count  | int                | Number of posts to scrap. default 10.                                                                                                  |
 | output_format | str                | The output format whether JSON or CSV. Default json.                                                                                   |
 | directory     | str                | Directory to save output file. Deafult current working directory.                                                                      |
+| browser_profile | str | Path to the browser profile where cookies are stored and can be used for scraping data in an authenticated way. |
 
 </div>
 
