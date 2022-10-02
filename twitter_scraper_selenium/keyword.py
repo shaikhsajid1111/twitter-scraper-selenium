@@ -8,6 +8,9 @@ import json
 import os
 import csv
 from twitter_scraper_selenium.scraping_utilities import Scraping_utilities
+import logging
+
+logging.getLogger().setLevel(logging.INFO)
 
 
 class Keyword:
@@ -100,7 +103,8 @@ class Keyword:
                     break
 
         except Exception as ex:
-            print("Error at method scrap on line no. {} : {}".format(ex))
+            logging.exception(
+                "Error at method fetch_and_store_data : {}".format(ex))
 
     def scrap(self):
         try:
@@ -117,7 +121,8 @@ class Keyword:
 
         except Exception as ex:
             self.__close_driver()
-            print("Error at method scrap on line no. {} : {}".format(ex))
+            logging.exception(
+                "Error at method scrap on : {}".format(ex))
 
 
 def json_to_csv(filename, json_data, directory):
@@ -126,11 +131,15 @@ def json_to_csv(filename, json_data, directory):
     fieldnames = ['tweet_id', 'username', 'name', 'profile_picture', 'replies',
                   'retweets', 'likes', 'is_retweet', 'posted_time', 'content', 'hashtags', 'mentions',
                   'images', 'videos', 'tweet_url', 'link']
+    mode = 'w'
     # open and start writing to CSV files
-    with open("{}.csv".format(filename), 'w', newline='', encoding="utf-8") as data_file:
+    if os.path.exists("{}.csv".format(filename)):
+        mode = 'a'
+    with open("{}.csv".format(filename), mode, newline='', encoding="utf-8") as data_file:
         # instantiate DictWriter for writing CSV fi
         writer = csv.DictWriter(data_file, fieldnames=fieldnames)
-        writer.writeheader()  # write headers to CSV file
+        if mode == 'w':
+            writer.writeheader()  # write headers to CSV file
         # iterate over entire dictionary, write each posts as a row to CSV file
         for key in json_data:
             # parse post in a dictionary and write it as a single row
@@ -155,6 +164,7 @@ def json_to_csv(filename, json_data, directory):
             }
             writer.writerow(row)  # write row to CSV fi
         data_file.close()  # after writing close the file
+    logging.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
 def scrap_keyword(keyword, browser="firefox", until=None,

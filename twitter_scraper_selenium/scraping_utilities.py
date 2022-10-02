@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 import re
 from urllib.parse import quote
+import logging
+
+logging.getLogger().setLevel(logging.INFO)
 
 
 class Scraping_utilities:
@@ -10,14 +13,14 @@ class Scraping_utilities:
         try:
             return string.split("(")[0].strip()
         except Exception as ex:
-            print("Error at Parse Name {}".format(ex))
+            logging.exception("Error at parse_name : {}".format(ex))
 
     @staticmethod
     def __extract_digits(string):
         try:
             return int(re.search(r'\d+', string).group(0))
         except Exception as ex:
-            print("Error at extract digits {}".format(ex))
+            logging.exception("Error at extract_digits : {}".format(ex))
 
     @staticmethod
     def __set_value_or_none(value, string):

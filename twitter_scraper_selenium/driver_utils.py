@@ -43,4 +43,4 @@ class Utilities:
                 time.sleep(randint(3, 5))
                 state = driver.execute_script("return document.readyState")
         except Exception as ex:
-            logging.exception('Error at Wait Until Completion: {}'.format(ex))
+            logging.exception('Error at wait_until_completion: {}'.format(ex))

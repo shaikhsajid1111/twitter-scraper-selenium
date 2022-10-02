@@ -8,6 +8,9 @@ import re
 import json
 import csv
 import os
+import logging
+
+logging.getLogger().setLevel(logging.INFO)
 
 
 class Profile:
@@ -102,7 +105,8 @@ class Profile:
                     break
 
         except Exception as ex:
-            print("Error at method scrap on line no. {} : {}".format(ex))
+            logging.exception(
+                "Error at method fetch_and_store_data : {}".format(ex))
 
     def scrap(self):
         try:
@@ -117,7 +121,8 @@ class Profile:
             return json.dumps(data)
         except Exception as ex:
             self.__close_driver()
-            print("Error at method scrap on line no. {} : {}".format(ex))
+            logging.exception(
+                "Error at method scrap : {} ".format(ex))
 
 
 def json_to_csv(filename, json_data, directory):
@@ -128,13 +133,13 @@ def json_to_csv(filename, json_data, directory):
                   'images', 'videos', 'tweet_url', 'link']
     mode = 'w'
     if os.path.exists("{}.csv".format(filename)):
-      mode = 'a'
+        mode = 'a'
     # open and start writing to CSV files
     with open("{}.csv".format(filename), mode, newline='', encoding="utf-8") as data_file:
         # instantiate DictWriter for writing CSV fi
         writer = csv.DictWriter(data_file, fieldnames=fieldnames)
         if mode == 'w':
-          writer.writeheader()  # write headers to CSV file
+            writer.writeheader()  # write headers to CSV file
         # iterate over entire dictionary, write each posts as a row to CSV file
         for key in json_data:
             # parse post in a dictionary and write it as a single row

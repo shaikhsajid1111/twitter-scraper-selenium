@@ -79,7 +79,7 @@ def scrap_topic(
                     for row in reader:
                         old_data.append(row)
             except Exception as err:
-                logging.Exception("load existing data failed")
+                logging.Exception("Load Existing Data Failed")
         with output_path.open("w") as f:
             writer = csv.DictWriter(f, filenames=fieldnames)
             writer.writeheader()
