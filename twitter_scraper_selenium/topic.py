@@ -46,7 +46,7 @@ def scrap_topic(
     if output_format.lower() == "json":
         if filename == '':
             # if filename was not provided
-            return data
+            return json.dumps(data)
         elif filename != '':
             # if filename was provided
             output_path = directory / "{}.json".format(filename)
@@ -54,12 +54,12 @@ def scrap_topic(
                 try:
                     with output_path.open(encoding="utf-8") as f:
                         existing_data = json.load(f)
-                    data = json.dumps(existing_data.update(json.loads(data)))
+                    data.update(existing_data)
                 except Exception as err:
                     logging.exception("Error Appending Data: {}".format(err))
-            output_path.write_text(data)
+            output_path.write_text(json.dumps(data))
             logging.info(
-                'Data Successfully Saved to {}'.format(output_format))
+                'Data Successfully Saved to {}'.format(output_path))
     elif output_format == "csv":
         if filename == '':
             raise Exception('Filename is required to save the CSV file.')
