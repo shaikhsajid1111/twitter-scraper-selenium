@@ -1,19 +1,18 @@
 #!/usr/bin/env python3
-try:
-    from seleniumwire import webdriver
-    # to add capabilities for chrome and firefox, import their Options with different aliases
-    from selenium.webdriver.chrome.options import Options as CustomChromeOptions
-    from selenium.webdriver.firefox.options import Options as CustomFireFoxOptions
-    # import webdriver for downloading respective driver for the browser
-    from webdriver_manager.chrome import ChromeDriverManager
-    from webdriver_manager.firefox import GeckoDriverManager
-    from fake_headers import Headers
-    from selenium.webdriver.chrome.service import Service as ChromeService
-    from selenium.webdriver.firefox.service import Service as FirefoxService
 
-except Exception as ex:
-    print(ex)
+from seleniumwire import webdriver
+# to add capabilities for chrome and firefox, import their Options with different aliases
+from selenium.webdriver.chrome.options import Options as CustomChromeOptions
+from selenium.webdriver.firefox.options import Options as CustomFireFoxOptions
+# import webdriver for downloading respective driver for the browser
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.firefox import GeckoDriverManager
+from fake_headers import Headers
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.firefox.service import Service as FirefoxService
+import logging
 
+logging.getLogger().setLevel(logging.INFO)
 
 class Initializer:
 
@@ -50,7 +49,7 @@ class Initializer:
                     'http': 'http://{}'.format(self.proxy.replace(" ", "")),
                     'no_proxy': 'localhost, 127.0.0.1'
                 }
-                print("Using: {}".format(self.proxy))
+                logging.info("Using Proxy: {}".format(self.proxy))
 
                 return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
                                         options=self.set_properties(browser_option), seleniumwire_options=options)
@@ -64,7 +63,7 @@ class Initializer:
                     'http': 'http://{}'.format(self.proxy.replace(" ", "")),
                     'no_proxy': 'localhost, 127.0.0.1'
                 }
-                print("Using: {}".format(self.proxy))
+                logging.info("Using Proxy: {}".format(self.proxy))
 
                 return webdriver.Firefox(service=FirefoxService(executable_path=GeckoDriverManager().install()),
                                          options=self.set_properties(browser_option), seleniumwire_options=options)

@@ -3,14 +3,16 @@
 import csv
 import logging
 import pathlib
-
+import json
 from .keyword import Keyword
+
+logging.getLogger().setLevel(logging.INFO)
 
 
 def scrap_topic(
-    filename: str,
     url: str,
     browser: str = "firefox",
+    filename: str = "",
     proxy: str = None,
     tweets_count: int = 10,
     output_format: str = "json",
@@ -41,17 +43,26 @@ def scrap_topic(
         tweets_count=tweets_count,
     )
     data = keyword_bot.scrap()
-    if output_format == "json":
-        output_path = directory / "{}.json".format(filename)
-        if output_path.exists():
-            try:
-                with output_path.open() as f:
-                    existing_data = json.load(f)
-                data = json.dumps(existing_data.update(json.loads(data)))
-            except Exception as err:
-                logging.Exception("load existing data failed")
-        output_path.write_text(data)
+    if output_format.lower() == "json":
+        if filename == '':
+            # if filename was not provided
+            return data
+        elif filename != '':
+            # if filename was provided
+            output_path = directory / "{}.json".format(filename)
+            if output_path.exists():
+                try:
+                    with output_path.open(encoding="utf-8") as f:
+                        existing_data = json.load(f)
+                    data = json.dumps(existing_data.update(json.loads(data)))
+                except Exception as err:
+                    logging.exception("Error Appending Data: {}".format(err))
+            output_path.write_text(data)
+            logging.info(
+                'Data Successfully Saved to {}'.format(output_format))
     elif output_format == "csv":
+        if filename == '':
+            raise Exception('Filename is required to save the CSV file.')
         fieldnames = [
             "tweet_id",
             "username",
@@ -74,15 +85,16 @@ def scrap_topic(
         old_data = []
         if output_path.exists():
             try:
-                with output_path.open() as f:
-                    reader = csv.DictReader(f, fieldnames=filenames)
+                with output_path.open(encoding="utf-8") as f:
+                    reader = csv.DictReader(f, fieldnames=fieldnames)
                     for row in reader:
                         old_data.append(row)
             except Exception as err:
-                logging.Exception("load existing data failed")
-        with output_path.open("w") as f:
-            writer = csv.DictWriter(f, filenames=fieldnames)
+                logging.exception("Error Appending Data: {}".format(err))
+        with output_path.open("w", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(old_data + list(json.loads(data).values()))
+            logging.info('Data Successfully Saved to {}'.format(output_path))
     else:
-        raise ValueError("invalid output format")
+        raise ValueError("Invalid Output Format")

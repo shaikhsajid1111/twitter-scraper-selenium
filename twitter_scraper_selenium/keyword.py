@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
-try:
-    from datetime import datetime, timedelta
-    from .driver_initialization import Initializer
-    from .driver_utils import Utilities
-    from inspect import currentframe
-    from .element_finder import Finder
-    import re
-    import json
-    import os
-    import csv
-    from twitter_scraper_selenium.scraping_utilities import Scraping_utilities
-except Exception as ex:
-    print(ex)
 
-frameinfo = currentframe()
+from .driver_initialization import Initializer
+from .driver_utils import Utilities
+from .element_finder import Finder
+import re
+import json
+import os
+import csv
+from twitter_scraper_selenium.scraping_utilities import Scraping_utilities
+import logging
+
+logging.getLogger().setLevel(logging.INFO)
 
 
 class Keyword:
@@ -106,8 +103,8 @@ class Keyword:
                     break
 
         except Exception as ex:
-            print("Error at method scrap on line no. {} : {}".format(
-                frameinfo.f_lineno, ex))
+            logging.exception(
+                "Error at method fetch_and_store_data : {}".format(ex))
 
     def scrap(self):
         try:
@@ -124,8 +121,8 @@ class Keyword:
 
         except Exception as ex:
             self.__close_driver()
-            print(ex)
-            #print("Error at method scrap on line no. {} : {}".format(frameinfo.f_lineno,ex))
+            logging.exception(
+                "Error at method scrap on : {}".format(ex))
 
 
 def json_to_csv(filename, json_data, directory):
@@ -134,11 +131,15 @@ def json_to_csv(filename, json_data, directory):
     fieldnames = ['tweet_id', 'username', 'name', 'profile_picture', 'replies',
                   'retweets', 'likes', 'is_retweet', 'posted_time', 'content', 'hashtags', 'mentions',
                   'images', 'videos', 'tweet_url', 'link']
+    mode = 'w'
     # open and start writing to CSV files
-    with open("{}.csv".format(filename), 'w', newline='', encoding="utf-8") as data_file:
+    if os.path.exists("{}.csv".format(filename)):
+        mode = 'a'
+    with open("{}.csv".format(filename), mode, newline='', encoding="utf-8") as data_file:
         # instantiate DictWriter for writing CSV fi
         writer = csv.DictWriter(data_file, fieldnames=fieldnames)
-        writer.writeheader()  # write headers to CSV file
+        if mode == 'w':
+            writer.writeheader()  # write headers to CSV file
         # iterate over entire dictionary, write each posts as a row to CSV file
         for key in json_data:
             # parse post in a dictionary and write it as a single row
@@ -163,6 +164,7 @@ def json_to_csv(filename, json_data, directory):
             }
             writer.writerow(row)  # write row to CSV fi
         data_file.close()  # after writing close the file
+    logging.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
 def scrap_keyword(keyword, browser="firefox", until=None,
@@ -202,8 +204,20 @@ def scrap_keyword(keyword, browser="firefox", until=None,
     keyword_bot = Keyword(keyword, browser=browser, url=URL,
                           proxy=proxy, tweets_count=tweets_count, headless=headless)
     data = keyword_bot.scrap()
-    if output_format == "json":
-        return data
+    if output_format.lower() == "json":
+        if filename == '':
+          # if filename was not provided then print the JSON to console
+            return data
+        elif filename != '':
+          # if filename was provided, save it to that file
+            mode = 'w'
+            json_file_location = os.path.join(directory, filename+".json")
+            if os.path.exists(json_file_location):
+                mode = 'a'
+            with open(json_file_location, mode, encoding='utf-8') as file:
+                file.write(data)
+                logging.info('Data Successfully Saved to {}'.format(
+                    json_file_location))
     elif output_format.lower() == "csv":
         if filename == "":
             filename = keyword

@@ -619,14 +619,10 @@ Output:
 ### To scrap topic tweets with url:
 
 ```python
-from twitter_scraper_selenium import scrap_keyword
+from twitter_scraper_selenium import scrap_topic
 # scrap 10 tweets from steam deck topic on twitter
-data = scrap_keyword(
-  filename="steamdeck",
-  url='https://twitter.com/i/topics/1415728297065861123'
-  browser="firefox",
-  tweets_count=10,
-  )
+data = scrap_topic(filename="steamdeck", url='https://twitter.com/i/topics/1415728297065861123',
+                     browser="firefox", tweets_count=10)
 ```
 
 Output and key of the output is the same as `scrap_keyword`:

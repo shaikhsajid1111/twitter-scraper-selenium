@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
-try:
-    from .driver_initialization import Initializer
-    from .driver_utils import Utilities
-    from inspect import currentframe
-    from .element_finder import Finder
-    from .driver_utils import Utilities
-    import re
-    import json
-    import csv
-    import os
-except Exception as ex:
-    frameinfo = currentframe()
-    print("Error on line no. {} : {}".format(frameinfo.f_lineno, ex))
 
-frameinfo = currentframe()
+from .driver_initialization import Initializer
+from .driver_utils import Utilities
+from .element_finder import Finder
+from .driver_utils import Utilities
+import re
+import json
+import csv
+import os
+import logging
+
+logging.getLogger().setLevel(logging.INFO)
 
 
 class Profile:
@@ -108,8 +105,8 @@ class Profile:
                     break
 
         except Exception as ex:
-            print("Error at method scrap on line no. {} : {}".format(
-                frameinfo.f_lineno, ex))
+            logging.exception(
+                "Error at method fetch_and_store_data : {}".format(ex))
 
     def scrap(self):
         try:
@@ -124,8 +121,8 @@ class Profile:
             return json.dumps(data)
         except Exception as ex:
             self.__close_driver()
-            print("Error at method scrap on line no. {} : {}".format(
-                frameinfo.f_lineno, ex))
+            logging.exception(
+                "Error at method scrap : {} ".format(ex))
 
 
 def json_to_csv(filename, json_data, directory):
@@ -134,11 +131,15 @@ def json_to_csv(filename, json_data, directory):
     fieldnames = ['tweet_id', 'username', 'name', 'profile_picture', 'replies',
                   'retweets', 'likes', 'is_retweet', 'retweet_link', 'posted_time', 'content', 'hashtags', 'mentions',
                   'images', 'videos', 'tweet_url', 'link']
+    mode = 'w'
+    if os.path.exists("{}.csv".format(filename)):
+        mode = 'a'
     # open and start writing to CSV files
-    with open("{}.csv".format(filename), 'w', newline='', encoding="utf-8") as data_file:
+    with open("{}.csv".format(filename), mode, newline='', encoding="utf-8") as data_file:
         # instantiate DictWriter for writing CSV fi
         writer = csv.DictWriter(data_file, fieldnames=fieldnames)
-        writer.writeheader()  # write headers to CSV file
+        if mode == 'w':
+            writer.writeheader()  # write headers to CSV file
         # iterate over entire dictionary, write each posts as a row to CSV file
         for key in json_data:
             # parse post in a dictionary and write it as a single row
@@ -161,8 +162,9 @@ def json_to_csv(filename, json_data, directory):
                 "tweet_url": json_data[key]['tweet_url'],
                 "link": json_data[key]['link']
             }
-            writer.writerow(row)  # write row to CSV fi
+            writer.writerow(row)  # write row to CSV file
         data_file.close()  # after writing close the file
+    logging.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
 def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=10, output_format="json", filename="", directory=os.getcwd(), headless=True):
@@ -189,8 +191,20 @@ def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=
     profile_bot = Profile(twitter_username, browser,
                           proxy, tweets_count, headless)
     data = profile_bot.scrap()
-    if output_format == "json":
-        return data
+    if output_format.lower() == "json":
+        if filename == '':
+          # if filename was not provided then print the JSON to console
+            return data
+        elif filename != '':
+          # if filename was provided, save it to that file
+            mode = 'w'
+            json_file_location = os.path.join(directory, filename+".json")
+            if os.path.exists(json_file_location):
+                mode = 'a'
+            with open(json_file_location, mode, encoding='utf-8') as file:
+                file.write(data)
+                logging.info(
+                    'Data Successfully Saved to {}'.format(json_file_location))
     elif output_format.lower() == "csv":
         if filename == "":
             filename = twitter_username
