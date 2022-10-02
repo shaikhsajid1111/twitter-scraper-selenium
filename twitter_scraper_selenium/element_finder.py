@@ -2,7 +2,6 @@
 
 from selenium.common.exceptions import NoSuchElementException
 from .scraping_utilities import Scraping_utilities
-from inspect import currentframe
 from dateutil.parser import parse
 from selenium.webdriver.common.by import By
 import logging

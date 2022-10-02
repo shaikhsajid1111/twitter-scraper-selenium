@@ -162,8 +162,9 @@ def json_to_csv(filename, json_data, directory):
                 "tweet_url": json_data[key]['tweet_url'],
                 "link": json_data[key]['link']
             }
-            writer.writerow(row)  # write row to CSV fi
+            writer.writerow(row)  # write row to CSV file
         data_file.close()  # after writing close the file
+    logging.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
 def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=10, output_format="json", filename="", directory=os.getcwd(), headless=True):
@@ -190,8 +191,20 @@ def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=
     profile_bot = Profile(twitter_username, browser,
                           proxy, tweets_count, headless)
     data = profile_bot.scrap()
-    if output_format == "json":
-        return data
+    if output_format.lower() == "json":
+        if filename == '':
+          # if filename was not provided then print the JSON to console
+            return data
+        elif filename != '':
+          # if filename was provided, save it to that file
+            mode = 'w'
+            json_file_location = os.path.join(directory, filename+".json")
+            if os.path.exists(json_file_location):
+                mode = 'a'
+            with open(json_file_location, mode, encoding='utf-8') as file:
+                file.write(data)
+                logging.info(
+                    'Data Successfully Saved to {}'.format(json_file_location))
     elif output_format.lower() == "csv":
         if filename == "":
             filename = twitter_username

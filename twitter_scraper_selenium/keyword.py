@@ -204,8 +204,20 @@ def scrap_keyword(keyword, browser="firefox", until=None,
     keyword_bot = Keyword(keyword, browser=browser, url=URL,
                           proxy=proxy, tweets_count=tweets_count, headless=headless)
     data = keyword_bot.scrap()
-    if output_format == "json":
-        return data
+    if output_format.lower() == "json":
+        if filename == '':
+          # if filename was not provided then print the JSON to console
+            return data
+        elif filename != '':
+          # if filename was provided, save it to that file
+            mode = 'w'
+            json_file_location = os.path.join(directory, filename+".json")
+            if os.path.exists(json_file_location):
+                mode = 'a'
+            with open(json_file_location, mode, encoding='utf-8') as file:
+                file.write(data)
+                logging.info('Data Successfully Saved to {}'.format(
+                    json_file_location))
     elif output_format.lower() == "csv":
         if filename == "":
             filename = keyword
