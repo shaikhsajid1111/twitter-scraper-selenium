@@ -1,19 +1,13 @@
 #!/usr/bin/env python3
-try:
-    from datetime import datetime, timedelta
-    from .driver_initialization import Initializer
-    from .driver_utils import Utilities
-    from inspect import currentframe
-    from .element_finder import Finder
-    import re
-    import json
-    import os
-    import csv
-    from twitter_scraper_selenium.scraping_utilities import Scraping_utilities
-except Exception as ex:
-    print(ex)
 
-frameinfo = currentframe()
+from .driver_initialization import Initializer
+from .driver_utils import Utilities
+from .element_finder import Finder
+import re
+import json
+import os
+import csv
+from twitter_scraper_selenium.scraping_utilities import Scraping_utilities
 
 
 class Keyword:
@@ -106,8 +100,7 @@ class Keyword:
                     break
 
         except Exception as ex:
-            print("Error at method scrap on line no. {} : {}".format(
-                frameinfo.f_lineno, ex))
+            print("Error at method scrap on line no. {} : {}".format(ex))
 
     def scrap(self):
         try:
@@ -124,8 +117,7 @@ class Keyword:
 
         except Exception as ex:
             self.__close_driver()
-            print(ex)
-            #print("Error at method scrap on line no. {} : {}".format(frameinfo.f_lineno,ex))
+            print("Error at method scrap on line no. {} : {}".format(ex))
 
 
 def json_to_csv(filename, json_data, directory):

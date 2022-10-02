@@ -3,7 +3,7 @@
 import csv
 import logging
 import pathlib
-
+import json
 from .keyword import Keyword
 
 
@@ -75,7 +75,7 @@ def scrap_topic(
         if output_path.exists():
             try:
                 with output_path.open() as f:
-                    reader = csv.DictReader(f, fieldnames=filenames)
+                    reader = csv.DictReader(f, fieldnames=fieldnames)
                     for row in reader:
                         old_data.append(row)
             except Exception as err:
@@ -85,4 +85,4 @@ def scrap_topic(
             writer.writeheader()
             writer.writerows(old_data + list(json.loads(data).values()))
     else:
-        raise ValueError("invalid output format")
+        raise ValueError("Invalid Output Format")

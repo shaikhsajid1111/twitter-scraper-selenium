@@ -1,19 +1,13 @@
 #!/usr/bin/env python3
-try:
-    from .driver_initialization import Initializer
-    from .driver_utils import Utilities
-    from inspect import currentframe
-    from .element_finder import Finder
-    from .driver_utils import Utilities
-    import re
-    import json
-    import csv
-    import os
-except Exception as ex:
-    frameinfo = currentframe()
-    print("Error on line no. {} : {}".format(frameinfo.f_lineno, ex))
 
-frameinfo = currentframe()
+from .driver_initialization import Initializer
+from .driver_utils import Utilities
+from .element_finder import Finder
+from .driver_utils import Utilities
+import re
+import json
+import csv
+import os
 
 
 class Profile:
@@ -108,8 +102,7 @@ class Profile:
                     break
 
         except Exception as ex:
-            print("Error at method scrap on line no. {} : {}".format(
-                frameinfo.f_lineno, ex))
+            print("Error at method scrap on line no. {} : {}".format(ex))
 
     def scrap(self):
         try:
@@ -124,8 +117,7 @@ class Profile:
             return json.dumps(data)
         except Exception as ex:
             self.__close_driver()
-            print("Error at method scrap on line no. {} : {}".format(
-                frameinfo.f_lineno, ex))
+            print("Error at method scrap on line no. {} : {}".format(ex))
 
 
 def json_to_csv(filename, json_data, directory):
@@ -134,11 +126,15 @@ def json_to_csv(filename, json_data, directory):
     fieldnames = ['tweet_id', 'username', 'name', 'profile_picture', 'replies',
                   'retweets', 'likes', 'is_retweet', 'retweet_link', 'posted_time', 'content', 'hashtags', 'mentions',
                   'images', 'videos', 'tweet_url', 'link']
+    mode = 'w'
+    if os.path.exists("{}.csv".format(filename)):
+      mode = 'a'
     # open and start writing to CSV files
-    with open("{}.csv".format(filename), 'w', newline='', encoding="utf-8") as data_file:
+    with open("{}.csv".format(filename), mode, newline='', encoding="utf-8") as data_file:
         # instantiate DictWriter for writing CSV fi
         writer = csv.DictWriter(data_file, fieldnames=fieldnames)
-        writer.writeheader()  # write headers to CSV file
+        if mode == 'w':
+          writer.writeheader()  # write headers to CSV file
         # iterate over entire dictionary, write each posts as a row to CSV file
         for key in json_data:
             # parse post in a dictionary and write it as a single row

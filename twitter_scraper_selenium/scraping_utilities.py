@@ -1,14 +1,6 @@
 #!/usr/bin/env python3
-try:
-    from inspect import currentframe
-    import re
-    from urllib.parse import quote
-except Exception as ex:
-    frameinfo = currentframe()
-    print("Error on line no. {} : {}".format(frameinfo.f_lineno, ex))
-
-
-frameinfo = currentframe()
+import re
+from urllib.parse import quote
 
 
 class Scraping_utilities:
@@ -17,15 +9,15 @@ class Scraping_utilities:
     def __parse_name(string):
         try:
             return string.split("(")[0].strip()
-        except:
-            print("Error on line no. {} : {}".format(frameinfo.f_lineno, ex))
+        except Exception as ex:
+            print("Error at Parse Name {}".format(ex))
 
     @staticmethod
     def __extract_digits(string):
         try:
             return int(re.search(r'\d+', string).group(0))
         except Exception as ex:
-            print("Error on line no. {} : {}".format(frameinfo.f_lineno, ex))
+            print("Error at extract digits {}".format(ex))
 
     @staticmethod
     def __set_value_or_none(value, string):
