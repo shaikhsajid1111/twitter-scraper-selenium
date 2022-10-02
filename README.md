@@ -39,6 +39,10 @@
     <li><a href="#keywordOutput">Keys of the output data</a></li>
     </ul>
     </li>
+    <li><a href="#to-scrap-topic-tweets-with-url">Scraping tweets using topic url</a></li>
+    <ul>
+    <li><a href="#topicArgument">Function Arguments</a></li>
+    </ul>
     <li><a href="#proxy">Using scraper with proxy</a>
     <ul>
     <li><a href="#unauthenticatedProxy">Unauthenticated Proxy</a></li>
@@ -611,6 +615,37 @@ Output:
 </div>
 <br>
 <hr>
+
+### To scrap topic tweets with url:
+
+```python
+from twitter_scraper_selenium import scrap_keyword
+# scrap 10 tweets from steam deck topic on twitter
+data = scrap_keyword(
+  filename="steamdeck",
+  url='https://twitter.com/i/topics/1415728297065861123'
+  browser="firefox",
+  tweets_count=10,
+  )
+```
+
+Output and key of the output is the same as `scrap_keyword`:
+
+<div id="topicArgument">
+<p><code>scrap_topic()</code> arguments:</p>
+
+
+| Arguments     | Argument <br> Type | Description                                                                                                                            |
+|---------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
+| filename      | str                | Filename to write result output.                                                                                                       |
+| url           | str                | Topic url.                                                                                                                             |
+| browser       | str                | Which browser to use for scraping? <br> Only 2 are supported Chrome and Firefox. default firefox                                       |
+| proxy         | str                | If user wants to use proxy for scraping. <br> If the proxy is authenticated proxy then the proxy format is username:password@host:port |
+| tweets_count  | int                | Number of posts to scrap. default 10.                                                                                                  |
+| output_format | str                | The output format whether JSON or CSV. Default json.                                                                                   |
+| directory     | str                | Directory to save output file. Deafult current working directory.                                                                      |
+
+</div>
 
 <h3 id="proxy"> Using scraper with proxy (http proxy) </h3>
 
