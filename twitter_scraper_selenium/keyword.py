@@ -17,7 +17,7 @@ class Keyword:
     """this class needs to be instantiated in order to find something
     on twitter related to keywords"""
 
-    def __init__(self, keyword, browser, proxy, tweets_count, url, headless):
+    def __init__(self, keyword, browser, proxy, tweets_count, url, headless, browser_profile):
         self.keyword = keyword
         self.URL = url
         self.driver = ""
@@ -27,11 +27,12 @@ class Keyword:
         self.posts_data = {}
         self.retry = 10
         self.headless = headless
+        self.browser_profile = browser_profile
 
     def __start_driver(self):
         """changes the class member __driver value to driver on call"""
         self.__driver = Initializer(
-            self.browser, self.headless, self.proxy).init()
+            self.browser, self.headless, self.proxy, self.browser_profile).init()
 
     def __close_driver(self):
         self.__driver.close()
@@ -170,7 +171,7 @@ def json_to_csv(filename, json_data, directory):
 def scrap_keyword(keyword, browser="firefox", until=None,
                   since=None, since_id=None, max_id=None, within_time=None,
                   proxy=None, tweets_count=10, output_format="json",
-                  filename="", directory=os.getcwd(), headless=True):
+                  filename="", directory=os.getcwd(), headless=True, browser_profile=None):
     """
     Returns tweets data in CSV or JSON.
 
@@ -198,11 +199,13 @@ def scrap_keyword(keyword, browser="firefox", until=None,
     max_id(integer): At or before (inclusive) a specified Snowflake ID.
 
     within_time(string): Search within the last number of days, hours, minutes, or seconds.
+
+    browser_profile(string): Path of Browser Profile where cookies might be located to scrap data in authenticated way.
     """
     URL = Scraping_utilities._Scraping_utilities__url_generator(keyword, since=since, until=until,
                                                                 since_id=since_id, max_id=max_id, within_time=within_time)
     keyword_bot = Keyword(keyword, browser=browser, url=URL,
-                          proxy=proxy, tweets_count=tweets_count, headless=headless)
+                          proxy=proxy, tweets_count=tweets_count, headless=headless, browser_profile=browser_profile)
     data = keyword_bot.scrap()
     if output_format.lower() == "json":
         if filename == '':
