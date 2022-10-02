@@ -83,8 +83,6 @@ def scrap_topic(
         with output_path.open("w") as f:
             writer = csv.DictWriter(f, filenames=fieldnames)
             writer.writeheader()
-            if old_data:
-                writer.writerows(old_data)
-            writer.writerows(json.loads(data).values())
+            writer.writerows(old_data + list(json.loads(data).values()))
     else:
         raise ValueError("invalid output format")
