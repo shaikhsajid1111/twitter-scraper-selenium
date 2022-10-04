@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
 
-from seleniumwire import webdriver
+import logging
+
+from fake_headers import Headers
 # to add capabilities for chrome and firefox, import their Options with different aliases
 from selenium.webdriver.chrome.options import Options as CustomChromeOptions
+from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium.webdriver.firefox.options import Options as CustomFireFoxOptions
+from selenium.webdriver.firefox.service import Service as FirefoxService
+from seleniumwire import webdriver
 # import webdriver for downloading respective driver for the browser
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
-from fake_headers import Headers
-from selenium.webdriver.chrome.service import Service as ChromeService
-from selenium.webdriver.firefox.service import Service as FirefoxService
-import logging
 
 logging.getLogger().setLevel(logging.INFO)
 
@@ -27,11 +28,13 @@ class Initializer:
         """adds capabilities to the driver"""
         header = Headers().generate()['User-Agent']
         if self.headless:
-            browser_option.add_argument(
-                '--headless')  # runs browser in headless mode
-        if self.profile and self.browser_name.lower() == 'chrome':
-            browser_option.add_argument(
-                'user-data-dir={}'.format(self.profile))
+            browser_option.add_argument("--headless")  # runs browser in headless mode
+        if self.profile and self.browser_name.lower() == "chrome":
+            browser_option.add_argument("user-data-dir={}".format(self.profile))
+        if self.profile and self.browser_name.lower() == "firefox":
+            logging.info("Loading Profile from {}".format(self.profile))
+            browser_option.add_argument("--profile")
+            browser_option.add_argument(self.profile)
         browser_option.add_argument('--no-sandbox')
         browser_option.add_argument("--disable-dev-shm-usage")
         browser_option.add_argument('--ignore-certificate-errors')
@@ -62,10 +65,6 @@ class Initializer:
             return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=self.set_properties(browser_option))
         elif browser_name.lower() == "firefox":
             browser_option = CustomFireFoxOptions()
-            if self.profile:
-                logging.info('Loading Profile from {}'.format(self.profile))
-                profile_path = webdriver.FirefoxProfile(self.profile)
-                browser_option.profile = profile_path
             if self.proxy is not None:
                 options = {
                     'https': 'https://{}'.format(self.proxy.replace(" ", "")),
