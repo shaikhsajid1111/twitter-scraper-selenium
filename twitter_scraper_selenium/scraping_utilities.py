@@ -3,7 +3,13 @@ import re
 from urllib.parse import quote
 import logging
 
-logging.getLogger().setLevel(logging.INFO)
+logger = logging.getLogger(__name__)
+format = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+ch = logging.StreamHandler()
+ch.setFormatter(format)
+logger.addHandler(ch)
+
 
 
 class Scraping_utilities:
@@ -13,14 +19,14 @@ class Scraping_utilities:
         try:
             return string.split("(")[0].strip()
         except Exception as ex:
-            logging.exception("Error at parse_name : {}".format(ex))
+            logger.exception("Error at parse_name : {}".format(ex))
 
     @staticmethod
     def __extract_digits(string):
         try:
             return int(re.search(r'\d+', string).group(0))
         except Exception as ex:
-            logging.exception("Error at extract_digits : {}".format(ex))
+            logger.exception("Error at extract_digits : {}".format(ex))
 
     @staticmethod
     def __set_value_or_none(value, string):

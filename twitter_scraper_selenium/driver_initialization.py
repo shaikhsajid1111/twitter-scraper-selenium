@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import logging
 
+import logging
 from fake_headers import Headers
 # to add capabilities for chrome and firefox, import their Options with different aliases
 from selenium.webdriver.chrome.options import Options as CustomChromeOptions
@@ -13,7 +13,12 @@ from seleniumwire import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.firefox import GeckoDriverManager
 
-logging.getLogger().setLevel(logging.INFO)
+logger = logging.getLogger(__name__)
+format = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+ch = logging.StreamHandler()
+ch.setFormatter(format)
+logger.addHandler(ch)
 
 
 class Initializer:
@@ -32,8 +37,9 @@ class Initializer:
         if self.profile and self.browser_name.lower() == "chrome":
             browser_option.add_argument("user-data-dir={}".format(self.profile))
         if self.profile and self.browser_name.lower() == "firefox":
-            logging.info("Loading Profile from {}".format(self.profile))
-            browser_option.add_argument("--profile")
+            logger.setLevel(logging.INFO)
+            logger.info("Loading Profile from {}".format(self.profile))
+            browser_option.add_argument("-profile")
             browser_option.add_argument(self.profile)
         browser_option.add_argument('--no-sandbox')
         browser_option.add_argument("--disable-dev-shm-usage")
@@ -57,7 +63,8 @@ class Initializer:
                     'http': 'http://{}'.format(self.proxy.replace(" ", "")),
                     'no_proxy': 'localhost, 127.0.0.1'
                 }
-                logging.info("Using Proxy: {}".format(self.proxy))
+                logger.setLevel(logging.INFO)
+                logger.info("Using Proxy: {}".format(self.proxy))
 
                 return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),
                                         options=self.set_properties(browser_option), seleniumwire_options=options)
@@ -71,7 +78,8 @@ class Initializer:
                     'http': 'http://{}'.format(self.proxy.replace(" ", "")),
                     'no_proxy': 'localhost, 127.0.0.1'
                 }
-                logging.info("Using Proxy: {}".format(self.proxy))
+                logger.setLevel(logging.INFO)
+                logger.info("Using Proxy: {}".format(self.proxy))
                 return webdriver.Firefox(service=FirefoxService(executable_path=GeckoDriverManager().install()),
                                          options=self.set_properties(browser_option), seleniumwire_options=options)
 

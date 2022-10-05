@@ -6,7 +6,12 @@ import pathlib
 import json
 from .keyword import Keyword
 
-logging.getLogger().setLevel(logging.INFO)
+logger = logging.getLogger(__name__)
+format = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+ch = logging.StreamHandler()
+ch.setFormatter(format)
+logger.addHandler(ch)
 
 
 def scrap_topic(
@@ -59,9 +64,9 @@ def scrap_topic(
                         existing_data = json.load(f)
                     data.update(existing_data)
                 except Exception as err:
-                    logging.exception("Error Appending Data: {}".format(err))
+                    logger.exception("Error Appending Data: {}".format(err))
             output_path.write_text(json.dumps(data))
-            logging.info(
+            logger.info(
                 'Data Successfully Saved to {}'.format(output_path))
     elif output_format == "csv":
         if filename == '':
@@ -93,11 +98,12 @@ def scrap_topic(
                     for row in reader:
                         old_data.append(row)
             except Exception as err:
-                logging.exception("Error Appending Data: {}".format(err))
+                logger.exception("Error Appending Data: {}".format(err))
         with output_path.open("w", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(old_data + list(json.loads(data).values()))
-            logging.info('Data Successfully Saved to {}'.format(output_path))
+            logger.setLevel(logging.INFO)
+            logger.info('Data Successfully Saved to {}'.format(output_path))
     else:
         raise ValueError("Invalid Output Format")

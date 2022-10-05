@@ -6,7 +6,13 @@ from dateutil.parser import parse
 from selenium.webdriver.common.by import By
 import logging
 
-logging.getLogger().setLevel(logging.INFO)
+logger = logging.getLogger(__name__)
+format = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+ch = logging.StreamHandler()
+ch.setFormatter(format)
+logger.addHandler(ch)
+
 class Finder:
     """
     this class should contain all  the static method to find that accept

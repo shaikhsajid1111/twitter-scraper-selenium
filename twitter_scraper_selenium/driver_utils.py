@@ -8,7 +8,13 @@ from selenium.webdriver.common.keys import Keys
 from random import randint
 import logging
 
-logging.getLogger().setLevel(logging.INFO)
+logger = logging.getLogger(__name__)
+format = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+ch = logging.StreamHandler()
+ch.setFormatter(format)
+logger.addHandler(ch)
+
 
 
 class Utilities:
@@ -22,7 +28,7 @@ class Utilities:
             WebDriverWait(driver, 10).until(EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-testid="tweet"]')))
         except WebDriverException:
-            logging.exception(
+            logger.exception(
                 "Tweets did not appear!, Try setting headless=False to see what is happening")
 
     @staticmethod
@@ -32,7 +38,7 @@ class Utilities:
             for _ in range(randint(1, 3)):
                 body.send_keys(Keys.PAGE_DOWN)
         except Exception as ex:
-            logging.exception("Error at scroll_down method {}".format(ex))
+            logger.exception("Error at scroll_down method {}".format(ex))
 
     @staticmethod
     def __wait_until_completion(driver):
@@ -43,4 +49,4 @@ class Utilities:
                 time.sleep(randint(3, 5))
                 state = driver.execute_script("return document.readyState")
         except Exception as ex:
-            logging.exception('Error at wait_until_completion: {}'.format(ex))
+            logger.exception('Error at wait_until_completion: {}'.format(ex))

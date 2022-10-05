@@ -10,8 +10,12 @@ import csv
 from twitter_scraper_selenium.scraping_utilities import Scraping_utilities
 import logging
 
-logging.getLogger().setLevel(logging.INFO)
-
+logger = logging.getLogger(__name__)
+format = logging.Formatter(
+    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+ch = logging.StreamHandler()
+ch.setFormatter(format)
+logger.addHandler(ch)
 
 class Keyword:
     """this class needs to be instantiated in order to find something
@@ -104,7 +108,7 @@ class Keyword:
                     break
 
         except Exception as ex:
-            logging.exception(
+            logger.exception(
                 "Error at method fetch_and_store_data : {}".format(ex))
 
     def scrap(self):
@@ -122,7 +126,7 @@ class Keyword:
 
         except Exception as ex:
             self.__close_driver()
-            logging.exception(
+            logger.exception(
                 "Error at method scrap on : {}".format(ex))
 
 
@@ -165,7 +169,8 @@ def json_to_csv(filename, json_data, directory):
             }
             writer.writerow(row)  # write row to CSV fi
         data_file.close()  # after writing close the file
-    logging.info('Data Successfully Saved to {}.csv'.format(filename))
+    logger.setLevel(logging.INFO)
+    logger.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
 def scrap_keyword(keyword, browser="firefox", until=None,
@@ -223,13 +228,14 @@ def scrap_keyword(keyword, browser="firefox", until=None,
                         file_content = file.read()
                         content = json.loads(file_content)
                     except json.decoder.JSONDecodeError:
-                        logging.warning('Invalid JSON Detected!')
+                        logger.warning('Invalid JSON Detected!')
                         content = {}
                     file.close()
                     data.update(content)
                     with open(json_file_location, 'w', encoding='utf-8') as file_in_write_mode:
                         json.dump(data, file_in_write_mode)
-                logging.info('Data Successfully Saved to {}'.format(
+                logger.setLevel(logging.INFO)
+                logger.info('Data Successfully Saved to {}'.format(
                     json_file_location))
     elif output_format.lower() == "csv":
         if filename == "":
