@@ -5,7 +5,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 format = logging.Formatter(
-    "%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    "%(asctime)s - %(levelname)s - %(message)s")
 ch = logging.StreamHandler()
 ch.setFormatter(format)
 logger.addHandler(ch)
