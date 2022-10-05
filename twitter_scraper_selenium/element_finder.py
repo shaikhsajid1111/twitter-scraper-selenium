@@ -29,7 +29,7 @@ class Finder:
         try:
             return driver.find_elements(By.CSS_SELECTOR, '[data-testid="tweet"]')
         except Exception as ex:
-            logging.exception("Error at method fetch_all_tweets : {}".format(ex))
+            logger.exception("Error at method fetch_all_tweets : {}".format(ex))
             return []
 
     @staticmethod
@@ -40,7 +40,7 @@ class Finder:
             replies = replies_element.get_attribute("aria-label")
             return Scraping_utilities._Scraping_utilities__extract_digits(replies)
         except Exception as ex:
-            logging.exception("Error at method find_replies : {}".format(ex))
+            logger.exception("Error at method find_replies : {}".format(ex))
             return ""
 
     @staticmethod
@@ -51,7 +51,7 @@ class Finder:
             shares = shares_element.get_attribute("aria-label")
             return Scraping_utilities._Scraping_utilities__extract_digits(shares)
         except Exception as ex:
-            logging.exception("Error at method find_shares : {}".format(ex))
+            logger.exception("Error at method find_shares : {}".format(ex))
             return ""
 
     @staticmethod
@@ -61,7 +61,7 @@ class Finder:
                 By.CSS_SELECTOR, "a.r-bcqeeo.r-3s2u2q.r-qvutc0")
             return (anchor.get_attribute("href").split("/"), anchor.get_attribute("href"))
         except Exception as ex:
-            logging.exception("Error at method find_status : {}".format(ex))
+            logger.exception("Error at method find_status : {}".format(ex))
             return []
 
     @staticmethod
@@ -69,7 +69,7 @@ class Finder:
         try:
             return tweet.find_elements(By.TAG_NAME, 'a')
         except Exception as ex:
-            logging.exception("Error at method find_all_anchor_tags : {}".format(ex))
+            logger.exception("Error at method find_all_anchor_tags : {}".format(ex))
 
     @staticmethod
     def __find_timestamp(tweet):
@@ -79,7 +79,7 @@ class Finder:
             posted_time = parse(timestamp).isoformat()
             return posted_time
         except Exception as ex:
-            logging.exception("Error at method find_timestamp : {}".format(ex))
+            logger.exception("Error at method find_timestamp : {}".format(ex))
 
     @staticmethod
     def __find_content(tweet):
@@ -90,7 +90,7 @@ class Finder:
         except NoSuchElementException:
             return ""
         except Exception as ex:
-            logging.exception("Error at method find_content : {}".format(ex))
+            logger.exception("Error at method find_content : {}".format(ex))
 
     @staticmethod
     def __find_like(tweet):
@@ -100,7 +100,7 @@ class Finder:
             likes = like_element.get_attribute("aria-label")
             return Scraping_utilities._Scraping_utilities__extract_digits(likes)
         except Exception as ex:
-            logging.exception("Error at method find_like : {}".format(ex))
+            logger.exception("Error at method find_like : {}".format(ex))
 
     @staticmethod
     def __find_images(tweet):
@@ -114,7 +114,7 @@ class Finder:
                 images.append(href)
             return images
         except Exception as ex:
-            logging.exception("Error at method find_images : {}".format(ex))
+            logger.exception("Error at method find_images : {}".format(ex))
 
     @staticmethod
     def __find_videos(tweet):
@@ -128,7 +128,7 @@ class Finder:
                 videos.append(href)
             return videos
         except Exception as ex:
-            logging.exception("Error at method find_videos : {}".format(ex))
+            logger.exception("Error at method find_videos : {}".format(ex))
 
     @staticmethod
     def __is_retweet(tweet):
@@ -138,7 +138,7 @@ class Finder:
         except NoSuchElementException:
             return False
         except Exception as ex:
-            logging.exception("Error at method is_retweet : {}".format(ex))
+            logger.exception("Error at method is_retweet : {}".format(ex))
             return False
 
     @staticmethod
@@ -153,7 +153,7 @@ class Finder:
                     name = anchors[1].text.split("\n")[0]
             return name
         except Exception as ex:
-            logging.exception("Error at method find_name_from_post : {}".format(ex))
+            logger.exception("Error at method find_name_from_post : {}".format(ex))
 
     @staticmethod
     def __find_external_link(tweet):
@@ -166,4 +166,4 @@ class Finder:
         except NoSuchElementException:
             return ""
         except Exception as ex:
-            logging.exception("Error at method find_external_link : {}".format(ex))
+            logger.exception("Error at method find_external_link : {}".format(ex))
