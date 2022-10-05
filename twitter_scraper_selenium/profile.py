@@ -10,8 +10,12 @@ import csv
 import os
 import logging
 
-logging.getLogger().setLevel(logging.INFO)
-
+logger = logging.getLogger(__name__)
+format = logging.Formatter(
+    "%(asctime)s - %(levelname)s - %(message)s")
+ch = logging.StreamHandler()
+ch.setFormatter(format)
+logger.addHandler(ch)
 
 class Profile:
     """this class needs to be instantiated in orer to scrape post of some
@@ -106,7 +110,7 @@ class Profile:
                     break
 
         except Exception as ex:
-            logging.exception(
+            logger.exception(
                 "Error at method fetch_and_store_data : {}".format(ex))
 
     def scrap(self):
@@ -122,7 +126,7 @@ class Profile:
             return data
         except Exception as ex:
             self.__close_driver()
-            logging.exception(
+            logger.exception(
                 "Error at method scrap : {} ".format(ex))
 
 
@@ -165,7 +169,8 @@ def json_to_csv(filename, json_data, directory):
             }
             writer.writerow(row)  # write row to CSV file
         data_file.close()  # after writing close the file
-    logging.info('Data Successfully Saved to {}.csv'.format(filename))
+    logger.setLevel(logging.INFO)
+    logger.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
 def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=10, output_format="json", filename="", directory=os.getcwd(), headless=True, browser_profile = None):
@@ -208,13 +213,14 @@ def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=
                         file_content = file.read()
                         content = json.loads(file_content)
                     except json.decoder.JSONDecodeError:
-                        logging.warning('Invalid JSON Detected!')
+                        logger.warning('Invalid JSON Detected!')
                         content = {}
                     file.close()
                     data.update(content)
                     with open(json_file_location, 'w', encoding='utf-8') as file_in_write_mode:
                         json.dump(data, file_in_write_mode)
-                logging.info(
+                logger.setLevel(logging.INFO)
+                logger.info(
                     'Data Successfully Saved to {}'.format(json_file_location))
     elif output_format.lower() == "csv":
         if filename == "":
