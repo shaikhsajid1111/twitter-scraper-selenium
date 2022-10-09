@@ -2,6 +2,7 @@
 
 
 import logging
+from typing import Union
 from fake_headers import Headers
 # to add capabilities for chrome and firefox, import their Options with different aliases
 from selenium.webdriver.chrome.options import Options as CustomChromeOptions
@@ -22,8 +23,15 @@ logger.addHandler(ch)
 
 
 class Initializer:
+    def __init__(self, browser_name: str, headless: bool, proxy: Union[str, None] = None, profile: Union[str, None] = None):
+        """Initialize Browser
 
-    def __init__(self, browser_name, headless, proxy=None, profile=None):
+        Args:
+            browser_name (str): Browser Name
+            headless (bool): Whether to run Browser in headless mode?
+            proxy (Union[str, None], optional): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port. Defaults to None.
+            profile (Union[str, None], optional): Path of Browser Profile where cookies might be located to scrap data in authenticated way. Defaults to None.
+      """
         self.browser_name = browser_name
         self.proxy = proxy
         self.headless = headless
@@ -33,9 +41,11 @@ class Initializer:
         """adds capabilities to the driver"""
         header = Headers().generate()['User-Agent']
         if self.headless:
-            browser_option.add_argument("--headless")  # runs browser in headless mode
+            # runs browser in headless mode
+            browser_option.add_argument("--headless")
         if self.profile and self.browser_name.lower() == "chrome":
-            browser_option.add_argument("user-data-dir={}".format(self.profile))
+            browser_option.add_argument(
+                "user-data-dir={}".format(self.profile))
         if self.profile and self.browser_name.lower() == "firefox":
             logger.setLevel(logging.INFO)
             logger.info("Loading Profile from {}".format(self.profile))
@@ -51,7 +61,7 @@ class Initializer:
         browser_option.add_argument('--user-agent={}'.format(header))
         return browser_option
 
-    def set_driver_for_browser(self, browser_name):
+    def set_driver_for_browser(self, browser_name: str):
         """expects browser name and returns a driver instance"""
         # if browser is suppose to be chrome
         if browser_name.lower() == "chrome":

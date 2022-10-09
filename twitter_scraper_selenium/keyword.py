@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from typing import Union
 from .driver_initialization import Initializer
 from .driver_utils import Utilities
 from .element_finder import Finder
@@ -17,11 +18,23 @@ ch = logging.StreamHandler()
 ch.setFormatter(format)
 logger.addHandler(ch)
 
+
 class Keyword:
-    """this class needs to be instantiated in order to find something
+    """This class needs to be instantiated in order to find something
     on twitter related to keywords"""
 
-    def __init__(self, keyword, browser, proxy, tweets_count, url, headless, browser_profile):
+    def __init__(self, keyword: str, browser: str, proxy: Union[str, None], tweets_count: int, url: Union[str, None], headless: bool, browser_profile: Union[str, None]):
+        """Scrape Tweet using keyword.
+
+        Args:
+            keyword (str): Keyword to search on twitter.
+            browser (str): Which browser to use for scraping?, Only 2 are supported Chrome and Firefox,default is set to Firefox.
+            proxy (Union[str, None]): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port
+            tweets_count (int): Number of tweets to scrap
+            url (Union[str, None]): URL of the webpage.
+            headless (bool): Whether to run browser in headless mode?.
+            browser_profile (Union[str, None]): Path of Browser Profile where cookies might be located to scrap data in authenticated way.
+        """
         self.keyword = keyword
         self.URL = url
         self.driver = ""
@@ -33,48 +46,47 @@ class Keyword:
         self.headless = headless
         self.browser_profile = browser_profile
 
-    def __start_driver(self):
-        """changes the class member __driver value to driver on call"""
-        self.__driver = Initializer(
+    def start_driver(self):
+        """changes the class member driver value to driver on call"""
+        self.driver = Initializer(
             self.browser, self.headless, self.proxy, self.browser_profile).init()
 
-    def __close_driver(self):
-        self.__driver.close()
-        self.__driver.quit()
+    def close_driver(self):
+        self.driver.close()
+        self.driver.quit()
 
-    def __check_tweets_presence(self, tweet_list):
+    def check_tweets_presence(self, tweet_list):
         if len(tweet_list) <= 0:
             self.retry -= 1
 
-    def __check_retry(self):
+    def check_retry(self):
         return self.retry <= 0
 
-    def __fetch_and_store_data(self):
+    def fetch_and_store_data(self):
         try:
             all_ready_fetched_posts = []
-            present_tweets = Finder._Finder__fetch_all_tweets(self.__driver)
-            self.__check_tweets_presence(present_tweets)
+            present_tweets = Finder.find_all_tweets(self.driver)
+            self.check_tweets_presence(present_tweets)
             all_ready_fetched_posts.extend(present_tweets)
 
             while len(self.posts_data) < self.tweets_count:
                 for tweet in present_tweets:
-                    name = Finder._Finder__find_name_from_post(tweet)
-                    status, tweet_url = Finder._Finder__find_status(tweet)
-                    replies = Finder._Finder__find_replies(tweet)
-                    retweets = Finder._Finder__find_shares(tweet)
+                    name = Finder.find_name_from_tweet(tweet)
+                    status, tweet_url = Finder.find_status(tweet)
+                    replies = Finder.find_replies(tweet)
+                    retweets = Finder.find_shares(tweet)
                     username = tweet_url.split("/")[3]
                     status = status[-1]
-                    is_retweet = Finder._Finder__is_retweet(tweet)
-                    posted_time = Finder._Finder__find_timestamp(tweet)
-                    content = Finder._Finder__find_content(tweet)
-                    likes = Finder._Finder__find_like(tweet)
-                    images = Finder._Finder__find_images(tweet)
-                    videos = Finder._Finder__find_videos(tweet)
+                    is_retweet = Finder.is_retweet(tweet)
+                    posted_time = Finder.find_timestamp(tweet)
+                    content = Finder.find_content(tweet)
+                    likes = Finder.find_like(tweet)
+                    images = Finder.find_images(tweet)
+                    videos = Finder.find_videos(tweet)
                     hashtags = re.findall(r"#(\w+)", content)
                     mentions = re.findall(r"@(\w+)", content)
-                    profile_picture = "https://twitter.com/{}/photo".format(
-                        username)
-                    link = Finder._Finder__find_external_link(tweet)
+                    profile_picture = Finder.find_profile_image_link(tweet)
+                    link = Finder.find_external_link(tweet)
 
                     self.posts_data[status] = {
                         "tweet_id": status,
@@ -95,16 +107,16 @@ class Keyword:
                         "link": link
                     }
 
-                Utilities._Utilities__scroll_down(self.__driver)
-                Utilities._Utilities__wait_until_completion(self.__driver)
-                Utilities._Utilities__wait_until_tweets_appear(self.__driver)
-                present_tweets = Finder._Finder__fetch_all_tweets(
-                    self.__driver)
+                Utilities.scroll_down(self.driver)
+                Utilities.wait_until_completion(self.driver)
+                Utilities.wait_until_tweets_appear(self.driver)
+                present_tweets = Finder.find_all_tweets(
+                    self.driver)
                 present_tweets = [
                     post for post in present_tweets if post not in all_ready_fetched_posts]
-                self.__check_tweets_presence(present_tweets)
+                self.check_tweets_presence(present_tweets)
                 all_ready_fetched_posts.extend(present_tweets)
-                if self.__check_retry() is True:
+                if self.check_retry() is True:
                     break
 
         except Exception as ex:
@@ -113,19 +125,19 @@ class Keyword:
 
     def scrap(self):
         try:
-            self.__start_driver()
-            self.__driver.get(self.URL)
-            Utilities._Utilities__wait_until_completion(self.__driver)
-            Utilities._Utilities__wait_until_tweets_appear(self.__driver)
-            self.__fetch_and_store_data()
+            self.start_driver()
+            self.driver.get(self.URL)
+            Utilities.wait_until_completion(self.driver)
+            Utilities.wait_until_tweets_appear(self.driver)
+            self.fetch_and_store_data()
 
-            self.__close_driver()
+            self.close_driver()
             data = dict(list(self.posts_data.items())
                         [0:int(self.tweets_count)])
             return data
 
         except Exception as ex:
-            self.__close_driver()
+            self.close_driver()
             logger.exception(
                 "Error at method scrap on : {}".format(ex))
 
@@ -173,42 +185,35 @@ def json_to_csv(filename, json_data, directory):
     logger.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
-def scrap_keyword(keyword, browser="firefox", until=None,
-                  since=None, since_id=None, max_id=None, within_time=None,
-                  proxy=None, tweets_count=10, output_format="json",
-                  filename="", directory=os.getcwd(), headless=True, browser_profile=None):
+def scrap_keyword(keyword: str, browser: str = "firefox", until: Union[str, None] = None,
+                  since: Union[int, None] = None, since_id: Union[int, None] = None, max_id: Union[int, None] = None,
+                  within_time: Union[str, None] = None,
+                  proxy: Union[str, None] = None, tweets_count: int = 10, output_format: str = "json",
+                  filename: str = "", directory: str = os.getcwd(), headless: bool = True,
+                  browser_profile: Union[str, None] = None):
+    """Scrap tweets using keywords.
+
+    Args:
+        keyword (str): Keyword to search on twitter.
+        browser (str, optional): Which browser to use for scraping?, Only 2 are supported Chrome and Firefox,default is set to Firefox. Defaults to "firefox".
+        until (Union[str, None], optional): Optional parameter,Until date for scraping,a end date from where search ends. Format for date is YYYY-MM-DD or unix timestamp in seconds. Defaults to None.
+        since (Union[int, None], optional): Optional parameter,Since date for scraping,a past date from where to search from. Format for date is YYYY-MM-DD or unix timestamp in seconds. Defaults to None.
+        since_id (Union[int, None], optional): After (NOT inclusive) a specified Snowflake ID. Defaults to None.
+        max_id (Union[int, None], optional): At or before (inclusive) a specified Snowflake ID. Defaults to None.
+        within_time (Union[str, None], optional): Search within the last number of days, hours, minutes, or seconds. Defaults to None.
+        proxy (Union[str, None], optional): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port. Defaults to None.
+        tweets_count (int, optional): Number of posts to scrap. Defaults to 10.
+        output_format (str, optional): The output format, whether JSON or CSV. Defaults to "json".
+        filename (str, optional): If output parameter is set to CSV, then it is necessary for filename parameter to passed. If not passed then the filename will be same as keyword passed. Defaults to "".
+        directory (str, optional): If output parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory. Defaults to current work directory.
+        headless (bool, optional): Whether to run browser in Headless Mode?. Defaults to True.
+        browser_profile (str, optional): Path of Browser Profile where cookies might be located to scrap data in authenticated way. Defaults to None.
+
+    Returns:
+        str: tweets data in CSV or JSON
     """
-    Returns tweets data in CSV or JSON.
-
-    Parameters:
-    keyword(string): Keyword to search on twitter.
-
-    browser(string): Which browser to use for scraping?, Only 2 are supported Chrome and Firefox,default is set to Firefox.
-
-    until(string): Optional parameter,Until date for scraping,a end date from where search ends. Format for date is YYYY-MM-DD or unix timestamp in seconds.
-
-    since(string): Optional parameter,Since date for scraping,a past date from where to search from. Format for date is YYYY-MM-DD or unix timestamp in seconds..
-
-    proxy(string): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port
-
-    tweets_count(int): Number of posts to scrap. Default is 10.
-
-    output_format(string): The output format, whether JSON or CSV. Default is JSON.
-
-    filename(string): If output parameter is set to CSV, then it is necessary for filename parameter to passed. If not passed then the filename will be same as keyword passed.
-
-    directory(string): If output parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.
-
-    since_id(integer): After (NOT inclusive) a specified Snowflake ID.
-
-    max_id(integer): At or before (inclusive) a specified Snowflake ID.
-
-    within_time(string): Search within the last number of days, hours, minutes, or seconds.
-
-    browser_profile(string): Path of Browser Profile where cookies might be located to scrap data in authenticated way.
-    """
-    URL = Scraping_utilities._Scraping_utilities__url_generator(keyword, since=since, until=until,
-                                                                since_id=since_id, max_id=max_id, within_time=within_time)
+    URL = Scraping_utilities.url_generator(keyword, since=since, until=until,
+                                           since_id=since_id, max_id=max_id, within_time=within_time)
     keyword_bot = Keyword(keyword, browser=browser, url=URL,
                           proxy=proxy, tweets_count=tweets_count, headless=headless, browser_profile=browser_profile)
     data = keyword_bot.scrap()

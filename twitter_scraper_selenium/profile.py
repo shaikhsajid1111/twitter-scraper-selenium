@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
+from typing import Union
 from .driver_initialization import Initializer
 from .driver_utils import Utilities
 from .element_finder import Finder
-from .driver_utils import Utilities
 import re
 import json
 import csv
@@ -16,6 +16,7 @@ format = logging.Formatter(
 ch = logging.StreamHandler()
 ch.setFormatter(format)
 logger.addHandler(ch)
+
 
 class Profile:
     """this class needs to be instantiated in orer to scrape post of some
@@ -52,31 +53,30 @@ class Profile:
     def __fetch_and_store_data(self):
         try:
             all_ready_fetched_posts = []
-            present_tweets = Finder._Finder__fetch_all_tweets(self.__driver)
+            present_tweets = Finder.find_all_tweets(self.__driver)
             self.__check_tweets_presence(present_tweets)
             all_ready_fetched_posts.extend(present_tweets)
 
             while len(self.posts_data) < self.tweets_count:
                 for tweet in present_tweets:
-                    status, tweet_url = Finder._Finder__find_status(tweet)
-                    replies = Finder._Finder__find_replies(tweet)
-                    retweets = Finder._Finder__find_shares(tweet)
+                    status, tweet_url = Finder.find_status(tweet)
+                    replies = Finder.find_replies(tweet)
+                    retweets = Finder.find_shares(tweet)
                     status = status[-1]
                     username = tweet_url.split("/")[3]
                     is_retweet = True if self.twitter_username.lower() != username.lower() else False
-                    name = Finder._Finder__find_name_from_post(
+                    name = Finder.find_name_from_tweet(
                         tweet, is_retweet)
                     retweet_link = tweet_url if is_retweet is True else ""
-                    posted_time = Finder._Finder__find_timestamp(tweet)
-                    content = Finder._Finder__find_content(tweet)
-                    likes = Finder._Finder__find_like(tweet)
-                    images = Finder._Finder__find_images(tweet)
-                    videos = Finder._Finder__find_videos(tweet)
+                    posted_time = Finder.find_timestamp(tweet)
+                    content = Finder.find_content(tweet)
+                    likes = Finder.find_like(tweet)
+                    images = Finder.find_images(tweet)
+                    videos = Finder.find_videos(tweet)
                     hashtags = re.findall(r"#(\w+)", content)
                     mentions = re.findall(r"@(\w+)", content)
-                    profile_picture = "https://twitter.com/{}/photo".format(
-                        username)
-                    link = Finder._Finder__find_external_link(tweet)
+                    profile_picture = Finder.find_profile_image_link(tweet)
+                    link = Finder.find_external_link(tweet)
                     self.posts_data[status] = {
                         "tweet_id": status,
                         "username": username,
@@ -97,10 +97,10 @@ class Profile:
                         "link": link
                     }
 
-                Utilities._Utilities__scroll_down(self.__driver)
-                Utilities._Utilities__wait_until_completion(self.__driver)
-                Utilities._Utilities__wait_until_tweets_appear(self.__driver)
-                present_tweets = Finder._Finder__fetch_all_tweets(
+                Utilities.scroll_down(self.__driver)
+                Utilities.wait_until_completion(self.__driver)
+                Utilities.wait_until_tweets_appear(self.__driver)
+                present_tweets = Finder.find_all_tweets(
                     self.__driver)
                 present_tweets = [
                     post for post in present_tweets if post not in all_ready_fetched_posts]
@@ -117,8 +117,8 @@ class Profile:
         try:
             self.__start_driver()
             self.__driver.get(self.URL)
-            Utilities._Utilities__wait_until_completion(self.__driver)
-            Utilities._Utilities__wait_until_tweets_appear(self.__driver)
+            Utilities.wait_until_completion(self.__driver)
+            Utilities.wait_until_tweets_appear(self.__driver)
             self.__fetch_and_store_data()
             self.__close_driver()
             data = dict(list(self.posts_data.items())
@@ -173,26 +173,24 @@ def json_to_csv(filename, json_data, directory):
     logger.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
-def scrap_profile(twitter_username, browser="firefox", proxy=None, tweets_count=10, output_format="json", filename="", directory=os.getcwd(), headless=True, browser_profile = None):
-    """
-    Returns tweets data in CSV or JSON.
+def scrap_profile(twitter_username: str, browser: str = "firefox", proxy: Union[str, None] = None,
+                  tweets_count: int = 10, output_format: str = "json", filename: str = "", directory: str = os.getcwd(),
+                  headless: bool = True, browser_profile: Union[str, None] = None):
+    """Scrap tweets of twitter profile using twitter username.
 
-    Parameters:
-    twitter_username(string): twitter username of the account.
+    Args:
+        twitter_username (str): Twitter username of the account.
+        browser (str, optional): Which browser to use for scraping?, Only 2 are supported Chrome and Firefox. Defaults to "firefox".
+        proxy (Union[str, None], optional): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port. Defaults to None.
+        tweets_count (int, optional): Number of posts to scrap. Defaults to 10.
+        output_format (str, optional): The output format, whether JSON or CSV. Defaults to "json".
+        filename (str, optional): If output_format parameter is set to CSV, then it is necessary for filename parameter to passed. If not passed then the filename will be same as keyword passed. Defaults to "".
+        directory (str, optional): If output_format parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory. Defaults to os.getcwd().
+        headless (bool, optional): Whether to run browser in headless mode?. Defaults to True.
+        browser_profile (Union[str, None], optional): Path of Browser Profile where cookies might be located to scrap data in authenticated way. Defaults to None.
 
-    browser(string): Which browser to use for scraping?, Only 2 are supported Chrome and Firefox. Default is set to Firefox
-
-    proxy(string): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port
-
-    tweets_count(int): Number of posts to scrap. Default is 10.
-
-    output_format(string): The output format, whether JSON or CSV. Default is JSON.
-
-    filename(string): If output_format parameter is set to CSV, then it is necessary for filename parameter to passed. If not passed then the filename will be same as keyword passed.
-
-    directory(string): If output_format parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.
-
-    browser_profile(string): Path of Browser Profile where cookies might be located to scrap data in authenticated way.
+    Returns:
+        str: tweets data in CSV or JSON
     """
     profile_bot = Profile(twitter_username, browser,
                           proxy, tweets_count, headless, browser_profile)
