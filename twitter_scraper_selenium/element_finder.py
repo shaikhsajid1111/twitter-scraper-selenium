@@ -166,7 +166,7 @@ class Finder:
             if len(anchors) > 2:
                 if is_retweet:
                     name = tweet.find_element(
-                        By.CSS_SELECTOR, '[data-testid="User-Names"]').text
+                        By.CSS_SELECTOR, '[data-testid="User-Names"] > div a').text
                 else:
                     name = anchors[1].text.split("\n")[0]
             return name
