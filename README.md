@@ -31,14 +31,14 @@
     <li><a href="#profileArgument">Function Arguments</a></li>
     <li><a href="#profileOutput">Keys of the output data</a></li>
     </ul>
-    <li><a href="#keywordAPI">Scraping tweets using query with API (Fast)</a>
+    <li><a href="#keywordAPI">Scraping tweets using query with API</a>
     <ul>
     <li><a href="#keywordAPI">In JSON Format</a></li>
     <li><a href="#scrape_keyword_with_apiArgs">Function Argument</a></li>
     <li><a href="#scrape_keyword_with_apiKeys">Keys of the output.</a></li>
     </ul>
     </li>
-    <li><a href="#keyword">Scraping tweets using keywords with browser automation (Slow)</a>
+    <li><a href="#keyword">Scraping tweets using keywords with browser automation</a>
     <ul>
     <li><a href="#keywordJson">In JSON format</a></li>
     <li><a href="#keywordCSV">In CSV format</a></li>
