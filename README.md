@@ -31,14 +31,14 @@
     <li><a href="#profileArgument">Function Arguments</a></li>
     <li><a href="#profileOutput">Keys of the output data</a></li>
     </ul>
-    <li><a href="#keywordAPI">Scraping tweets using keyword with API</a>
+    <li><a href="#keywordAPI">Scraping tweets using query with API (Fast)</a>
     <ul>
     <li><a href="#keywordAPI">In JSON Format</a></li>
     <li><a href="#scrape_keyword_with_apiArgs">Function Argument</a></li>
     <li><a href="#scrape_keyword_with_apiKeys">Keys of the output.</a></li>
     </ul>
     </li>
-    <li><a href="#keyword">Scraping tweets using keywords with browser automation</a>
+    <li><a href="#keyword">Scraping tweets using keywords with browser automation (Slow)</a>
     <ul>
     <li><a href="#keywordJson">In JSON format</a></li>
     <li><a href="#keywordCSV">In CSV format</a></li>
@@ -365,7 +365,7 @@ from twitter_scraper_selenium import scrape_keyword_with_api
 query = "#gaming"
 tweets_count = 10
 output_filename = "gaming_hashtag_data"
-scrape_keyword_with_api(query=keyword, tweets_count=tweets_count, output_filename=output_filename)
+scrape_keyword_with_api(query=query, tweets_count=tweets_count, output_filename=output_filename)
 
 ```
 Output:
@@ -384,7 +384,6 @@ Output:
 ```
 </div>
 <br>
-<hr>
 <div id="scrape_keyword_with_apiArgs">
 <p><code>scrape_keyword_with_api()</code> arguments:</p>
 
@@ -453,6 +452,8 @@ Output:
 </table>
 </div>
 <br>
+<br>
+<hr>
 <h3>To scrap tweets using keywords with browser automation</h3>
 <div>
 <p id="keywordJson">In JSON format:</p>
