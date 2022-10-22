@@ -3,6 +3,8 @@ import re
 from typing import Union
 from urllib.parse import quote
 import logging
+import requests
+from fake_headers import Headers
 
 logger = logging.getLogger(__name__)
 format = logging.Formatter(
@@ -89,3 +91,103 @@ class Scraping_utilities:
             query = keyword + " " + word
             base_url = base_url + quote(query) + "&src=typed_query&f=live"
         return base_url
+
+    @staticmethod
+    def make_http_request(URL, params, headers, proxy=None):
+        try:
+            response = None
+            if proxy:
+                proxy_dict = {
+                    "http": "http://{}".format(proxy),
+                    "https": "http://{}".format(proxy)
+                }
+                response = requests.get(URL, params=params, headers=headers,
+                                        proxies=proxy_dict)
+            else:
+                response = requests.get(URL, params=params, headers=headers)
+            if response and response.status_code == 200:
+                return response.json()
+        except Exception as ex:
+            logger.warning("Error at make_http_request: {}".format(ex))
+
+    @staticmethod
+    def build_params(query, cursor=None):
+        params = {
+            'include_profile_interstitial_type': '1',
+            'include_blocking': '1',
+            'include_blocked_by': '1',
+            'include_followed_by': '1',
+            'include_want_retweets': '1',
+            'include_mute_edge': '1',
+            'include_can_dm': '1',
+            'include_can_media_tag': '1',
+            'include_ext_has_nft_avatar': '1',
+            'skip_status': '1',
+            'cards_platform': 'Web-12',
+            'include_cards': '1',
+            'include_ext_alt_text': 'true',
+            'include_ext_limited_action_results': 'false',
+            'include_quote_count': 'true',
+            'include_reply_count': '1',
+            'tweet_mode': 'extended',
+            'include_ext_collab_control': 'true',
+            'include_entities': 'true',
+            'include_user_entities': 'true',
+            'include_ext_media_color': 'true',
+            'include_ext_media_availability': 'true',
+            'include_ext_sensitive_media_warning': 'true',
+            'include_ext_trusted_friends_metadata': 'true',
+            'send_error_codes': 'true',
+            'simple_quoted_tweet': 'true',
+            'q': query,
+            'vertical': 'trends',
+            'count': '20',
+            'query_source': 'trend_click',
+            'pc': '1',
+            'spelling_corrections': '1',
+            'include_ext_edit_control': 'true',
+            'ext': 'mediaStats,highlightedLabel,hasNftAvatar,voiceInfo,enrichments,superFollowMetadata,unmentionInfo,editControl,collab_control,vibe',
+        }
+        if cursor:
+            params['cursor'] = cursor
+        return params
+
+    @staticmethod
+    def build_keyword_headers(x_guest_token, authorization_key, query):
+        headers = {
+            'authority': 'twitter.com',
+            'accept': '*/*',
+            'accept-language': 'en-US,en;q=0.9',
+            'authorization': authorization_key,
+            'referer': "https://twitter.com/search?q={}".format(query),
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'user-agent': Headers().generate()['User-Agent'],
+            'x-guest-token': x_guest_token,
+            'x-twitter-active-user': 'yes',
+            'x-twitter-client-language': 'en',
+        }
+        return headers
+
+    @staticmethod
+    def find_x_guest_token(authorization_key, proxy=None):
+        try:
+            headers = {
+                'authorization': authorization_key,
+            }
+            response = None
+            if proxy:
+                proxy_dict = {
+                    "http": "http://{}".format(proxy),
+                    "https": "http://{}".format(proxy),
+                }
+                response = requests.post(
+                    'https://api.twitter.com/1.1/guest/activate.json', headers=headers, proxies=proxy_dict)
+                return response.json()['guest_token']
+
+            response = requests.post(
+                'https://api.twitter.com/1.1/guest/activate.json', headers=headers)
+            return response.json()['guest_token']
+        except Exception as ex:
+            logger.warning("Error at find_x_guest_token: {}".format(ex))
