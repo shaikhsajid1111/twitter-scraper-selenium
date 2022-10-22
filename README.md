@@ -369,7 +369,7 @@ scrape_keyword_with_api(query=keyword, tweets_count=tweets_count, output_filenam
 
 ```
 Output:
-```json
+```js
 {
   "1583808472851701760": {
     "tweet_url" : "https://twitter.com/TOICitiesNews/status/1432493306152243200",
