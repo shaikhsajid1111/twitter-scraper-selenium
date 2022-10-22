@@ -202,4 +202,4 @@ class Finder:
         try:
             return tweet.find_element(By.CSS_SELECTOR, 'img[alt][draggable="true"]').get_attribute('src')
         except Exception as ex:
-            logger.warning("Find Profile Image Link : {}".format(ex))
+            logger.warning("Error at find_profile_image_link : {}".format(ex))
