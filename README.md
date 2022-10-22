@@ -31,7 +31,14 @@
     <li><a href="#profileArgument">Function Arguments</a></li>
     <li><a href="#profileOutput">Keys of the output data</a></li>
     </ul>
-    <li><a href="#keyword">Scraping tweets using keywords</a>
+    <li><a href="#keywordAPI">Scraping tweets using keyword with API</a>
+    <ul>
+    <li><a href="#keywordAPI">In JSON Format</a></li>
+    <li><a href="#scrape_keyword_with_apiArgs">Function Argument</a></li>
+    <li><a href="#scrape_keyword_with_apiKeys">Keys of the output.</a></li>
+    </ul>
+    </li>
+    <li><a href="#keyword">Scraping tweets using keywords with browser automation</a>
     <ul>
     <li><a href="#keywordJson">In JSON format</a></li>
     <li><a href="#keywordCSV">In CSV format</a></li>
@@ -349,8 +356,104 @@ Output:
 </div>
 <br>
 <hr>
-<h3 id="keyword">To scrap tweets using keywords:</h3>
+<h3 id="keywordAPI">To scrape tweets using keywords with API:</h3>
+<div>
 
+```python
+from twitter_scraper_selenium import scrape_keyword_with_api
+
+query = "#gaming"
+tweets_count = 10
+output_filename = "gaming_hashtag_data"
+scrape_keyword_with_api(query=keyword, tweets_count=tweets_count, output_filename=output_filename)
+
+```
+Output:
+```json
+{
+  "1583808472851701760": {
+    "tweet_url" : "https://twitter.com/TOICitiesNews/status/1432493306152243200",
+    "tweet_detail":{
+      ...
+    },
+    "user_detail":{
+      ...
+    }
+  }
+}
+```
+</div>
+<br>
+<hr>
+<div id="scrape_keyword_with_apiArgs">
+<p><code>scrape_keyword_with_api()</code> arguments:</p>
+
+<table>
+    <thead>
+        <tr>
+            <td>Argument</td>
+            <td>Argument Type</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>query</td>
+            <td>String</td>
+            <td>Query to search. The query can be built from <a href="https://developer.twitter.com/apitools/query">here</a> for advanced search.</td>
+        </tr>
+        <tr>
+            <td>tweets_count</td>
+            <td>Integer</td>
+            <td>Number of tweets to scrape.</td>
+        </tr>
+        <tr>
+            <td>output_filename</td>
+            <td>String</td>
+            <td>What should be the filename where output is stored?.</td>
+        </tr>
+        <tr>
+            <td>output_dir</td>
+            <td>String</td>
+            <td>What directory output file should be saved?</td>
+        </tr>
+    </tbody>
+</table>
+
+</div>
+<hr>
+<br>
+<div>
+<p id="scrape_keyword_with_apiKeys">Keys of the output:</p>
+<table>
+<thead>
+        <tr>
+            <td>Key</td>
+            <td>Type</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td>tweet_url</td>
+    <td>String</td>
+    <td>URL of the tweet.</td>
+    </tr>
+    <tr>
+    <td>tweet_detail</td>
+    <td>Dictionary</td>
+    <td>A dictionary containing the data about the tweet. All fields which will be available inside can be checked <a href="https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/tweet">here<a></td>
+    </tr>
+    <tr>
+    <td>user_detail</td>
+    <td>Dictionary</td>
+    <td>A dictionary containing the data about the tweet owner. All fields which will be available inside can be checked <a href="https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/user">here<a></td>
+    </tr>
+    </tbody>
+</table>
+</div>
+<br>
+<h3>To scrap tweets using keywords with browser automation</h3>
 <div>
 <p id="keywordJson">In JSON format:</p>
 
@@ -531,6 +634,7 @@ Output:
 <hr>
 <div id="keywordOutput">
 <p>Keys of the output</p>
+
 <table>
     <thead>
         <tr>
