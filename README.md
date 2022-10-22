@@ -371,8 +371,8 @@ scrape_keyword_with_api(query=query, tweets_count=tweets_count, output_filename=
 Output:
 ```js
 {
-  "1432493306152243200": {
-    "tweet_url" : "https://twitter.com/TOICitiesNews/status/1432493306152243200",
+  "1583821467732480001": {
+    "tweet_url" : "https://twitter.com/yakubblackbeard/status/1583821467732480001",
     "tweet_detail":{
       ...
     },
