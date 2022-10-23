@@ -93,7 +93,7 @@ class Scraping_utilities:
         return base_url
 
     @staticmethod
-    def make_http_request(URL, params, headers, proxy=None):
+    def make_http_request_with_params(URL, params, headers, proxy=None):
         try:
             response = None
             if proxy:
@@ -105,6 +105,24 @@ class Scraping_utilities:
                                         proxies=proxy_dict)
             else:
                 response = requests.get(URL, params=params, headers=headers)
+            if response and response.status_code == 200:
+                return response.json()
+        except Exception as ex:
+            logger.warning("Error at make_http_request: {}".format(ex))
+
+    @staticmethod
+    def make_http_request(URL, headers, proxy=None):
+        try:
+            response = None
+            if proxy:
+                proxy_dict = {
+                    "http": "http://{}".format(proxy),
+                    "https": "http://{}".format(proxy)
+                }
+                response = requests.get(URL, headers=headers,
+                                        proxies=proxy_dict)
+            else:
+                response = requests.get(URL, headers=headers)
             if response and response.status_code == 200:
                 return response.json()
         except Exception as ex:
@@ -153,13 +171,12 @@ class Scraping_utilities:
         return params
 
     @staticmethod
-    def build_keyword_headers(x_guest_token, authorization_key, query):
+    def build_keyword_headers(x_guest_token, authorization_key, query = None):
         headers = {
             'authority': 'twitter.com',
             'accept': '*/*',
             'accept-language': 'en-US,en;q=0.9',
             'authorization': authorization_key,
-            'referer': "https://twitter.com/search?q={}".format(query),
             'sec-fetch-dest': 'empty',
             'sec-fetch-mode': 'cors',
             'sec-fetch-site': 'same-origin',
@@ -168,6 +185,8 @@ class Scraping_utilities:
             'x-twitter-active-user': 'yes',
             'x-twitter-client-language': 'en',
         }
+        if query:
+          headers['referer'] = "https://twitter.com/search?q={}".format(query)
         return headers
 
     @staticmethod

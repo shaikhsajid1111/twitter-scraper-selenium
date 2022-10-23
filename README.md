@@ -23,30 +23,39 @@
       </ul>
     </li>
     <li><a href="#Usage">Usage</a>
+    <!---->
+    <ul><li><a href="#profileDetail">Scraping profile's details</a>
+    <ul>
+    <li><a href="#profileDetailExample">In JSON Format - Example</a></li>
+    <li><a href="#profileDetailArgument">Function Argument</a></li>
+    <li><a href="#profileDetailKeys">Keys of the output</a></li>
+    </ul>
+    </li></ul>
+    <!---->
     <ul>
     <li><a href="#profile">Scraping profile's tweets</a>
     <ul>
-    <li><a href="#profileJson">In JSON format</a></li>
-    <li><a href="#profileCSV">In CSV format</a></li>
+    <li><a href="#profileJson">In JSON format - Example</a></li>
+    <li><a href="#profileCSV">In CSV format - Example</a></li>
     <li><a href="#profileArgument">Function Arguments</a></li>
     <li><a href="#profileOutput">Keys of the output data</a></li>
     </ul>
-    <li><a href="#keywordAPI">Scraping tweets using query with API</a>
+    <li><a href="#keywordAPI">Scraping tweets using query/keyword with API</a>
     <ul>
-    <li><a href="#keywordAPI">In JSON Format</a></li>
+    <li><a href="#keywordAPI">In JSON Format - Example</a></li>
     <li><a href="#scrape_keyword_with_apiArgs">Function Argument</a></li>
     <li><a href="#scrape_keyword_with_apiKeys">Keys of the output.</a></li>
     </ul>
     </li>
     <li><a href="#keyword">Scraping tweets using keywords with browser automation</a>
     <ul>
-    <li><a href="#keywordJson">In JSON format</a></li>
-    <li><a href="#keywordCSV">In CSV format</a></li>
+    <li><a href="#keywordJson">In JSON format - Example</a></li>
+    <li><a href="#keywordCSV">In CSV format - Example</a></li>
     <li><a href="#keywordArgument">Function Arguments</a></li>
     <li><a href="#keywordOutput">Keys of the output data</a></li>
     </ul>
     </li>
-    <li><a href="#to-scrap-topic-tweets-with-url">Scraping tweets using topic url</a></li>
+    <li><a href="#to-scrap-topic-tweets-with-url">Scraping tweets using topic url - Example</a></li>
     <ul>
     <li><a href="#topicArgument">Function Arguments</a></li>
     </ul>
@@ -100,6 +109,126 @@ pip3 install twitter-scraper-selenium
 <h2 id="Usage">
 Usage</h2>
 
+<h3 id="profileDetail">To scrape twitter profile details:</h3>
+<div id="profileDetailExample">
+
+```python
+from twitter_scraper_selenium import get_profile_details
+
+twitter_username = "TwitterAPI"
+filename = "twitter_api_data"
+get_profile_details(twitter_username=twitter_username, filename=filename)
+
+```
+Output:
+```js
+{
+	"id": 6253282,
+	"id_str": "6253282",
+	"name": "Twitter API",
+	"screen_name": "TwitterAPI",
+	"location": "San Francisco, CA",
+	"profile_location": null,
+	"description": "The Real Twitter API. Tweets about API changes, service issues and our Developer Platform. Don't get an answer? It's on my website.",
+	"url": "https:\/\/t.co\/8IkCzCDr19",
+	"entities": {
+		"url": {
+			"urls": [{
+				"url": "https:\/\/t.co\/8IkCzCDr19",
+				"expanded_url": "https:\/\/developer.twitter.com",
+				"display_url": "developer.twitter.com",
+				"indices": [
+					0,
+					23
+				]
+			}]
+		},
+		"description": {
+			"urls": []
+		}
+	},
+	"protected": false,
+	"followers_count": 6133636,
+	"friends_count": 12,
+	"listed_count": 12936,
+	"created_at": "Wed May 23 06:01:13 +0000 2007",
+	"favourites_count": 31,
+	"utc_offset": null,
+	"time_zone": null,
+	"geo_enabled": null,
+	"verified": true,
+	"statuses_count": 3656,
+	"lang": null,
+	"contributors_enabled": null,
+	"is_translator": null,
+	"is_translation_enabled": null,
+	"profile_background_color": null,
+	"profile_background_image_url": null,
+	"profile_background_image_url_https": null,
+	"profile_background_tile": null,
+	"profile_image_url": null,
+	"profile_image_url_https": "https:\/\/pbs.twimg.com\/profile_images\/942858479592554497\/BbazLO9L_normal.jpg",
+	"profile_banner_url": null,
+	"profile_link_color": null,
+	"profile_sidebar_border_color": null,
+	"profile_sidebar_fill_color": null,
+	"profile_text_color": null,
+	"profile_use_background_image": null,
+	"has_extended_profile": null,
+	"default_profile": false,
+	"default_profile_image": false,
+	"following": null,
+	"follow_request_sent": null,
+	"notifications": null,
+	"translator_type": null
+}
+```
+</div>
+<br>
+<div id="profileDetailArgument">
+<p><code>get_profile_details()</code> arguments:</p>
+
+<table>
+    <thead>
+        <tr>
+            <td>Argument</td>
+            <td>Argument Type</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>twitter_username</td>
+            <td>String</td>
+            <td>Twitter Username</td>
+        </tr>
+        <tr>
+            <td>output_filename</td>
+            <td>String</td>
+            <td>What should be the filename where output is stored?.</td>
+        </tr>
+        <tr>
+            <td>output_dir</td>
+            <td>String</td>
+            <td>What directory output file should be saved?</td>
+        </tr>
+        <tr>
+            <td>proxy</td>
+            <td>String</td>
+            <td>Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port.</td>
+        </tr>
+    </tbody>
+</table>
+
+</div>
+<hr>
+<br>
+<div>
+<h4 id="profileDetailKeys">Keys of the output:</p>
+Detail of each key can be found <a href="https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/user">here</a>.</h4>
+</div>
+<br>
+<hr>
 <h3 id="profile">To scrap profile's tweets:</h3>
 <p id="profileJson">In JSON format:</p>
 
@@ -415,6 +544,11 @@ Output:
             <td>output_dir</td>
             <td>String</td>
             <td>What directory output file should be saved?</td>
+        </tr>
+        <tr>
+            <td>proxy</td>
+            <td>String</td>
+            <td>Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port.</td>
         </tr>
     </tbody>
 </table>
