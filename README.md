@@ -24,7 +24,7 @@
     </li>
     <li><a href="#Usage">Usage</a>
     <!---->
-    <ul><li><a href="#profileDetail">Scraping Profile Details</a>
+    <ul><li><a href="#profileDetail">Scraping profile's details</a>
     <ul>
     <li><a href="#profileDetailExample">In JSON Format - Example</a></li>
     <li><a href="#profileDetailArgument">Function Argument</a></li>
