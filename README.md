@@ -35,27 +35,27 @@
     <ul>
     <li><a href="#profile">Scraping profile's tweets</a>
     <ul>
-    <li><a href="#profileJson">In JSON format</a></li>
-    <li><a href="#profileCSV">In CSV format</a></li>
+    <li><a href="#profileJson">In JSON format - Example</a></li>
+    <li><a href="#profileCSV">In CSV format - Example</a></li>
     <li><a href="#profileArgument">Function Arguments</a></li>
     <li><a href="#profileOutput">Keys of the output data</a></li>
     </ul>
     <li><a href="#keywordAPI">Scraping tweets using query/keyword with API</a>
     <ul>
-    <li><a href="#keywordAPI">In JSON Format</a></li>
+    <li><a href="#keywordAPI">In JSON Format - Example</a></li>
     <li><a href="#scrape_keyword_with_apiArgs">Function Argument</a></li>
     <li><a href="#scrape_keyword_with_apiKeys">Keys of the output.</a></li>
     </ul>
     </li>
     <li><a href="#keyword">Scraping tweets using keywords with browser automation</a>
     <ul>
-    <li><a href="#keywordJson">In JSON format</a></li>
-    <li><a href="#keywordCSV">In CSV format</a></li>
+    <li><a href="#keywordJson">In JSON format - Example</a></li>
+    <li><a href="#keywordCSV">In CSV format - Example</a></li>
     <li><a href="#keywordArgument">Function Arguments</a></li>
     <li><a href="#keywordOutput">Keys of the output data</a></li>
     </ul>
     </li>
-    <li><a href="#to-scrap-topic-tweets-with-url">Scraping tweets using topic url</a></li>
+    <li><a href="#to-scrap-topic-tweets-with-url">Scraping tweets using topic url - Example</a></li>
     <ul>
     <li><a href="#topicArgument">Function Arguments</a></li>
     </ul>
