@@ -55,7 +55,7 @@ class Keywords_api:
             retry = 5
             while len(self.posts_data) < self.tweets_count:
                 params = Scraping_utilities.build_params(self.query, cursor)
-                response = Scraping_utilities.make_http_request(
+                response = Scraping_utilities.make_http_request_with_params(
                     'https://twitter.com/i/api/2/search/adaptive.json', params,
                     headers, self.proxy)
                 if response:
@@ -89,7 +89,7 @@ def scrape_keyword_with_api(query: str, proxy: Union[str, None] = None,
 
     Args:
         query (str): query to search.
-        proxy (Union[str, None], optional): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port. Defaults to None.. Defaults to None.
+        proxy (Union[str, None], optional): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port. Defaults to None.
         tweets_count (int, optional): Number of Tweets to scrape. Defaults to 10.
         output_filename (Union[str, None], optional): Name of the output JSON file. Defaults to None.
         output_dir (Union[str, None], optional): Directory where to save the file. Defaults to os.getcwd().
