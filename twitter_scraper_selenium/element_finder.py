@@ -6,6 +6,7 @@ from .scraping_utilities import Scraping_utilities
 from dateutil.parser import parse
 from selenium.webdriver.common.by import By
 import logging
+from .driver_utils import Utilities
 
 logger = logging.getLogger(__name__)
 format = logging.Formatter(
@@ -203,3 +204,20 @@ class Finder:
             return tweet.find_element(By.CSS_SELECTOR, 'img[alt][draggable="true"]').get_attribute('src')
         except Exception as ex:
             logger.warning("Error at find_profile_image_link : {}".format(ex))
+
+    @staticmethod
+    def find_graphql_key(driver, URL):
+      try:
+        driver.get(URL)
+        Utilities.wait_until_completion(driver)
+        URL = None
+        for request in driver.requests:
+          if 'TopicLandingPage' in request.url:
+            URL = request.url
+            break
+        if not URL:
+          logger.exception('Failed to find key!')
+        logger.debug('Key Found!')
+        return URL.split('/')[6]
+      except Exception as ex:
+        logger.warning('Error at find_graphql_link : {}'.format(ex))

@@ -1,5 +1,5 @@
 <h1> Twitter scraper selenium </h1>
-<p> Python's package to scrap Twitter's front-end easily with selenium.  </p>
+<p> Python's package to scrape Twitter's front-end easily with selenium.  </p>
 
 
 [![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://opensource.org/licenses/MIT) [![Python >=3.6.9](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/release/python-360/)
@@ -23,7 +23,7 @@
       </ul>
     </li>
     <li><a href="#Usage">Usage</a>
-    <!---->
+    <ul><li><a href="#availableFunction">Available Functions in this package- Summary</a></li></ul>
     <ul><li><a href="#profileDetail">Scraping profile's details</a>
     <ul>
     <li><a href="#profileDetailExample">In JSON Format - Example</a></li>
@@ -55,9 +55,17 @@
     <li><a href="#keywordOutput">Keys of the output data</a></li>
     </ul>
     </li>
-    <li><a href="#to-scrap-topic-tweets-with-url">Scraping tweets using topic url - Example</a></li>
+    <li><a href="#scrape_with_api">Scraping tweets using topic url with API</a></li>
     <ul>
+    <li><a href="#scrape_with_api">In JSON format -  Example</a></li>
+    <li><a href="#scrape_topic_with_api_args">Function Arguments</a></li>
+    <li><a href="#scrape_topic_with_api_args_keys">Keys of the output</a></li>
+    </ul>
+    <li><a href="#to-scrape-topic-tweets-with-url">Scraping tweets using topic url - Example</a></li>
+    <ul>
+    <li><a href="#scrape_topic_with_api_args">In JSON format -  Example</a></li>
     <li><a href="#topicArgument">Function Arguments</a></li>
+    <li><a href="#profileOutput">Keys of the output:</a></li>
     </ul>
     <li><a href="#proxy">Using scraper with proxy</a>
     <ul>
@@ -108,7 +116,59 @@ pip3 install twitter-scraper-selenium
 <hr>
 <h2 id="Usage">
 Usage</h2>
-
+<h3 id="availableFunction">Available Function In this Package - Summary</h3>
+<div>
+<table>
+<thead>
+<tr>
+<td>Function Name</td>
+<td>Function Description</td>
+<td>Scraping Method</td>
+<td>Scraping Speed</td>
+</tr>
+</thead>
+<tr>
+<td><code>scrape_profile()</code></td>
+<td>Scrape's Twitter user's profile tweets</td>
+<td>Browser Automation</td>
+<td>Slow</td>
+</tr>
+<tr>
+<td><code>scrape_keyword()</code></td>
+<td>Scrape's Twitter tweets using keyword provided.</td>
+<td>Browser Automation</td>
+<td>Slow</td>
+</tr>
+<tr>
+<td><code>scrape_topic()</code></td>
+<td>Scrape's Twitter tweets by URL. It expects the URL of the topic.</td>
+<td>Browser Automation</td>
+<td>Slow</td>
+</tr>
+<tr>
+<td><code>scrape_keyword_with_api()</code></td>
+<td>Scrape's Twitter tweets by query/keywords. For an advanced search, query can be built from <a href="https://developer.twitter.com/apitools/query">here</a>.</td>
+<td>HTTP Request</td>
+<td>Fast</td>
+</tr>
+<tr>
+<td><code>get_profile_details()</code></td>
+<td>Scrape's Twitter user details.</td>
+<td>HTTP Request</td>
+<td>Fast</td>
+</tr>
+<tr>
+<td><code>scrape_topic_with_api()</code></td>
+<td>Scrape's Twitter tweets by URL. It expects the URL of the topic</td>
+<td>Browser Automation & HTTP Request</td>
+<td>Fast</td>
+</tr>
+</table>
+<p>
+Note: HTTP Request Method sends the request to Twitter's API directly for scraping data, and Browser Automation visits that page, scroll while collecting the data.</p>
+</div>
+<br>
+<hr>
 <h3 id="profileDetail">To scrape twitter profile details:</h3>
 <div id="profileDetailExample">
 
@@ -229,13 +289,13 @@ Detail of each key can be found <a href="https://developer.twitter.com/en/docs/t
 </div>
 <br>
 <hr>
-<h3 id="profile">To scrap profile's tweets:</h3>
+<h3 id="profile">To scrape profile's tweets:</h3>
 <p id="profileJson">In JSON format:</p>
 
 ```python
-from twitter_scraper_selenium import scrap_profile
+from twitter_scraper_selenium import scrape_profile
 
-microsoft = scrap_profile(twitter_username="microsoft",output_format="json",browser="firefox",tweets_count=10)
+microsoft = scrape_profile(twitter_username="microsoft",output_format="json",browser="firefox",tweets_count=10)
 print(microsoft)
 ```
 Output:
@@ -266,10 +326,10 @@ Output:
 <p id="profileCSV">In CSV format:</p>
 
 ```python
-from twitter_scraper_selenium import scrap_profile
+from twitter_scraper_selenium import scrape_profile
 
 
-scrap_profile(twitter_username="microsoft",output_format="csv",browser="firefox",tweets_count=10,filename="microsoft",directory="/home/user/Downloads")
+scrape_profile(twitter_username="microsoft",output_format="csv",browser="firefox",tweets_count=10,filename="microsoft",directory="/home/user/Downloads")
 
 
 ```
@@ -321,7 +381,7 @@ Output:
 
 <br><hr>
 <div id="profileArgument">
-<p><code>scrap_profile()</code> arguments:</p>
+<p><code>scrape_profile()</code> arguments:</p>
 
 <table>
     <thead>
@@ -350,7 +410,7 @@ Output:
         <tr>
             <td>tweets_count</td>
             <td>Integer</td>
-            <td>Number of posts to scrap. Default is 10.</td>
+            <td>Number of posts to scrape. Default is 10.</td>
         </tr>
         <tr>
             <td>output_format</td>
@@ -502,13 +562,13 @@ Output:
 {
   "1583821467732480001": {
     "tweet_url" : "https://twitter.com/yakubblackbeard/status/1583821467732480001",
-    "tweet_detail":{
+    "tweet_details":{
       ...
     },
-    "user_detail":{
+    "user_details":{
       ...
     }
-  }
+  }, ...
 }
 ```
 </div>
@@ -573,12 +633,12 @@ Output:
     <td>URL of the tweet.</td>
     </tr>
     <tr>
-    <td>tweet_detail</td>
+    <td>tweet_details</td>
     <td>Dictionary</td>
     <td>A dictionary containing the data about the tweet. All fields which will be available inside can be checked <a href="https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/tweet">here<a></td>
     </tr>
     <tr>
-    <td>user_detail</td>
+    <td>user_details</td>
     <td>Dictionary</td>
     <td>A dictionary containing the data about the tweet owner. All fields which will be available inside can be checked <a href="https://developer.twitter.com/en/docs/twitter-api/v1/data-dictionary/object-model/user">here<a></td>
     </tr>
@@ -588,14 +648,14 @@ Output:
 <br>
 <br>
 <hr>
-<h3>To scrap tweets using keywords with browser automation</h3>
+<h3>To scrape tweets using keywords with browser automation</h3>
 <div>
 <p id="keywordJson">In JSON format:</p>
 
 ```python
-from twitter_scraper_selenium import scrap_keyword
-#scrap 10 posts by searching keyword "india" from date 30th August till date 31st August
-india = scrap_keyword(keyword="india", browser="firefox",
+from twitter_scraper_selenium import scrape_keyword
+#scrape 10 posts by searching keyword "india" from date 30th August till date 31st August
+india = scrape_keyword(keyword="india", browser="firefox",
                       tweets_count=10,output_format="json" ,until="2021-08-31", since="2021-08-30")
 print(india)
 
@@ -630,9 +690,9 @@ Output:
 <p>In CSV format:</p>
 
 ```python
-from twitter_scraper_selenium import scrap_keyword
+from twitter_scraper_selenium import scrape_keyword
 
-scrap_keyword(keyword="india", browser="firefox",
+scrape_keyword(keyword="india", browser="firefox",
                       tweets_count=10, until="2021-08-31", since="2021-08-30",output_format="csv",filename="india")
 ```
 <br>
@@ -682,7 +742,7 @@ Output:
 <hr>
 <br>
 <div id="keywordArgument">
-<p><code>scrap_keyword()</code> arguments:</p>
+<p><code>scrape_keyword()</code> arguments:</p>
 
 <table>
     <thead>
@@ -721,7 +781,7 @@ Output:
         <tr>
             <td>tweets_count</td>
             <td>Integer</td>
-            <td>Number of posts to scrap. Default is 10.</td>
+            <td>Number of posts to scrape. Default is 10.</td>
         </tr>
         <tr>
             <td>output_format</td>
@@ -864,29 +924,117 @@ Output:
 </div>
 <br>
 <hr>
-
-### To scrap topic tweets with url:
+<br>
+<h3 id="scrape_with_api">To scrape topic tweets with URL using API </h3>
 
 ```python
-from twitter_scraper_selenium import scrap_topic
-# scrap 10 tweets from steam deck topic on twitter
-data = scrap_topic(filename="steamdeck", url='https://twitter.com/i/topics/1415728297065861123',
+from twitter_scraper_selenium import scrape_topic_with_api
+
+topic_url = 'https://twitter.com/i/topics/1468157909318045697'
+scrape_topic_with_api(URL=topic_url, output_filename='solana_cryptocurrency', tweets_count=50)
+```
+
+Output:
+```js
+{
+  "1584979408338632705": {
+    "tweet_url" : "https://twitter.com/AptosBullCNFT/status/1584979408338632705",
+    "tweet_details":{
+      ...
+    },
+    "user_details":{
+      ...
+    }
+  }, ...
+}
+```
+
+
+<div id="scrape_topic_with_api_args">
+<p><code>scrape_topic_with_api()</code> arguments: </p>
+
+
+<table>
+    <thead>
+        <tr>
+            <td>Argument</td>
+            <td>Argument Type</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>URL</td>
+            <td>String</td>
+            <td>Twitter's Topic URL</td>
+        </tr>
+        <tr>
+            <td>tweets_count</td>
+            <td>Integer</td>
+            <td>Number of tweets to scrape.</td>
+        </tr>
+        <tr>
+            <td>output_filename</td>
+            <td>String</td>
+            <td>What should be the filename where output is stored?.</td>
+        </tr>
+        <tr>
+            <td>output_dir</td>
+            <td>String</td>
+            <td>What directory output file should be saved?</td>
+        </tr>
+        <tr>
+            <td>proxy</td>
+            <td>String</td>
+            <td>Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port.</td>
+        </tr>
+        <tr>
+            <td>browser</td>
+            <td>String</td>
+            <td>Which browser to use for extracting out graphql key. Default is firefox.</td>
+        </tr>
+        <tr>
+            <td>headless</td>
+            <td>String</td>
+            <td>Whether to run browser in headless mode?</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<hr>
+
+<div id="scrape_topic_with_api_args_keys"> <p>Keys of the output:<p>
+  Same as <a href="#scrape_keyword_with_apiKeys">scrape_keyword_with_api</a>
+</div>
+<br>
+<hr>
+
+<h3 id="to-scrape-topic-tweets-with-url"> To scrape topic tweets with URL using browser automation: </h3>
+
+```python
+from twitter_scraper_selenium import scrape_topic
+# scrape 10 tweets from steam deck topic on twitter
+data = scrape_topic(filename="steamdeck", url='https://twitter.com/i/topics/1415728297065861123',
                      browser="firefox", tweets_count=10)
 ```
 
-Output and key of the output is the same as `scrap_keyword`:
+<div id="scrape_topic_with_api_args_keys"> <p>Keys of the output:<p>
+  Same as <a href="#profileOutput">scrape_profile</a>
+</div>
+<hr>
+
 
 <div id="topicArgument">
-<p><code>scrap_topic()</code> arguments:</p>
+<p><code>scrape_topic()</code> arguments:</p>
 
 
 | Arguments     | Argument <br> Type | Description                                                                                                                            |
 |---------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | filename      | str                | Filename to write result output.                                                                                                       |
-| url           | str                | Topic url.                                                                                                                             |
+| URL           | str                | Topic URL.                                                                                                                             |
 | browser       | str                | Which browser to use for scraping? <br> Only 2 are supported Chrome and Firefox. default firefox                                       |
 | proxy         | str                | If user wants to use proxy for scraping. <br> If the proxy is authenticated proxy then the proxy format is username:password@host:port |
-| tweets_count  | int                | Number of posts to scrap. default 10.                                                                                                  |
+| tweets_count  | int                | Number of posts to scrape. default 10.                                                                                                  |
 | output_format | str                | The output format whether JSON or CSV. Default json.                                                                                   |
 | directory     | str                | Directory to save output file. Deafult current working directory.                                                                      |
 | browser_profile | str | Path to the browser profile where cookies are stored and can be used for scraping data in an authenticated way. |
@@ -899,9 +1047,9 @@ Output and key of the output is the same as `scrap_keyword`:
 <p>Just pass <code>proxy</code> argument to function.</p>
 
 ```python
-from twitter_scraper_selenium import scrap_keyword
+from twitter_scraper_selenium import scrape_keyword
 
-scrap_keyword(keyword="#india", browser="firefox",tweets_count=10,output="csv",filename="india",
+scrape_keyword(keyword="#india", browser="firefox",tweets_count=10,output="csv",filename="india",
 proxy="66.115.38.247:5678") #In IP:PORT format
 
 ```
@@ -913,9 +1061,9 @@ proxy="66.115.38.247:5678") #In IP:PORT format
 
 ```python
 
-from twitter_scraper_selenium import scrap_profile
+from twitter_scraper_selenium import scrape_profile
 
-microsoft_data = scrap_profile(twitter_username="microsoft", browser="chrome", tweets_count=10, output="json",
+microsoft_data = scrape_profile(twitter_username="microsoft", browser="chrome", tweets_count=10, output="json",
                       proxy="sajid:pass123@66.115.38.247:5678")  #  username:password@IP:PORT
 print(microsoft_data)
 
@@ -929,7 +1077,7 @@ print(microsoft_data)
 <h2>Privacy</h2>
 
 <p>
-This scraper only scrapes public data available to unauthenticated user and does not holds the capability to scrap anything private.
+This scraper only scrapes public data available to unauthenticated user and does not holds the capability to scrape anything private.
 </p>
 </div>
 <br>

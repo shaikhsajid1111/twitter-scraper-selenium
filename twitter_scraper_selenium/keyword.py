@@ -185,7 +185,7 @@ def json_to_csv(filename, json_data, directory):
     logger.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
-def scrap_keyword(keyword: str, browser: str = "firefox", until: Union[str, None] = None,
+def scrape_keyword(keyword: str, browser: str = "firefox", until: Union[str, None] = None,
                   since: Union[int, None] = None, since_id: Union[int, None] = None, max_id: Union[int, None] = None,
                   within_time: Union[str, None] = None,
                   proxy: Union[str, None] = None, tweets_count: int = 10, output_format: str = "json",

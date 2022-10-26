@@ -32,8 +32,8 @@ class Keywords_api:
             tweet = tweets[key]
             self.posts_data[key] = {
                 "tweet_url": "https://twitter.com/{}/status/{}".format(user['screen_name'], key),
-                "tweet_detail": tweet,
-                "user_detail": user
+                "tweet_details": tweet,
+                "user_details": user
             }
 
     def find_cursor(self, timeline):

@@ -5,6 +5,7 @@ from urllib.parse import quote
 import logging
 import requests
 from fake_headers import Headers
+import json
 
 logger = logging.getLogger(__name__)
 format = logging.Formatter(
@@ -171,7 +172,7 @@ class Scraping_utilities:
         return params
 
     @staticmethod
-    def build_keyword_headers(x_guest_token, authorization_key, query = None):
+    def build_keyword_headers(x_guest_token, authorization_key, query=None):
         headers = {
             'authority': 'twitter.com',
             'accept': '*/*',
@@ -186,7 +187,28 @@ class Scraping_utilities:
             'x-twitter-client-language': 'en',
         }
         if query:
-          headers['referer'] = "https://twitter.com/search?q={}".format(query)
+            headers['referer'] = "https://twitter.com/search?q={}".format(
+                query)
+        return headers
+
+    @staticmethod
+    def build_topic_headers(x_guest_token, authorization_key, rest_id=None):
+        headers = {
+            'authority': 'twitter.com',
+            'accept': '*/*',
+            'accept-language': 'en-US,en;q=0.9',
+            'authorization': authorization_key,
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            'user-agent': Headers().generate()['User-Agent'],
+            'x-guest-token': x_guest_token,
+            'x-twitter-active-user': 'yes',
+            'x-twitter-client-language': 'en',
+        }
+        if rest_id:
+            headers['referer'] = "https://twitter.com/i/topics/{}".format(
+                rest_id)
         return headers
 
     @staticmethod
@@ -210,3 +232,15 @@ class Scraping_utilities:
             return response.json()['guest_token']
         except Exception as ex:
             logger.warning("Error at find_x_guest_token: {}".format(ex))
+
+    @staticmethod
+    def build_topic_params(rest_id, cursor):
+        variables = {"rest_id": rest_id, "context": "{}", "withSuperFollowsUserFields": True, "withDownvotePerspective": False,
+                     "withReactionsMetadata": False, "withReactionsPerspective": False, "withSuperFollowsTweetFields": True}
+        if cursor:
+            variables["cursor"] = cursor
+        params = {
+            'variables': json.dumps(variables),
+            'features': '{"verified_phone_label_enabled":false,"responsive_web_graphql_timeline_navigation_enabled":true,"unified_cards_ad_metadata_container_dynamic_card_content_query_enabled":true,"tweetypie_unmention_optimization_enabled":true,"responsive_web_uc_gql_enabled":true,"vibe_api_enabled":true,"responsive_web_edit_tweet_api_enabled":true,"graphql_is_translatable_rweb_tweet_is_translatable_enabled":true,"standardized_nudges_misinfo":true,"tweet_with_visibility_results_prefer_gql_limited_actions_policy_enabled":false,"interactive_text_enabled":true,"responsive_web_text_conversations_enabled":false,"responsive_web_enhance_cards_enabled":true}',
+        }
+        return params
