@@ -124,37 +124,44 @@ Usage</h2>
 <td>Function Name</td>
 <td>Function Description</td>
 <td>Scraping Method</td>
+<td>Scraping Speed</td>
 </tr>
 </thead>
 <tr>
 <td><code>scrape_profile()</code></td>
 <td>Scrape's Twitter user's profile tweets</td>
 <td>Browser Automation</td>
+<td>Slow</td>
 </tr>
 <tr>
 <td><code>scrape_keyword()</code></td>
 <td>Scrape's Twitter tweets using keyword provided.</td>
 <td>Browser Automation</td>
+<td>Slow</td>
 </tr>
 <tr>
 <td><code>scrape_topic()</code></td>
 <td>Scrape's Twitter tweets by URL. It expects the URL of the topic.</td>
 <td>Browser Automation</td>
+<td>Slow</td>
 </tr>
 <tr>
 <td><code>scrape_keyword_with_api()</code></td>
 <td>Scrape's Twitter tweets by query/keywords. For an advanced search, query can be built from <a href="https://developer.twitter.com/apitools/query">here</a>.</td>
 <td>HTTP Request</td>
+<td>Fast</td>
 </tr>
 <tr>
 <td><code>get_profile_details()</code></td>
 <td>Scrape's Twitter user details.</td>
 <td>HTTP Request</td>
+<td>Fast</td>
 </tr>
 <tr>
 <td><code>scrape_topic_with_api()</code></td>
 <td>Scrape's Twitter tweets by URL. It expects the URL of the topic</td>
 <td>HTTP Request</td>
+<td>Fast</td>
 </tr>
 </table>
 <p>
