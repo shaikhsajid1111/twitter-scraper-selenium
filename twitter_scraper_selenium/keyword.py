@@ -245,5 +245,4 @@ def scrap_keyword(keyword: str, browser: str = "firefox", until: Union[str, None
     elif output_format.lower() == "csv":
         if filename == "":
             filename = keyword
-        json_to_csv(filename=filename, json_data=json.loads(
-            data), directory=directory)
+        json_to_csv(filename=filename, json_data=data, directory=directory)
