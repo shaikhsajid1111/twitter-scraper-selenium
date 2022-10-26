@@ -173,7 +173,7 @@ def json_to_csv(filename, json_data, directory):
     logger.info('Data Successfully Saved to {}.csv'.format(filename))
 
 
-def scrap_profile(twitter_username: str, browser: str = "firefox", proxy: Union[str, None] = None,
+def scrape_profile(twitter_username: str, browser: str = "firefox", proxy: Union[str, None] = None,
                   tweets_count: int = 10, output_format: str = "json", filename: str = "", directory: str = os.getcwd(),
                   headless: bool = True, browser_profile: Union[str, None] = None):
     """Scrap tweets of twitter profile using twitter username.

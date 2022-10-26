@@ -14,7 +14,7 @@ ch.setFormatter(format)
 logger.addHandler(ch)
 
 
-def scrap_topic(
+def scrape_topic(
     url: str,
     browser: str = "firefox",
     filename: str = "",
