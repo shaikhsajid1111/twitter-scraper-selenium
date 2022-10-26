@@ -23,7 +23,7 @@
       </ul>
     </li>
     <li><a href="#Usage">Usage</a>
-    <!---->
+    <ul><li><a href="#availableFunction">Available Functions in this package- Summary</a></li></ul>
     <ul><li><a href="#profileDetail">Scraping profile's details</a>
     <ul>
     <li><a href="#profileDetailExample">In JSON Format - Example</a></li>
@@ -55,13 +55,17 @@
     <li><a href="#keywordOutput">Keys of the output data</a></li>
     </ul>
     </li>
-    <li><a href="#scrape_topic_with_api_args">Scraping tweets using topic url with API - Example</a></li>
+    <li><a href="#scrape_with_api">Scraping tweets using topic url with API</a></li>
     <ul>
-    <li><a href="#topicArgument">Function Arguments</a></li>
+    <li><a href="#scrape_with_api">In JSON format -  Example</a></li>
+    <li><a href="#scrape_topic_with_api_args">Function Arguments</a></li>
+    <li><a href="#scrape_topic_with_api_args_keys">Keys of the output</a></li>
     </ul>
     <li><a href="#to-scrape-topic-tweets-with-url">Scraping tweets using topic url - Example</a></li>
     <ul>
+    <li><a href="#scrape_topic_with_api_args">In JSON format -  Example</a></li>
     <li><a href="#topicArgument">Function Arguments</a></li>
+    <li><a href="#profileOutput">Keys of the output:</a></li>
     </ul>
     <li><a href="#proxy">Using scraper with proxy</a>
     <ul>
@@ -112,7 +116,52 @@ pip3 install twitter-scraper-selenium
 <hr>
 <h2 id="Usage">
 Usage</h2>
-
+<h3 id="availableFunction">Available Function In this Package - Summary</h3>
+<div>
+<table>
+<thead>
+<tr>
+<td>Function Name</td>
+<td>Function Description</td>
+<td>Scraping Method</td>
+</tr>
+</thead>
+<tr>
+<td><code>scrape_profile()</code></td>
+<td>Scrape's Twitter user's profile tweets</td>
+<td>Browser Automation</td>
+</tr>
+<tr>
+<td><code>scrape_keyword()</code></td>
+<td>Scrape's Twitter tweets using keyword provided.</td>
+<td>Browser Automation</td>
+</tr>
+<tr>
+<td><code>scrape_topic()</code></td>
+<td>Scrape's Twitter tweets by URL. It expects the URL of the topic.</td>
+<td>Browser Automation</td>
+</tr>
+<tr>
+<td><code>scrape_keyword_with_api()</code></td>
+<td>Scrape's Twitter tweets by query/keywords. For an advanced search, query can be built from <a href="https://developer.twitter.com/apitools/query">here</a>.</td>
+<td>HTTP Request</td>
+</tr>
+<tr>
+<td><code>get_profile_details()</code></td>
+<td>Scrape's Twitter user details.</td>
+<td>HTTP Request</td>
+</tr>
+<tr>
+<td><code>scrape_topic_with_api()</code></td>
+<td>Scrape's Twitter tweets by URL. It expects the URL of the topic</td>
+<td>HTTP Request</td>
+</tr>
+</table>
+<p>
+Note: HTTP Request Method sends the request to Twitter's API directly for scraping data, and Browser Automation visits that page, scroll while collecting the data.</p>
+</div>
+<br>
+<hr>
 <h3 id="profileDetail">To scrape twitter profile details:</h3>
 <div id="profileDetailExample">
 
@@ -869,7 +918,7 @@ Output:
 <br>
 <hr>
 <br>
-<h3>To scrape topic tweets with URL using API </h3>
+<h3 id="scrape_with_api">To scrape topic tweets with URL using API </h3>
 
 ```python
 from twitter_scraper_selenium import scrape_topic_with_api
@@ -947,13 +996,13 @@ Output:
 </div>
 <hr>
 
-<div> <p>Keys of the output:<p>
+<div id="scrape_topic_with_api_args_keys"> <p>Keys of the output:<p>
   Same as <a href="#scrape_keyword_with_apiKeys">scrape_keyword_with_api</a>
 </div>
 <br>
 <hr>
 
-### To scrape topic tweets with URL using browser automation:
+<h3 id="to-scrape-topic-tweets-with-url"> To scrape topic tweets with URL using browser automation: </h3>
 
 ```python
 from twitter_scraper_selenium import scrape_topic
@@ -962,7 +1011,11 @@ data = scrape_topic(filename="steamdeck", url='https://twitter.com/i/topics/1415
                      browser="firefox", tweets_count=10)
 ```
 
-Output and key of the output is the same as `scrape_keyword`:
+<div id="scrape_topic_with_api_args_keys"> <p>Keys of the output:<p>
+  Same as <a href="#profileOutput">scrape_profile</a>
+</div>
+<hr>
+
 
 <div id="topicArgument">
 <p><code>scrape_topic()</code> arguments:</p>
