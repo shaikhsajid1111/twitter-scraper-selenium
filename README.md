@@ -160,7 +160,7 @@ Usage</h2>
 <tr>
 <td><code>scrape_topic_with_api()</code></td>
 <td>Scrape's Twitter tweets by URL. It expects the URL of the topic</td>
-<td>HTTP Request</td>
+<td>Browser Automation & HTTP Request</td>
 <td>Fast</td>
 </tr>
 </table>
