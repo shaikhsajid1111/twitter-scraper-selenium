@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 import csv
 import logging
-import pathlib
+import os
 import json
-from .keyword import Keyword
+from .keyword import Keyword, json_to_csv
 
 logger = logging.getLogger(__name__)
 format = logging.Formatter(
@@ -23,7 +23,7 @@ def scrap_topic(
     output_format: str = "json",
     directory: str = None,
     headless: bool = True,
-    browser_profile = None
+    browser_profile=None
 ):
     """
     Returns tweets data in CSV or JSON.
@@ -40,7 +40,7 @@ def scrap_topic(
     """
     pass
     if directory is None:
-        directory = pathlib.Path.cwd()
+        directory = os.getcwd()
     keyword_bot = Keyword(
         keyword=filename,
         browser=browser,
@@ -57,53 +57,26 @@ def scrap_topic(
             return json.dumps(data)
         elif filename != '':
             # if filename was provided
-            output_path = directory / "{}.json".format(filename)
-            if output_path.exists():
-                try:
-                    with output_path.open(encoding="utf-8") as f:
-                        existing_data = json.load(f)
-                    data.update(existing_data)
-                except Exception as err:
-                    logger.exception("Error Appending Data: {}".format(err))
-            output_path.write_text(json.dumps(data))
-            logger.info(
-                'Data Successfully Saved to {}'.format(output_path))
-    elif output_format == "csv":
-        if filename == '':
-            raise Exception('Filename is required to save the CSV file.')
-        fieldnames = [
-            "tweet_id",
-            "username",
-            "name",
-            "profile_picture",
-            "replies",
-            "retweets",
-            "likes",
-            "is_retweet",
-            "posted_time",
-            "content",
-            "hashtags",
-            "mentions",
-            "images",
-            "videos",
-            "tweet_url",
-            "link",
-        ]
-        output_path = directory / "{}.csv".format(filename)
-        old_data = []
-        if output_path.exists():
-            try:
-                with output_path.open(encoding="utf-8") as f:
-                    reader = csv.DictReader(f, fieldnames=fieldnames)
-                    for row in reader:
-                        old_data.append(row)
-            except Exception as err:
-                logger.exception("Error Appending Data: {}".format(err))
-        with output_path.open("w", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(old_data + list(json.loads(data).values()))
+            mode = 'w'
+            output_path = os.path.join(directory, filename+".json")
+            if os.path.exists(output_path):
+                mode = 'r'
+            with open(output_path, mode, encoding='utf-8') as file:
+                if mode == 'r':
+                    try:
+                        file_content = file.read()
+                        content = json.loads(file_content)
+                    except json.decoder.JSONDecodeError:
+                        logger.warning('Invalid JSON Detected!')
+                        content = {}
+                    file.close()
+                    data.update(content)
+                    with open(output_path, 'w', encoding='utf-8') as file_in_write_mode:
+                        json.dump(data, file_in_write_mode)
             logger.setLevel(logging.INFO)
-            logger.info('Data Successfully Saved to {}'.format(output_path))
+            logger.info('Data Successfully Saved to {}'.format(
+                output_path))
+    elif output_format == "csv":
+        json_to_csv(filename=filename, json_data=data, directory=directory)
     else:
         raise ValueError("Invalid Output Format")
