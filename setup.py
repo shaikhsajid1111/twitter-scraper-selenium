@@ -43,6 +43,7 @@ setuptools.setup(
         'selenium==4.3.0',
         'selenium-wire==4.6.4',
         'webdriver-manager==3.2.2',
-        'fake-headers==1.0.2'
+        'fake-headers==1.0.2',
+        'requests==2.27.1'
     ]
 )
