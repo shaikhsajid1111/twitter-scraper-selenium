@@ -73,9 +73,9 @@ def scrape_topic(
                     data.update(content)
                     with open(output_path, 'w', encoding='utf-8') as file_in_write_mode:
                         json.dump(data, file_in_write_mode)
-            logger.setLevel(logging.INFO)
-            logger.info('Data Successfully Saved to {}'.format(
-                output_path))
+                        logger.setLevel(logging.INFO)
+                        logger.info('Data Successfully Saved to {}'.format(
+                            output_path))
     elif output_format == "csv":
         json_to_csv(filename=filename, json_data=data, directory=directory)
     else:

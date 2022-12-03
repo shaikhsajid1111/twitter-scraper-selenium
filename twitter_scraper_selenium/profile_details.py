@@ -71,8 +71,8 @@ def get_profile_details(twitter_username: str, proxy: Union[str, None] = None,
                     content = {}
                 file.close()
                 data.update(content)
-                with open(json_file_location, 'w', encoding='utf-8') as file_in_write_mode:
-                    json.dump(data, file_in_write_mode)
-            logger.setLevel(logging.INFO)
-            logger.info(
-                'Data Successfully Saved to {}'.format(json_file_location))
+            with open(json_file_location, 'w', encoding='utf-8') as file_in_write_mode:
+                json.dump(data, file_in_write_mode)
+                logger.setLevel(logging.INFO)
+                logger.info(
+                    'Data Successfully Saved to {}'.format(json_file_location))
