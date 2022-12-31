@@ -139,7 +139,7 @@ def scrape_topic_with_api(URL: str, proxy: Union[str, None] = None,
     topic_api_scraper = Topic_api(
         URL=URL, browser=browser, tweets_count=tweets_count, proxy=proxy, headless=headless)
     data = topic_api_scraper.scrape()
-    if output_filename:
+    if output_filename and len(data) > 0:
         path = os.path.join(output_dir, "{}.json".format(output_filename))
         mode = 'a'
         if os.path.exists(path):
@@ -154,9 +154,9 @@ def scrape_topic_with_api(URL: str, proxy: Union[str, None] = None,
                     content = {}
                 file.close()
                 data.update(content)
-                with open(path, 'w', encoding='utf-8') as file_in_write_mode:
-                    json.dump(data, file_in_write_mode)
-                    logger.setLevel(logging.INFO)
-                    logger.info('Data was saved to {}'.format(path))
+        with open(path, 'w', encoding='utf-8') as file_in_write_mode:
+            json.dump(data, file_in_write_mode)
+            logger.setLevel(logging.INFO)
+            logger.info('Data was saved to {}'.format(path))
     else:
         return data

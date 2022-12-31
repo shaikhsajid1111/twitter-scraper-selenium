@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as file:
 
 setuptools.setup(
     name="twitter_scraper_selenium",
-    version="4.0.2",
+    version="4.1.2",
     author="Sajid Shaikh",
     author_email="shaikhsajid3732@gmail.com",
     description="Python package to scrap twitter's front-end easily with selenium",

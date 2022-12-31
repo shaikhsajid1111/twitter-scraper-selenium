@@ -199,7 +199,7 @@ def scrape_profile(twitter_username: str, browser: str = "firefox", proxy: Union
         if filename == '':
           # if filename was not provided then print the JSON to console
             return json.dumps(data)
-        elif filename != '':
+        elif filename != '' and len(data) > 0:
           # if filename was provided, save it to that file
             mode = 'w'
             json_file_location = os.path.join(directory, filename+".json")
@@ -215,11 +215,11 @@ def scrape_profile(twitter_username: str, browser: str = "firefox", proxy: Union
                         content = {}
                     file.close()
                     data.update(content)
-                with open(json_file_location, 'w', encoding='utf-8') as file_in_write_mode:
-                    json.dump(data, file_in_write_mode)
-                    logger.setLevel(logging.INFO)
-                    logger.info(
-                        'Data Successfully Saved to {}'.format(json_file_location))
+            with open(json_file_location, 'w', encoding='utf-8') as file_in_write_mode:
+                json.dump(data, file_in_write_mode)
+                logger.setLevel(logging.INFO)
+                logger.info(
+                    'Data Successfully Saved to {}'.format(json_file_location))
     elif output_format.lower() == "csv":
         if filename == "":
             filename = twitter_username
