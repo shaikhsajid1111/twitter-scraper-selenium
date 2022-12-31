@@ -67,6 +67,12 @@
     <li><a href="#topicArgument">Function Arguments</a></li>
     <li><a href="#profileOutput">Keys of the output:</a></li>
     </ul>
+    <li><a href='#to-scrape-user-tweets-with-api'>Scraping user's tweet using API</a></li>
+    <ul>
+    <li><a href='#to-scrape-user-tweets-with-api'>In JSON format - Example</a></li>
+    <li><a href='#users_api_parameter'>Function Arguments</a></li>
+    <li><a href='#users_with_key_argument'>Keys of the output</a></li>
+    </ul>
     <li><a href="#proxy">Using scraper with proxy</a>
     <ul>
     <li><a href="#unauthenticatedProxy">Unauthenticated Proxy</a></li>
@@ -1039,6 +1045,40 @@ data = scrape_topic(filename="steamdeck", url='https://twitter.com/i/topics/1415
 | directory     | str                | Directory to save output file. Deafult current working directory.                                                                      |
 | browser_profile | str | Path to the browser profile where cookies are stored and can be used for scraping data in an authenticated way. |
 
+<br>
+<hr>
+<div id="to-scrape-user-tweets-with-api">
+
+<p>To Scrap User's Tweets with API:</p>
+
+```python
+from twitter_scraper_selenium import scrape_profile_with_api
+
+scrape_profile_with_api('elonmusk', output_filename='musk', tweets_count= 100)
+```
+</div>
+<div id="users_api_parameter">
+Same as <a href='#scrape_topic_with_api_args'>scrape_topic_with_api</a>
+</div>
+<br>
+<div id="scrape_user_with_api_args_keys"> <p>Output:<p>
+
+```js
+{
+  "1608939190548598784": {
+    "tweet_url" : "https://twitter.com/elonmusk/status/1608939190548598784",
+    "tweet_details":{
+      ...
+    },
+    "user_details":{
+      ...
+    }
+  }, ...
+}
+```
+
+</div>
+<hr>
 </div>
 
 <h3 id="proxy"> Using scraper with proxy (http proxy) </h3>
