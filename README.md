@@ -169,6 +169,12 @@ Usage</h2>
 <td>Browser Automation & HTTP Request</td>
 <td>Fast</td>
 </tr>
+<tr>
+<td><code>scrape_profile_with_api()</code></td>
+<td>Scrape's Twitter tweets by twitter profile username. It expects the username of the profile</td>
+<td>Browser Automation & HTTP Request</td>
+<td>Fast</td>
+</tr>
 </table>
 <p>
 Note: HTTP Request Method sends the request to Twitter's API directly for scraping data, and Browser Automation visits that page, scroll while collecting the data.</p>
@@ -1057,7 +1063,9 @@ from twitter_scraper_selenium import scrape_profile_with_api
 scrape_profile_with_api('elonmusk', output_filename='musk', tweets_count= 100)
 ```
 </div>
+<br>
 <div id="users_api_parameter">
+<p><code>scrape_profile_with_api()</code> arguments:<p>
 Same as <a href='#scrape_topic_with_api_args'>scrape_topic_with_api</a>
 </div>
 <br>
@@ -1078,6 +1086,7 @@ Same as <a href='#scrape_topic_with_api_args'>scrape_topic_with_api</a>
 ```
 
 </div>
+<br>
 <hr>
 </div>
 
