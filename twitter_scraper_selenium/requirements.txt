@@ -1,0 +1,6 @@
+fake_headers==1.0.2
+python_dateutil==2.8.2
+requests==2.27.1
+selenium==4.5.0
+selenium_wire==4.6.4
+webdriver_manager==3.2.2
