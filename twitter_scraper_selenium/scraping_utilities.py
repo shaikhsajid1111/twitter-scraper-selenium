@@ -249,7 +249,7 @@ class Scraping_utilities:
     def build_params_for_profile(user_id, cursor=None):
      variables = {
          "userId": str(user_id),
-         "count": 1,
+         "count": 40,
          "includePromotedContent": True,
          "withQuickPromoteEligibilityTweetFields": True,
          "withSuperFollowsUserFields": True,
