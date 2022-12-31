@@ -1055,7 +1055,7 @@ data = scrape_topic(filename="steamdeck", url='https://twitter.com/i/topics/1415
 <hr>
 <div id="to-scrape-user-tweets-with-api">
 
-<p>To Scrap User's Tweets with API:</p>
+<p>To Scrap profile's tweets with API:</p>
 
 ```python
 from twitter_scraper_selenium import scrape_profile_with_api
