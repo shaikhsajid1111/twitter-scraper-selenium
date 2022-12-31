@@ -71,7 +71,7 @@
     <ul>
     <li><a href='#to-scrape-user-tweets-with-api'>In JSON format - Example</a></li>
     <li><a href='#users_api_parameter'>Function Arguments</a></li>
-    <li><a href='#users_with_key_argument'>Keys of the output</a></li>
+    <li><a href='#scrape_user_with_api_args_keys'>Keys of the output</a></li>
     </ul>
     <li><a href="#proxy">Using scraper with proxy</a>
     <ul>
