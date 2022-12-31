@@ -1065,8 +1065,53 @@ scrape_profile_with_api('elonmusk', output_filename='musk', tweets_count= 100)
 </div>
 <br>
 <div id="users_api_parameter">
-<p><code>scrape_profile_with_api()</code> arguments:<p>
-Same as <a href='#scrape_topic_with_api_args'>scrape_topic_with_api</a>
+<p><code>scrape_profile_with_api()</code> Arguments:<p>
+<table>
+    <thead>
+        <tr>
+            <td>Argument</td>
+            <td>Argument Type</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>username</td>
+            <td>String</td>
+            <td>Twitter's Profile username</td>
+        </tr>
+        <tr>
+            <td>tweets_count</td>
+            <td>Integer</td>
+            <td>Number of tweets to scrape.</td>
+        </tr>
+        <tr>
+            <td>output_filename</td>
+            <td>String</td>
+            <td>What should be the filename where output is stored?.</td>
+        </tr>
+        <tr>
+            <td>output_dir</td>
+            <td>String</td>
+            <td>What directory output file should be saved?</td>
+        </tr>
+        <tr>
+            <td>proxy</td>
+            <td>String</td>
+            <td>Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port.</td>
+        </tr>
+        <tr>
+            <td>browser</td>
+            <td>String</td>
+            <td>Which browser to use for extracting out graphql key. Default is firefox.</td>
+        </tr>
+        <tr>
+            <td>headless</td>
+            <td>String</td>
+            <td>Whether to run browser in headless mode?</td>
+        </tr>
+    </tbody>
+</table>
 </div>
 <br>
 <div id="scrape_user_with_api_args_keys"> <p>Output:<p>
