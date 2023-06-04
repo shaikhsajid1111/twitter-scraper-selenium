@@ -23,19 +23,17 @@ logger.addHandler(ch)
 
 
 class Initializer:
-    def __init__(self, browser_name: str, headless: bool, proxy: Union[str, None] = None, profile: Union[str, None] = None):
+    def __init__(self, browser_name: str, headless: bool, proxy: Union[str, None] = None):
         """Initialize Browser
 
         Args:
             browser_name (str): Browser Name
             headless (bool): Whether to run Browser in headless mode?
             proxy (Union[str, None], optional): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port. Defaults to None.
-            profile (Union[str, None], optional): Path of Browser Profile where cookies might be located to scrap data in authenticated way. Defaults to None.
       """
         self.browser_name = browser_name
         self.proxy = proxy
         self.headless = headless
-        self.profile = profile
 
     def set_properties(self, browser_option):
         """adds capabilities to the driver"""
@@ -43,14 +41,6 @@ class Initializer:
         if self.headless:
             # runs browser in headless mode
             browser_option.add_argument("--headless")
-        if self.profile and self.browser_name.lower() == "chrome":
-            browser_option.add_argument(
-                "user-data-dir={}".format(self.profile))
-        if self.profile and self.browser_name.lower() == "firefox":
-            logger.setLevel(logging.INFO)
-            logger.info("Loading Profile from {}".format(self.profile))
-            browser_option.add_argument("-profile")
-            browser_option.add_argument(self.profile)
         browser_option.add_argument('--no-sandbox')
         browser_option.add_argument("--disable-dev-shm-usage")
         browser_option.add_argument('--ignore-certificate-errors')

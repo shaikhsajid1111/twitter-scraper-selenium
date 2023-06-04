@@ -23,7 +23,7 @@ class Keyword:
     """This class needs to be instantiated in order to find something
     on twitter related to keywords"""
 
-    def __init__(self, keyword: str, browser: str, proxy: Union[str, None], tweets_count: int, url: Union[str, None], headless: bool, browser_profile: Union[str, None]):
+    def __init__(self, keyword: str, browser: str, proxy: Union[str, None], tweets_count: int, url: Union[str, None], headless: bool):
         """Scrape Tweet using keyword.
 
         Args:
@@ -33,7 +33,6 @@ class Keyword:
             tweets_count (int): Number of tweets to scrap
             url (Union[str, None]): URL of the webpage.
             headless (bool): Whether to run browser in headless mode?.
-            browser_profile (Union[str, None]): Path of Browser Profile where cookies might be located to scrap data in authenticated way.
         """
         self.keyword = keyword
         self.URL = url
@@ -44,12 +43,11 @@ class Keyword:
         self.posts_data = {}
         self.retry = 10
         self.headless = headless
-        self.browser_profile = browser_profile
 
     def start_driver(self):
         """changes the class member driver value to driver on call"""
         self.driver = Initializer(
-            self.browser, self.headless, self.proxy, self.browser_profile).init()
+            self.browser, self.headless, self.proxy).init()
 
     def close_driver(self):
         self.driver.close()
@@ -189,8 +187,7 @@ def scrape_keyword(keyword: str, browser: str = "firefox", until: Union[str, Non
                   since: Union[int, None] = None, since_id: Union[int, None] = None, max_id: Union[int, None] = None,
                   within_time: Union[str, None] = None,
                   proxy: Union[str, None] = None, tweets_count: int = 10, output_format: str = "json",
-                  filename: str = "", directory: str = os.getcwd(), headless: bool = True,
-                  browser_profile: Union[str, None] = None):
+                  filename: str = "", directory: str = os.getcwd(), headless: bool = True):
     """Scrap tweets using keywords.
 
     Args:
@@ -207,7 +204,6 @@ def scrape_keyword(keyword: str, browser: str = "firefox", until: Union[str, Non
         filename (str, optional): If output parameter is set to CSV, then it is necessary for filename parameter to passed. If not passed then the filename will be same as keyword passed. Defaults to "".
         directory (str, optional): If output parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory. Defaults to current work directory.
         headless (bool, optional): Whether to run browser in Headless Mode?. Defaults to True.
-        browser_profile (str, optional): Path of Browser Profile where cookies might be located to scrap data in authenticated way. Defaults to None.
 
     Returns:
         str: tweets data in CSV or JSON
@@ -215,7 +211,7 @@ def scrape_keyword(keyword: str, browser: str = "firefox", until: Union[str, Non
     URL = Scraping_utilities.url_generator(keyword, since=since, until=until,
                                            since_id=since_id, max_id=max_id, within_time=within_time)
     keyword_bot = Keyword(keyword, browser=browser, url=URL,
-                          proxy=proxy, tweets_count=tweets_count, headless=headless, browser_profile=browser_profile)
+                          proxy=proxy, tweets_count=tweets_count, headless=headless)
     data = keyword_bot.scrap()
     if output_format.lower() == "json":
         if filename == '':
