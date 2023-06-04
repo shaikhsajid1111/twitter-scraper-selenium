@@ -22,8 +22,7 @@ def scrape_topic(
     tweets_count: int = 10,
     output_format: str = "json",
     directory: str = None,
-    headless: bool = True,
-    browser_profile=None
+    headless: bool = True
 ):
     """
     Returns tweets data in CSV or JSON.
@@ -36,7 +35,6 @@ def scrape_topic(
         tweets_count: Number of posts to scrap. Default is 10.
         output_format: The output format, whether JSON or CSV. Default is JSON.
         directory: If output parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory.
-        browser_profile: Path of Browser Profile where cookies might be located to scrap data in authenticated way.
     """
     pass
     if directory is None:
@@ -47,8 +45,7 @@ def scrape_topic(
         url=url,
         headless=headless,
         proxy=proxy,
-        tweets_count=tweets_count,
-        browser_profile=browser_profile
+        tweets_count=tweets_count
     )
     data = keyword_bot.scrap()
     if output_format.lower() == "json":

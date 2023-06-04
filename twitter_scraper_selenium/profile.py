@@ -22,7 +22,7 @@ class Profile:
     """this class needs to be instantiated in orer to scrape post of some
     twitter profile"""
 
-    def __init__(self, twitter_username, browser, proxy, tweets_count, headless, browser_profile):
+    def __init__(self, twitter_username, browser, proxy, tweets_count, headless):
         self.twitter_username = twitter_username
         self.URL = "https://twitter.com/{}".format(twitter_username.lower())
         self.__driver = ""
@@ -32,12 +32,11 @@ class Profile:
         self.posts_data = {}
         self.retry = 10
         self.headless = headless
-        self.browser_profile = browser_profile
 
     def __start_driver(self):
         """changes the class member __driver value to driver on call"""
         self.__driver = Initializer(
-            self.browser, self.headless, self.proxy, self.browser_profile).init()
+            self.browser, self.headless, self.proxy).init()
 
     def __close_driver(self):
         self.__driver.close()
@@ -175,7 +174,7 @@ def json_to_csv(filename, json_data, directory):
 
 def scrape_profile(twitter_username: str, browser: str = "firefox", proxy: Union[str, None] = None,
                   tweets_count: int = 10, output_format: str = "json", filename: str = "", directory: str = os.getcwd(),
-                  headless: bool = True, browser_profile: Union[str, None] = None):
+                  headless: bool = True):
     """Scrap tweets of twitter profile using twitter username.
 
     Args:
@@ -187,13 +186,12 @@ def scrape_profile(twitter_username: str, browser: str = "firefox", proxy: Union
         filename (str, optional): If output_format parameter is set to CSV, then it is necessary for filename parameter to passed. If not passed then the filename will be same as keyword passed. Defaults to "".
         directory (str, optional): If output_format parameter is set to CSV, then it is valid for directory parameter to be passed. If not passed then CSV file will be saved in current working directory. Defaults to os.getcwd().
         headless (bool, optional): Whether to run browser in headless mode?. Defaults to True.
-        browser_profile (Union[str, None], optional): Path of Browser Profile where cookies might be located to scrap data in authenticated way. Defaults to None.
 
     Returns:
         str: tweets data in CSV or JSON
     """
     profile_bot = Profile(twitter_username, browser,
-                          proxy, tweets_count, headless, browser_profile)
+                          proxy, tweets_count, headless)
     data = profile_bot.scrap()
     if output_format.lower() == "json":
         if filename == '':
