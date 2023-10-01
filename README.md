@@ -589,10 +589,9 @@ scrape_profile_with_api('elonmusk', output_filename='musk', tweets_count= 100)
 <p>Just pass <code>proxy</code> argument to function.</p>
 
 ```python
-from twitter_scraper_selenium import scrape_keyword
+from twitter_scraper_selenium import scrape_profile
 
-scrape_keyword(keyword="#india", browser="firefox",tweets_count=10,output="csv",filename="india",
-proxy="66.115.38.247:5678") #In IP:PORT format
+scrape_profile("elonmusk", headless=False, proxy="66.115.38.247:5678", output_format="csv",filename="musk") #In IP:PORT format
 
 ```
 </div>
