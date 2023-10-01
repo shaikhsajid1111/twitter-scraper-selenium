@@ -40,16 +40,19 @@ class Profile_api:
         self.driver.quit()
 
     def find_entries(self, response):
-        try:
-            tweets = response["data"]["user"]["result"]["timeline_v2"]["timeline"][
-                "instructions"
-            ][0]["entries"]
-            return tweets
-        except KeyError:
-            tweets = response["data"]["user"]["result"]["timeline_v2"]["timeline"][
-                "instructions"
-            ][1]["entries"]
-            return tweets
+      try:
+        instructions = response["data"]["user"]["result"]["timeline_v2"]["timeline"]["instructions"]
+        N = len(instructions)
+        for i in range(N):
+            entries = instructions[i].get("entries")
+            if entries:
+                return entries
+
+        # If no entries found in the first N instructions, return an empty list
+        return []
+      except KeyError:
+        # If there is an error or if the structure doesn't match, return an empty list
+        return []
 
     def augment_data(self, tweets):
         try:
