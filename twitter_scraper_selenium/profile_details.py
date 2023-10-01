@@ -5,6 +5,7 @@ from .scraping_utilities import Scraping_utilities
 import os
 import logging
 import json
+from .profile_api import Profile_api
 
 logger = logging.getLogger(__name__)
 format = logging.Formatter(
@@ -15,29 +16,34 @@ logger.addHandler(ch)
 
 
 class Profile_detail:
-    def __init__(self, username: str, proxy: Union[str, None]) -> None:
+    def __init__(self, username: str, proxy: Union[str, None], browser: str, headless: bool) -> None:
         self.username = username
         self.authorization_key = \
             'Bearer AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA'
         self.proxy = proxy
+        self.browser = browser
+        self.headless = headless
 
     def scrape(self):
-        guest_token = Scraping_utilities.find_x_guest_token(
-            authorization_key=self.authorization_key, proxy=self.proxy)
-        headers = Scraping_utilities.build_keyword_headers(
-            authorization_key=self.authorization_key, x_guest_token=guest_token)
-        response = Scraping_utilities.make_http_request(
-            "https://api.twitter.com/1.1/users/show.json?screen_name={}".format(
-                self.username),
-            headers=headers, proxy=self.proxy)
+        profile_api = Profile_api(self.username, proxy=self.proxy,
+          browser = self.browser, tweets_count=1, headless=self.headless)
+        header, uid, user_id = profile_api.get_headers_and_uid(
+                f"https://twitter.com/{self.username}")
+        params = Scraping_utilities.build_params_for_profile(
+                    user_id, None)
+        response = Scraping_utilities.make_http_request_with_params(
+                    f"https://twitter.com/i/api/graphql/{uid}/UserTweets", params, header, self.proxy)
         if response:
-            return response
+            entries = profile_api.find_entries(response)
+            if len(entries) > 0:
+                return entries[0]["content"]["itemContent"]["tweet_results"]["result"]["core"]["user_results"]["result"]
+            return {}
         else:
             logger.debug('Failed to Make Request!')
 
 
 def get_profile_details(twitter_username: str, proxy: Union[str, None] = None,
-                       filename: str = "", directory: str = os.getcwd()):
+                       filename: str = "", directory: str = os.getcwd(), browser: str="firefox", headless: bool = True):
     """Extract Profile Detail.
 
     Args:
@@ -45,11 +51,12 @@ def get_profile_details(twitter_username: str, proxy: Union[str, None] = None,
         proxy (Union[str, None], optional): Optional parameter, if user wants to use proxy for scraping. If the proxy is authenticated proxy then the proxy format is username:password@host:port. Defaults to None.
         filename (str, optional): Filename where to save the output. Defaults to "".
         directory (str, optional): Directory where to save the file. Defaults to os.getcwd().
-
+        browser (str, optional): Which browser to use for extracting out graphql key. Defaults to 'firefox'.
+        headless (bool, optional): Whether to run browser in headless mode?. Defaults to True.
     Returns:
         (dict | none): None if data was saved, else JSON String.
     """
-    profile_bot = Profile_detail(username=twitter_username, proxy=proxy)
+    profile_bot = Profile_detail(username=twitter_username, proxy=proxy, browser=browser, headless=headless)
     data = profile_bot.scrape()
 
     if filename == '':
