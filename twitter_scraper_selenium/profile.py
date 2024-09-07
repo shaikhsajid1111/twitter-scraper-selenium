@@ -124,9 +124,9 @@ class Profile:
                         [0:int(self.tweets_count)])
             return data
         except Exception as ex:
-            self.__close_driver()
             logger.exception(
                 "Error at method scrap : {} ".format(ex))
+            self.__close_driver()
 
 
 def json_to_csv(filename, json_data, directory):

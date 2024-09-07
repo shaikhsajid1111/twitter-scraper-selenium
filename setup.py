@@ -37,13 +37,15 @@ setuptools.setup(
         "Topic :: Internet :: WWW/HTTP"
 
     ],
-    python_requires=">=3.6",
+    python_requires=">=3.8",
     install_requires=[
         'python-dateutil==2.8.2',
         'selenium==4.7.0',
         'selenium-wire==5.1.0',
-        'webdriver-manager==3.2.2',
+        'webdriver-manager==4.0.2',
         'fake-headers==1.0.2',
-        'requests==2.27.1'
+        'requests==2.27.1',
+        'blinker==1.7.0',
+        'setuptools==74.1.1'
     ]
 )
