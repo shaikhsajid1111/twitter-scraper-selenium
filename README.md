@@ -60,6 +60,28 @@
   </ol>
 </details>
 
+---
+
+## ⚡ Sponsor
+
+### **RapidProxy — Unlock Scalable Web Data for Your Business**
+
+[![RapidProxy Banner](img/rapidproxy-banner.png)](https://www.rapidproxy.io/?ref=twsc)
+
+[RapidProxy](https://www.rapidproxy.io/?ref=twsc) provides high-performance residential proxies for Twitter scraping, Selenium automation, and web data extraction.
+
+*   **🌐 90M+ IPs** — Massive global pool.
+*   **🔄 Smart Rotation** — Seamless IP switching.
+*   **🛡️ Anti-Block** — Bypass strict anti-bot systems.
+*   **⏳ Non-Expiring Traffic** — Use your data at your own pace.
+
+### 🎁 Special Offer
+**[Try it free](https://www.rapidproxy.io/?ref=twsc)** — Plans start from just **$0.65/GB**. 
+Use coupon code **`RAPID10`** at checkout for **10% off**.
+
+---
+
+
 <!--TABLE of contents //-->
 <br>
 <hr>
