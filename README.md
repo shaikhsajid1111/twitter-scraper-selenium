@@ -62,24 +62,34 @@
 
 ---
 
-## ⚡ Sponsor
+<h2>⚡ Sponsor</h2>
 
-### **[RapidProxy](https://www.rapidproxy.io/?ref=twsc) — Unlock Scalable Web Data for Your Business**
+<h3>
+  <strong><a href="https://www.rapidproxy.io/?ref=twsc" rel="nofollow">RapidProxy</a> — Unlock Scalable Web Data for Your Business</strong>
+</h3>
 
-[![RapidProxy Banner](img/rapidproxy-banner.png)](https://www.rapidproxy.io/?ref=twsc)
+<p>
+  <a href="https://www.rapidproxy.io/?ref=twsc" rel="nofollow">
+    <img src="img/rapidproxy-banner.png" alt="RapidProxy Banner" style="max-width: 100%;">
+  </a>
+</p>
 
-[RapidProxy](https://www.rapidproxy.io/?ref=twsc) provides high-performance residential proxies for Twitter scraping, Selenium automation, and web data extraction.
+<p>
+  <a href="https://www.rapidproxy.io/?ref=twsc" rel="nofollow">RapidProxy</a> provides high-performance residential proxies for Twitter scraping, Selenium automation, and web data extraction.
+</p>
 
-*   **🌐 90M+ IPs** — Massive global pool.
-*   **🔄 Smart Rotation** — Seamless IP switching.
-*   **🛡️ Anti-Block** — Bypass strict anti-bot systems.
-*   **⏳ Non-Expiring Traffic** — Use your data at your own pace.
+<ul>
+  <li><strong>🌐 90M+ IPs</strong> — Massive global pool.</li>
+  <li><strong>🔄 Smart Rotation</strong> — Seamless IP switching.</li>
+  <li><strong>🛡️ Anti-Block</strong> — Bypass strict anti-bot systems.</li>
+  <li><strong>⏳ Non-Expiring Traffic</strong> — Use your data at your own pace.</li>
+</ul>
 
-### 🎁 Special Offer
-**[Try it free](https://www.rapidproxy.io/?ref=twsc)** — Plans start from just **$0.65/GB**. 
-Use coupon code **`RAPID10`** at checkout for **10% off**.
-
-
+<h3>🎁 Special Offer</h3>
+<p>
+  <strong><a href="https://www.rapidproxy.io/?ref=twsc" rel="nofollow">Try it free</a></strong> — Plans start from just <strong>$0.65/GB</strong>.<br>
+  Use coupon code <code>RAPID10</code> at checkout for <strong>10% off</strong>.
+</p>
 
 <!--TABLE of contents //-->
 <br>
