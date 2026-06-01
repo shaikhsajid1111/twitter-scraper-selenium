@@ -64,7 +64,7 @@
 
 ## ⚡ Sponsor
 
-### **RapidProxy — Unlock Scalable Web Data for Your Business**
+### **[RapidProxy](https://www.rapidproxy.io/?ref=twsc) — Unlock Scalable Web Data for Your Business**
 
 [![RapidProxy Banner](img/rapidproxy-banner.png)](https://www.rapidproxy.io/?ref=twsc)
 
