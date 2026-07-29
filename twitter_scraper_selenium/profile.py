@@ -25,7 +25,7 @@ class Profile:
     def __init__(self, twitter_username, browser, proxy, tweets_count, headless):
         self.twitter_username = twitter_username
         self.URL = "https://twitter.com/{}".format(twitter_username.lower())
-        self.__driver = ""
+        self.__driver = None
         self.browser = browser
         self.proxy = proxy
         self.tweets_count = tweets_count
@@ -39,8 +39,14 @@ class Profile:
             self.browser, self.headless, self.proxy).init()
 
     def __close_driver(self):
-        self.__driver.close()
-        self.__driver.quit()
+        driver = self.__driver
+        if driver is None:
+            return
+        self.__driver = None
+        try:
+            driver.close()
+        finally:
+            driver.quit()
 
     def __check_tweets_presence(self, tweet_list):
         if len(tweet_list) <= 0:
