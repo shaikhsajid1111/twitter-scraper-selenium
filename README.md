@@ -32,6 +32,7 @@
     </ul>
     </li></ul>
     <!---->
+    <ul><li><a href="#xquik-search">Searching X with Xquik</a></li></ul>
     <ul>
     <li><a href="#profile">Scraping profile's tweets</a>
     <ul>
@@ -155,11 +156,67 @@ Usage</h2>
 <td>Browser Automation & HTTP Request</td>
 <td>Fast</td>
 </tr>
+<tr>
+<td><code>search_tweets_with_xquik()</code></td>
+<td>Search public X posts through the Xquik API.</td>
+<td>HTTP Request</td>
+<td>Fast</td>
+</tr>
 </table>
 <p>
 Note: HTTP Request Method sends the request to Twitter's API directly for scraping data, and Browser Automation visits that page, scroll while collecting the data.</p>
 </div>
 <br>
+<hr>
+<h3 id="xquik-search">Search X with Xquik</h3>
+
+<p>
+Use the optional Xquik helper for authenticated, read-only X search without
+launching Selenium. Create an API key, then store it outside your source code:
+</p>
+
+```bash
+export XQUIK_API_KEY="<your_api_key>"
+```
+
+```python
+from twitter_scraper_selenium import search_tweets_with_xquik
+
+page = search_tweets_with_xquik(
+    "python #opensource",
+    tweets_count=25,
+    query_type="Latest",
+)
+
+for tweet in page["tweets"]:
+    print(tweet["text"])
+
+if page.get("has_next_page"):
+    next_page = search_tweets_with_xquik(
+        "python #opensource",
+        tweets_count=25,
+        query_type="Latest",
+        cursor=page["next_cursor"],
+    )
+```
+
+<p>
+<code>tweets_count</code> accepts 1 to 200 posts per request.
+<code>query_type</code> accepts <code>Latest</code> or <code>Top</code>.
+Use <code>since_time</code> and <code>until_time</code> for date bounds.
+Pass <code>next_cursor</code> back as <code>cursor</code> to continue.
+The helper returns the raw JSON response and raises
+<code>XquikApiError</code> for authentication, HTTP, network, or response
+errors. See the
+<a href="https://docs.xquik.com/api-reference/x/search-tweets">Search Tweets API documentation</a>
+for response fields and search operators.
+</p>
+
+<p>
+Xquik is an independent third-party service. Not affiliated with X Corp.
+"Twitter" and "X" are trademarks of X Corp.
+</p>
+
 <hr>
 <h3 id="profileDetail">To scrape twitter profile details:</h3>
 <div id="profileDetailExample">
