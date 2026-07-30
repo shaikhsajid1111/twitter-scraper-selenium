@@ -1,0 +1,7 @@
+python-dateutil
+seleniumbase
+webdriver-manager
+fake-headers
+requests
+blinker
+setuptools
