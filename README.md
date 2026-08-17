@@ -91,6 +91,35 @@
   <strong><a href="https://www.rapidproxy.io/?ref=twsc" rel="nofollow">Try it free</a></strong> — Plans start from just <strong>$0.65/GB</strong>.<br>
   Use coupon code <code>RAPID10</code> at checkout for <strong>10% off</strong>.
 </p>
+<hr>
+<br>
+
+<p>
+  <a href="https://www.rapidproxy.io/?ref=twsc" rel="nofollow">
+    <img src="img/swiftproxy-banner.png" alt="RapidProxy Banner" style="max-width: 100%;">
+  </a>
+</p>
+
+<h3>
+  <strong><a href="https://www.swiftproxy.net/?ref=shaikhsajid111" rel="nofollow">Swiftproxy</a> — Reliable Residential Proxies for Scraping & Automation</strong>
+</h3>
+
+<p>
+  <a href="https://www.swiftproxy.net/?ref=shaikhsajid111" rel="nofollow">Swiftproxy</a> offers dependable residential proxy solutions for web scraping, browser automation, and large-scale data collection projects.
+</p>
+
+<ul>
+  <li><strong>🌐 90M+ residential IPs</strong> — Global coverage across many regions.</li>
+  <li><strong>🔒 HTTP(S) & SOCKS5</strong> — Flexible protocol support for real-world scraping.</li>
+  <li><strong>📍 Country, region, and city targeting</strong> — Better geo-targeting control.</li>
+  <li><strong>⏳ Non-expiring residential proxy traffic</strong> — Use your proxy data at your own pace.</li>
+  <li><strong>🧪 Free trial available</strong> — Test performance before scaling.</li>
+</ul>
+
+<h3>🎁 Special Offer</h3>
+<p>
+  <strong><a href="https://www.swiftproxy.net/?ref=shaikhsajid111" rel="nofollow">Get started with Swiftproxy</a></strong> and use code <code>PROXY90</code> for <strong>10% off</strong>.
+</p>
 
 <!--TABLE of contents //-->
 <br>
